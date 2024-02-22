@@ -43,23 +43,46 @@ class Element(object):
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
         raise NotImplementedError('Method shape_functions_derivative not implemented')
 
-    def jacobian(self, xi: float, eta: float, derivative: np.ndarray) -> np.ndarray:
+    def jacobian(self, derivative: np.ndarray) -> np.ndarray:
         raise NotImplementedError('Method jacobian not implemented')
 
-    def jacobian_determinant(self, jacobian: np.ndarray) -> float:
+    @staticmethod
+    def jacobian_determinant(jacobian: np.ndarray) -> float:
         return np.linalg.det(jacobian)
 
-    def inverse_jacobian(self, jacobian: np.ndarray) -> np.ndarray:
+    @staticmethod
+    def inverse_jacobian(jacobian: np.ndarray) -> np.ndarray:
         return np.linalg.inv(jacobian)
 
     def compute_elem_stiffness_matrix(self, gauss_points: int) -> np.ndarray:
         raise NotImplementedError('Method compute_elem_stiffness_matrix not implemented')
 
     def assemble_elem_b_matrix(self, shape_derivative: np.ndarray):
-        b_matrix = np.zeros((3, self.count_elem_dofs()))
-        for i, node in enumerate(self.nodes):
-            b_matrix[1, 2 * i - 1] = shape_derivative[1, i]
-            b_matrix[3, 2 * i] = shape_derivative[1, i]
-            b_matrix[2, 2 * i] = shape_derivative[2, i]
-            b_matrix[3, 2 * i - 1] = shape_derivative[2, i]
+        num_nodes = len(self.nodes)
+
+        num_dofs = self.count_elem_dofs()
+        b_matrix = np.zeros((3, num_dofs))
+
+        for i in range(num_nodes):
+            # Adjust index calculations to start from 0
+            b_matrix[0, 2 * i] = shape_derivative[0, i]
+            b_matrix[1, 2 * i + 1] = shape_derivative[1, i]
+            b_matrix[2, 2 * i] = shape_derivative[1, i]
+            b_matrix[2, 2 * i + 1] = shape_derivative[0, i]
+
         return b_matrix
+
+    def get_steering_vector(self):
+        steering = np.full(self.count_elem_dofs(), -1)
+        for i, node in enumerate(self.nodes):
+            if not node.is_constrained_x():
+                steering[2 * i] = node.global_index_x
+            if not node.is_constrained_y():
+                steering[2 * i + 1] = node.global_index_y
+        return steering
+
+    def size(self):
+        x = [node.x for node in self.nodes]
+        y = [node.y for node in self.nodes]
+
+        return abs((x[0] * y[1] + x[1] * y[2] + x[2] * y[3] + x[3] * y[0] - x[1] * y[0] - x[2] * y[1] - x[3] * y[2] - x[0] * y[3]) / 2)

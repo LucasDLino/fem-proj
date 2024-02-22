@@ -1,5 +1,8 @@
+from typing import Optional
+
 from Engine.Geometry import Geometry
 from Engine.Materials.LinearElasticMaterial import LinearElasticMaterial
+from Pos.Visualizer import Visualizer
 import numpy as np
 
 
@@ -48,6 +51,9 @@ class Engine(object):
         n20 = self.geometry.add_node(60., 0.)
         n21 = self.geometry.add_node(60., 10.)
 
+        # Compute nodal global indices for each node
+        self.geometry.compute_nodal_global_indices()
+
         # Create beam elements
         self.geometry.add_bilinear_quadrilateral_element([n1, n4, n5, n2])
         self.geometry.add_bilinear_quadrilateral_element([n2, n5, n6, n3])
@@ -62,35 +68,62 @@ class Engine(object):
         self.geometry.add_bilinear_quadrilateral_element([n16, n19, n20, n17])
         self.geometry.add_bilinear_quadrilateral_element([n17, n20, n21, n18])
 
+    def set_linear_elastic_material(self, young_modulus: float, poisson_ratio: float, thickness: Optional[float] = None):
         # Set material
-        linear_material = LinearElasticMaterial(1E6, 0.3)
-        linear_material.beam_thickness = 0.5
+        linear_material = LinearElasticMaterial(young_modulus, poisson_ratio)
+        if thickness is not None:
+            linear_material.beam_thickness = thickness
         self.geometry.set_all_materials(linear_material)
 
-        # Set boundary conditions
-        n19.constrain(True, True)
-        n20.constrain(True, True)
-        n21.constrain(True, True)
+    def set_boundary_conditions(self, node: int, x: bool, y: bool):
+        self.geometry.nodes[node].constrain(x, y)
 
-        # Apply loads
-        n1.apply_load(0., -1000.)
+    def apply_nodal_load(self, node: int, x: float, y: float):
+        self.geometry.nodes[node].apply_load(x, y)
 
-        loads = self.geometry.get_nodal_loads_matrix()
+    def integrate_and_assemble_stiffness_matrix(self):
+        self.global_stiffness_matrix = np.zeros((self.geometry.count_global_free_dofs(), self.geometry.count_global_free_dofs()))
 
-        print(loads)
+        for element in self.geometry.elements:
+            element_stiffness_matrix = element.compute_elem_stiffness_matrix(self.gauss_points)
+            self.global_stiffness_matrix = self.geometry.assemble_global_stiffness_matrix(self.global_stiffness_matrix, element_stiffness_matrix, element)
 
-    def compute_analysis(self):
+        return self.global_stiffness_matrix
+
+    def solve_displacements(self):
+        self.global_displacement_vector = np.zeros(len(self.geometry.nodes) * 2)
+        displacements = np.linalg.solve(self.global_stiffness_matrix, self.global_force_vector)
+
+        # Assemble the global displacement vector
+        for i, node in enumerate(self.geometry.nodes):
+            if not node.is_constrained_x():
+                self.global_displacement_vector[node.global_index_x] = displacements[node.global_index_x]
+            if not node.is_constrained_y():
+                self.global_displacement_vector[node.global_index_y] = displacements[node.global_index_y]
+
+        return self.global_displacement_vector
+
+    def run_analysis(self):
         self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
         self.global_force_vector = self.geometry.assemble_global_forces_vector()
         self.global_displacement_vector = self.solve_displacements()
 
-    def integrate_and_assemble_stiffness_matrix(self):
-        self.global_stiffness_matrix = np.ndarray((self.geometry.free_dofs(), self.geometry.free_dofs()))
+    def show_results(self):
+        # print nodes
+        # print('Nodes:')
+        # for i, node in enumerate(self.geometry.nodes):
+        #     print(f'Node {i + 1}: x = {node.x}, y = {node.y} - Constrained x: {node.is_constrained_x()}, Constrained y: {node.is_constrained_y()}')
 
-        for element in self.geometry.elements:
-            element_stiffness_matrix = element.compute_elem_stiffness_matrix(self.gauss_points)
-            self.global_stiffness_matrix = self.geometry.assemble_global_stiffness_matrix(self.global_stiffness_matrix, element_stiffness_matrix)
+        # print global force vector
+        print('Global force vector:')
+        print(self.global_force_vector)
 
-    def solve_displacements(self):
-        # TODO: Check this method
-        return np.linalg.solve(self.global_stiffness_matrix, self.global_force_vector)
+        # print global displacement results
+        print('Global displacement results:')
+        for i, node in enumerate(self.geometry.nodes):
+            print(f'Node {i + 1}: u = {self.global_displacement_vector[i * 2]}, v = {self.global_displacement_vector[i * 2 + 1]} with coordinates {node.x}, {node.y}')
+
+        visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
+
+        visualization.visualize_undeformed_geometry()
+        visualization.visualize_deformed_geometry(self.global_displacement_vector, 1000, add_nodal_forces=True)

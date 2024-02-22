@@ -6,6 +6,8 @@ class Node(object):  # Although python 3, it is good practice to inherit from ob
         self.y_constraint = False
         self.x_load = 0.0
         self.y_load = 0.0
+        self.global_index_x = -1
+        self.global_index_y = -1
 
     @property
     def name(self):
@@ -24,9 +26,6 @@ class Node(object):  # Although python 3, it is good practice to inherit from ob
         self.x_constraint = x
         self.y_constraint = y
 
-    def is_constrained(self):
-        return self.x_constraint or self.y_constraint
-
     def is_constrained_x(self):
         return self.x_constraint
 
@@ -40,3 +39,9 @@ class Node(object):  # Although python 3, it is good practice to inherit from ob
     def apply_load(self, x: float, y: float):
         self.x_load = x
         self.y_load = y
+
+    def set_global_index_x(self, index: int):
+        self.global_index_x = index
+
+    def set_global_index_y(self, index: int):
+        self.global_index_y = index

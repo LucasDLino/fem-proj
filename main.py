@@ -19,6 +19,7 @@ if __name__ == '__main__':
     # Applying loads
     engine.apply_nodal_load(1, 0, -1000)  # Node 1
     # engine.apply_nodal_load(4, 0, -5000)  # Node 5
+    # engine.apply_nodal_load(7, 100, 500)  # Node 8
 
     # Analysis and results
     engine.run_analysis()

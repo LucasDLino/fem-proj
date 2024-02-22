@@ -92,6 +92,7 @@ class Engine(object):
 
     def solve_displacements(self):
         self.global_displacement_vector = np.zeros(len(self.geometry.nodes) * 2)
+        # numpy division of matrices
         displacements = np.linalg.solve(self.global_stiffness_matrix, self.global_force_vector)
 
         # Assemble the global displacement vector
@@ -115,15 +116,16 @@ class Engine(object):
         #     print(f'Node {i + 1}: x = {node.x}, y = {node.y} - Constrained x: {node.is_constrained_x()}, Constrained y: {node.is_constrained_y()}')
 
         # print global force vector
-        print('Global force vector:')
-        print(self.global_force_vector)
+        # print('Global force vector:')
+        # print(self.global_force_vector)
 
         # print global displacement results
-        print('Global displacement results:')
-        for i, node in enumerate(self.geometry.nodes):
-            print(f'Node {i + 1}: u = {self.global_displacement_vector[i * 2]}, v = {self.global_displacement_vector[i * 2 + 1]} with coordinates {node.x}, {node.y}')
+        # print('Global displacement results:')
+        # for i, node in enumerate(self.geometry.nodes):
+        #     print(f'Node {i + 1}: u = {self.global_displacement_vector[i * 2]}, v = {self.global_displacement_vector[i * 2 + 1]} with coordinates {node.x}, {node.y}')
 
         visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
 
         visualization.visualize_undeformed_geometry()
-        visualization.visualize_deformed_geometry(self.global_displacement_vector, 1000, add_nodal_forces=True)
+        visualization.visualize_deformed_geometry(self.global_displacement_vector, 100, add_nodal_forces=True)
+        visualization.visualize_disp_table(self.global_displacement_vector)

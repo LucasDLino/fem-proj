@@ -35,8 +35,8 @@ class BilinearQuadrilateralElement(Element):
                                 [(1. - xi) * (1. + eta)]])
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
-        return 0.25 * np.array([[-(1. - eta), -(1. - xi), -(1. - eta), -(1. + xi)],
-                                [(1. - eta), -(1. + xi), (1. + eta), (1. + xi)]])
+        return 0.25 * np.array([[-(1. - eta), (1. - eta), (1. + eta), -(1. + eta)],
+                                [-(1. - xi), -(1. + xi), (1. + xi), (1. - xi)]])
 
     def jacobian(self, derivative: np.ndarray) -> np.ndarray:
         x = np.array([node.x for node in self.nodes])
@@ -66,7 +66,7 @@ class BilinearQuadrilateralElement(Element):
 
                 derivative = inverse_jacobian @ shape_derivative
 
-                elastic_matrix = self.material.get_elastic_matrix()
+                elastic_matrix = self.material.get_elastic_matrix(True)  # True for plane stress
 
                 thickness = self.get_thickness()
 

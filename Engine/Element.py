@@ -72,6 +72,7 @@ class Element(object):
 
         return b_matrix
 
+    # This vector is used to assemble the global stiffness matrix
     def get_steering_vector(self):
         steering = np.full(self.count_elem_dofs(), -1)
         for i, node in enumerate(self.nodes):
@@ -81,8 +82,9 @@ class Element(object):
                 steering[2 * i + 1] = node.global_index_y
         return steering
 
-    def size(self):
+    def max_size(self):
         x = [node.x for node in self.nodes]
         y = [node.y for node in self.nodes]
 
-        return abs((x[0] * y[1] + x[1] * y[2] + x[2] * y[3] + x[3] * y[0] - x[1] * y[0] - x[2] * y[1] - x[3] * y[2] - x[0] * y[3]) / 2)
+        # Calculate the maximum distance between any two nodes
+        return max(max(x) - min(x), max(y) - min(y))

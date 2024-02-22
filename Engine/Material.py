@@ -19,5 +19,5 @@ class Material(object):
     def __hash__(self):
         return hash(self.name)
 
-    def get_elastic_matrix(self) -> np.ndarray:
+    def get_elastic_matrix(self, *args) -> np.ndarray:
         raise NotImplementedError('Method not implemented')

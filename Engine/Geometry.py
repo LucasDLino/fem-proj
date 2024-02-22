@@ -19,6 +19,8 @@ class Geometry(object):
 
     def add_node(self, x: float, y: float) -> Node:
         self.nodes.append(Node(x, y))
+        # Set node label
+        self.nodes[-1].label = len(self.nodes)
         return self.nodes[-1]
 
     def add_bilinear_quadrilateral_element(self, nodes: List[Node]) -> Element:
@@ -53,7 +55,7 @@ class Geometry(object):
                 global_index_count += 1
 
     def assemble_global_forces_vector(self) -> np.ndarray:
-        forces = np.zeros(self.count_global_free_dofs())
+        forces = np.zeros((self.count_global_free_dofs(), 1))
         for i, node in enumerate(self.nodes):
             if not node.is_constrained_x():
                 forces[2 * i] = node.x_load

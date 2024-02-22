@@ -1,5 +1,6 @@
 class Node(object):  # Although python 3, it is good practice to inherit from object
     def __init__(self, x: float, y: float):
+        self.label = None
         self.x = x
         self.y = y
         self.x_constraint = False

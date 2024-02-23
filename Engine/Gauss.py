@@ -10,14 +10,11 @@ class Gauss(object):
     Attributes:
         None
 
-    Methods:
-        name: Returns the name of the Gauss quadrature method.
-        get_weights: Returns the weights for numerical integration.
-        get_points: Returns the points for numerical integration.
-
     Usage:
         gauss = Gauss()
+
         weights = gauss.get_weights()
+
         points = gauss.get_points()
     """
 

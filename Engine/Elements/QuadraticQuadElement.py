@@ -5,7 +5,7 @@ from Engine.Material import Material
 from Engine.Node import Node
 
 
-class QuadraticQuadrilateralElement(Element):
+class QuadraticQuadElement(Element):
     def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):
         super().__init__(nodes, material)
 

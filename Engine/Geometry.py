@@ -4,8 +4,8 @@ import numpy as np
 from Engine.Material import Material
 from Engine.Node import Node
 from Engine.Element import Element
-from Engine.Elements.BilinearQuadrilateralElement import BilinearQuadrilateralElement
-from Engine.Elements.QuadraticQuadrilateralElement import QuadraticQuadrilateralElement
+from Engine.Elements.BilinearQuadElement import BilinearQuadElement
+from Engine.Elements.QuadraticQuadElement import QuadraticQuadElement
 
 
 class Geometry(object):
@@ -24,11 +24,11 @@ class Geometry(object):
         return self.nodes[-1]
 
     def add_bilinear_quadrilateral_element(self, nodes: List[Node]) -> Element:
-        self.elements.append(BilinearQuadrilateralElement(nodes))
+        self.elements.append(BilinearQuadElement(nodes))
         return self.elements[-1]
 
     def add_quadratic_quadrilateral_element(self, nodes: List[Node]) -> Element:
-        self.elements.append(QuadraticQuadrilateralElement(nodes))
+        self.elements.append(QuadraticQuadElement(nodes))
         return self.elements[-1]
 
     def set_all_materials(self, material: Material):

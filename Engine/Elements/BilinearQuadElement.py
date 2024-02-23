@@ -7,7 +7,7 @@ from Engine.Materials.LinearElasticMaterial import LinearElasticMaterial
 from Engine.Node import Node
 
 
-class BilinearQuadrilateralElement(Element):
+class BilinearQuadElement(Element):
     def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):
         super().__init__(nodes, material)
 

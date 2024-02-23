@@ -12,25 +12,12 @@ class Element(object):
 
      Attributes:
          nodes (List[Node]): List of nodes that define the element.
-         material (Optional[Material]): Material assigned to the element.
-         gauss (Gauss): Gauss quadrature method for numerical integration.
-         elem_dofs (int): Number of degrees of freedom associated with the element.
 
-     Methods:
-         name: Returns the name of the element.
-         max_nodes: Returns the maximum number of nodes the element can have.
-         add_node: Adds a node to the element.
-         set_material: Sets the material for the element.
-         count_elem_dofs: Counts the degrees of freedom associated with the element.
-         shape_functions: Computes the shape functions of the element.
-         shape_functions_derivative: Computes the derivative of the shape functions.
-         jacobian: Computes the Jacobian matrix for the element.
-         jacobian_determinant: Computes the determinant of the Jacobian matrix.
-         inverse_jacobian: Computes the inverse of the Jacobian matrix.
-         compute_elem_stiffness_matrix: Computes the element stiffness matrix.
-         assemble_elem_b_matrix: Assembles the B matrix for the element.
-         get_connectivity_vector: Returns the connectivity vector for global assembly.
-         max_size: Computes the maximum size of the element.
+         material (Optional[Material]): Material assigned to the element.
+
+         gauss (Gauss): Gauss quadrature method for numerical integration.
+
+         elem_dofs (int): Number of degrees of freedom associated with the element.
      """
 
     def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):

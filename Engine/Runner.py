@@ -51,9 +51,6 @@ class Runner(object):
         n20 = self.geometry.add_node(60., 0.)
         n21 = self.geometry.add_node(60., 10.)
 
-        # Compute nodal global indices for each node
-        self.geometry.compute_nodal_global_indices()
-
         # Create beam elements
         self.geometry.add_bilinear_quadrilateral_element([n1, n4, n5, n2])
         self.geometry.add_bilinear_quadrilateral_element([n2, n5, n6, n3])
@@ -105,6 +102,10 @@ class Runner(object):
         return self.global_displacement_vector
 
     def run_analysis(self):
+        # Compute nodal global indices for each node
+        self.geometry.compute_nodal_global_indices()
+
+        # Perform the analysis
         self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
         self.global_force_vector = self.geometry.assemble_global_forces_vector()
         self.global_displacement_vector = self.solve_displacements()

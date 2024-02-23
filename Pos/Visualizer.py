@@ -161,7 +161,7 @@ class Visualizer:
 
         # # Define the table data and headers
         headers = ['Node', 'X Displacement', 'Y Displacement']
-        table_data = [[f'Node {node.label}', f'{displacements[node.global_index_x]:.2f}', f'{displacements[node.global_index_y]:.2f}'] for node in self.nodes]
+        table_data = [[f'Node {node.label}', f'{displacements[node.global_index_x]:.6f}', f'{displacements[node.global_index_y]:.6f}'] for node in self.nodes]
 
         # Create the table and add it to the figure
         table = ax.table(cellText=table_data, colLabels=headers, loc='center', cellLoc='center', colLoc='center')

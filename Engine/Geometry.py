@@ -56,11 +56,14 @@ class Geometry(object):
 
     def assemble_global_forces_vector(self) -> np.ndarray:
         forces = np.zeros((self.count_global_free_dofs(), 1))
-        for i, node in enumerate(self.nodes):
+        global_index_count = 0
+        for node in self.nodes:
             if not node.is_constrained_x():
-                forces[2 * i] = node.x_load
+                forces[global_index_count] = node.x_load
+                global_index_count += 1
             if not node.is_constrained_y():
-                forces[2 * i + 1] = node.y_load
+                forces[global_index_count] = node.y_load
+                global_index_count += 1
         return forces
 
     @staticmethod

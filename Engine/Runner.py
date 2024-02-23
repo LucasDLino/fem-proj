@@ -6,7 +6,7 @@ from Pos.Visualizer import Visualizer
 import numpy as np
 
 
-class Engine(object):
+class Runner(object):
     def __init__(self):
         # Geometry
         self.geometry = Geometry()

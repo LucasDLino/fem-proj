@@ -66,7 +66,7 @@ class Geometry(object):
     @staticmethod
     def assemble_global_stiffness_matrix(global_stiffness_matrix: np.ndarray, element_stiffness_matrix: np.ndarray, element: Element) -> np.ndarray:
         elem_dofs = element.count_elem_dofs()
-        g = element.get_steering_vector()
+        g = element.get_connectivity_vector()
         for i in range(elem_dofs):
             if g[i] != -1:
                 for j in range(elem_dofs):

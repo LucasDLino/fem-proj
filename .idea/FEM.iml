@@ -5,6 +5,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="ReSTService">
+    <option name="DOC_DIR" value="$MODULE_DIR$" />
+  </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="789698fe-aed6-4e14-ad01-b89815150b05" />
   </component>

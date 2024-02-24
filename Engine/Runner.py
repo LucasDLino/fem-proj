@@ -158,8 +158,6 @@ class Runner(object):
         # for i, node in enumerate(self.geometry.nodes):
         #     print(f'Node {i + 1}: x = {node.x}, y = {node.y} - Constrained x: {node.is_constrained_x()}, Constrained y: {node.is_constrained_y()}')
 
-        "ahaha"
-
         # print global force vector
         # print('Global force vector:')
         # print(self.global_force_vector)

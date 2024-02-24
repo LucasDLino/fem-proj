@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import matplotlib.tri as tri
+
 from typing import List, Optional
 
 from Engine.Element import Element
@@ -188,4 +190,156 @@ class Visualizer:
 
     def visualize_disp_table(self, displacements):
         self.create_displacement_table(displacements)
+        plt.show()
+
+    # converts quad elements into tri elements. Reference: https://stackoverflow.com/questions/52202014/how-can-i-plot-2d-fem-results-using-matplotlib
+    @staticmethod
+    def quads_to_tris(quads):
+        """
+        This is the shape you would get by converting a quad to 2 triangles
+                            A-------B
+                            |     / |
+                            |    /  |
+                            |   /   |
+                            |  /    |
+                            | /     |
+                            D-------C
+
+        :param quads: list of quads
+
+        :return: list of triangles
+        """
+        tris = []
+        for quad in quads:
+            # First triangle
+            tris.append([quad[0], quad[1], quad[2]])
+            # Second triangle
+            tris.append([quad[2], quad[3], quad[0]])
+        return tris
+
+    @staticmethod
+    def convert_to_4tris(quads):
+        """
+        This is the shape you would get by converting a quad to 4 triangles
+                            A-------B
+                            | \   / |
+                            |  \ /  |
+                            |   X   |
+                            |  / \  |
+                            | /   \ |
+                            D-------C
+
+        :param quads: list of quads
+
+        :return: list of triangles
+        """
+        tris = []
+        for quad in quads:
+            # First triangle
+            tris.append([quad[0], quad[1], quad[2]])
+            # Second triangle
+            tris.append([quad[0], quad[2], quad[3]])
+            # Third triangle (diagonal-based)
+            tris.append([quad[0], quad[1], quad[3]])
+            # Fourth triangle (diagonal-based)
+            tris.append([quad[1], quad[2], quad[3]])
+        return tris
+
+    # plots a finite element mesh
+    def plot_fem_mesh(self, nodes_x, nodes_y, elements):
+        for element in elements:
+            x = [nodes_x[element[i]] for i in range(len(element))]
+            y = [nodes_y[element[i]] for i in range(len(element))]
+            plt.fill(x, y, edgecolor='black', fill=False)
+
+    def visualize_nodal_stress(self, stress_component: str):
+        """Visualize a color map of the nodal stress."""
+        # Create new plot
+        fig, ax = plt.subplots(figsize=(12, 9))
+
+        # Extract the specified stress component
+        if stress_component == 'xx':
+            stress = [node.stress_avg[0] for node in self.nodes]
+            title = 'Stress xx'
+        elif stress_component == 'yy':
+            stress = [node.stress_avg[1] for node in self.nodes]
+            title = 'Stress yy'
+        elif stress_component == 'xy':
+            stress = [node.stress_avg[2] for node in self.nodes]
+            title = 'Stress xy'
+        else:
+            raise ValueError("Invalid stress component. Choose from 'xx', 'yy', or 'xy'.")
+
+        x = [node.x for node in self.nodes]
+        y = [node.y for node in self.nodes]
+
+        elem_nodes_map = [[] for _ in self.elements]
+
+        for i, elem in enumerate(self.elements):
+            for node in elem.nodes:
+                elem_nodes_map[i].append(node.label - 1)
+
+        # convert all elements into triangles
+        elements_all_tris = self.quads_to_tris(elem_nodes_map)
+
+        # create an unstructured triangular grid instance
+        triangulation = tri.Triangulation(x, y, elements_all_tris)
+
+        # plot the finite element mesh
+        self.plot_fem_mesh(x, y, elem_nodes_map)
+
+        # plot the contours
+        plt.tricontourf(triangulation, stress)
+
+        ax.set_title(title)
+        ax.grid(True)
+        ax.set_aspect('equal', adjustable='box')
+
+        # show
+        plt.colorbar()
+        # plt.axis('equal')
+        plt.show()
+
+    def visualize_displacement(self, displacements, direction: str = 'x'):
+        """Visualize a color map of the nodal displacement."""
+        # Create new plot
+        fig, ax = plt.subplots(figsize=(12, 9))
+
+        if direction == 'x':
+            title = 'Displacement in x direction'
+            displacement_dir = [displacements[node.global_index_x] if node.global_index_x != -1 else 0 for node in self.nodes]
+        elif direction == 'y':
+            title = 'Displacement in y direction'
+            displacement_dir = [displacements[node.global_index_y] if node.global_index_y != -1 else 0 for node in self.nodes]
+        else:
+            raise ValueError("Invalid direction. Choose from 'x' or 'y'.")
+
+        x = [node.x for node in self.nodes]
+        y = [node.y for node in self.nodes]
+
+        elem_nodes_map = [[] for _ in self.elements]
+
+        for i, elem in enumerate(self.elements):
+            for node in elem.nodes:
+                elem_nodes_map[i].append(node.label - 1)
+
+        # convert all elements into triangles
+        elements_all_tris = self.quads_to_tris(elem_nodes_map)
+
+        # create an unstructured triangular grid instance
+        triangulation = tri.Triangulation(x, y, elements_all_tris)
+
+        # plot the finite element mesh
+        self.plot_fem_mesh(x, y, elem_nodes_map)
+
+        # plot the contours
+        plt.tricontourf(triangulation, displacement_dir)
+
+        ax.set_title(title)
+        ax.grid(True)
+        ax.set_aspect('equal', adjustable='box')
+
+        # show
+        plt.colorbar()
+        # plt.axis('equal')
         plt.show()

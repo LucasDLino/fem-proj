@@ -25,6 +25,8 @@ class Geometry(object):
 
     def add_bilinear_quadrilateral_element(self, nodes: List[Node]) -> Element:
         self.elements.append(BilinearQuadElement(nodes))
+        # Set element label
+        self.elements[-1].label = len(self.elements)
         return self.elements[-1]
 
     def add_quadratic_quadrilateral_element(self, nodes: List[Node]) -> Element:

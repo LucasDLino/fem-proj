@@ -5,10 +5,22 @@ class Node(object):  # Although python 3, it is good practice to inherit from ob
         self.y = y
         self.x_constraint = False
         self.y_constraint = False
+
+        # Load
         self.x_load = 0.0
         self.y_load = 0.0
+
+        # Global index
         self.global_index_x = -1
         self.global_index_y = -1
+
+        # Stress and strain from all elements
+        self.stress = []
+        self.strain = []
+
+        # Average stress and strain
+        self.stress_avg = None
+        self.strain_avg = None
 
     @property
     def name(self):

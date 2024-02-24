@@ -28,12 +28,18 @@ class Element(object):
            nodes (List[Node], optional): List of nodes that define the element. Defaults to None.
            material (Material, optional): Material assigned to the element. Defaults to None.
        """
+        self.label = None
+
         if nodes is None:
             nodes = []
         self.nodes = nodes
         self.material = material
         self.gauss = Gauss()
-        self.elem_dofs = 0
+        self.elem_dofs: int = 0
+
+        # Element data
+        self.stress_gp = None
+        self.strain_gp = None
 
     @property
     def name(self):
@@ -101,7 +107,7 @@ class Element(object):
         """Computes the element stiffness matrix."""
         raise NotImplementedError('Method compute_elem_stiffness_matrix not implemented')
 
-    def assemble_elem_b_matrix(self, shape_derivative: np.ndarray):
+    def assemble_elem_b_matrix(self, shape_derivative: np.ndarray) -> np.ndarray:
         """Assembles the B matrix for the element."""
         num_nodes = len(self.nodes)
 
@@ -118,7 +124,7 @@ class Element(object):
         return b_matrix
 
     # This vector is used to assemble the global stiffness matrix
-    def get_connectivity_vector(self):
+    def get_connectivity_vector(self) -> np.ndarray:
         """Returns the connectivity vector for global assembly."""
         steering = np.full(self.count_elem_dofs(), -1)
         for i, node in enumerate(self.nodes):
@@ -128,6 +134,11 @@ class Element(object):
                 steering[2 * i + 1] = node.global_index_y
         return steering
 
+    def get_elem_displacement_from_global(self, global_displacement_vector: np.ndarray) -> np.ndarray:
+        """Returns the element displacement vector from the global displacement vector."""
+        steering = self.get_connectivity_vector()
+        return np.array([global_displacement_vector[i] for i in steering])
+
     def max_size(self):
         """Computes the maximum size of the element."""
         x = [node.x for node in self.nodes]
@@ -135,3 +146,11 @@ class Element(object):
 
         # Calculate the maximum distance between any two nodes
         return max(max(x) - min(x), max(y) - min(y))
+
+    def compute_stress_strain(self, global_displacement_vector: np.ndarray, number_gp: int) -> (np.ndarray, np.ndarray):
+        """Computes the stress and strain at the gauss points."""
+        raise NotImplementedError('Method compute_stress_strain not implemented')
+
+    def extrapolate_stress_strain_gp_to_nodes(self, number_gp: int):
+        """Extrapolates the stress or strain from the gauss points to the nodes."""
+        raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')

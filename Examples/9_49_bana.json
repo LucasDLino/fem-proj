@@ -1,5 +1,5 @@
 {
-  "element_type": "quad4",
+  "element_type": "quad8",
   "geometry": {
     "origin": {
       "x": 0,
@@ -8,8 +8,8 @@
     "width": 60,
     "height": 20,
     "num_nodes": {
-      "x": 30,
-      "y": 10
+      "x": 15,
+      "y": 5
     }
   },
   "nodes_restrictions": [

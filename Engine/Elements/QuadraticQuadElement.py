@@ -38,6 +38,12 @@ class QuadraticQuadElement(Element):
                                 [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
                                 [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left
 
+    def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
+        return 0.25 * np.array([[-(1. - xi) * (1. - eta)],  # N1 (bottom left)
+                                [(1. + xi) * (1. - eta)],   # N2 (bottom right)
+                                [(1. + xi) * (1. + eta)],   # N3 (top right)
+                                [(1. - xi) * (1. + eta)]])  # N4 (top left)
+
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
         # Derivadas parciais em relação a xi e eta organizadas em uma matriz
         return 0.25 * np.array(
@@ -141,20 +147,19 @@ class QuadraticQuadElement(Element):
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
-        parametric_coords = np.array([[-1, -1], [1, -1], [1, 1], [-1, 1]])
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
 
-        num_rows = len(parametric_coords)
+        num_cols = 4
 
-        extrapolation_matrix = np.zeros((num_rows, num_nodes))
+        extrapolation_matrix = np.zeros((num_nodes, num_cols))
 
         # We will evaluate the shape functions at the parametric coordinates and populate the extrapolation matrix
-        for i in range(num_rows):
+        for i in range(num_nodes):
             xi = parametric_coords[i, 0]
             eta = parametric_coords[i, 1]
 
             # N_i = 0.25 * (1 +- xi') * (1 +- eta') in which xi' = xi * sqrt(3) and eta' = eta * sqrt(3)
-
-            shape_funcs = self.shape_functions(xi * np.sqrt(3), eta * np.sqrt(3))
+            shape_funcs = self.linear_shape_functions(xi * np.sqrt(3), eta * np.sqrt(3))
 
             extrapolation_matrix[i, :] = shape_funcs.ravel()
 
@@ -164,7 +169,6 @@ class QuadraticQuadElement(Element):
         """Extrapolates the stress or strain from the gauss points to the nodes."""
 
         if number_gp == 2:
-            # TODO: Check extrapolation, it seems to be wrong
             # Each row corresponds to a gauss point and each column to a node
             extrapolation_matrix = self.construct_extrapolation_matrix_2gp()
 
@@ -188,5 +192,4 @@ class QuadraticQuadElement(Element):
                 node.strain.append([self.label, self.strain_gp[0]])
                 node.stress.append([self.label, np.array(self.stress_gp[0][0:3])])
         else:
-            # Todo: Implement the extrapolation for other number of gauss points
             raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')

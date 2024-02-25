@@ -1,7 +1,7 @@
 from Engine.Runner import Runner
 from Pre.BeamMeshGenerator import BeamMeshGenerator
 from Examples import examples_reader
-
+from Pos.Visualizer import Visualizer
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     runner = Runner()
@@ -10,6 +10,11 @@ if __name__ == '__main__':
 
     if element_type == 'quad4':
         BeamMeshGenerator(runner.geometry).generate_bilinear_mesh(width=geometry['width'], height=geometry['height'], num_elements_x=geometry['num_nodes']['x'], num_elements_y=geometry['num_nodes']['y'], x_origin=geometry['origin']['x'], y_origin=geometry['origin']['y'])
+    elif element_type == 'quad8':
+        BeamMeshGenerator(runner.geometry).generate_biquadratic_mesh(width=geometry['width'], height=geometry['height'], num_elements_x=geometry['num_nodes']['x'], num_elements_y=geometry['num_nodes']['y'], x_origin=geometry['origin']['x'], y_origin=geometry['origin']['y'])
+    else:
+        raise ValueError('Element type not supported')
+
 
     # Setting the material
     linear_elastic_material = runner.set_linear_elastic_material(young_modulus=elements_material['E'], poisson_ratio=elements_material['poisson'], thickness=elements_material['thickness'])

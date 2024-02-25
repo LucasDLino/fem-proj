@@ -23,6 +23,17 @@ class Geometry(object):
         self.nodes[-1].label = len(self.nodes)
         return self.nodes[-1]
 
+
+    def add_element(self, nodes: List[Node]) -> Element:
+
+        if len(nodes) == 4:
+            return self.add_bilinear_quadrilateral_element(nodes)
+        elif len(nodes) == 8:
+            return self.add_quadratic_quadrilateral_element(nodes)
+        else:
+            raise ValueError('Element type not supported')
+
+
     def add_bilinear_quadrilateral_element(self, nodes: List[Node]) -> Element:
         self.elements.append(BilinearQuadElement(nodes))
         # Set element label
@@ -31,6 +42,8 @@ class Geometry(object):
 
     def add_quadratic_quadrilateral_element(self, nodes: List[Node]) -> Element:
         self.elements.append(QuadraticQuadElement(nodes))
+        # Set element label
+        self.elements[-1].label = len(self.elements)
         return self.elements[-1]
 
     def set_all_materials(self, material: Material):

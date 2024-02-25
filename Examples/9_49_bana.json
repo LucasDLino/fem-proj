@@ -1,0 +1,44 @@
+{
+  "element_type": "quad4",
+  "geometry": {
+    "origin": {
+      "x": 0,
+      "y": -10
+    },
+    "width": 60,
+    "height": 20,
+    "num_elements": {
+      "x": 8,
+      "y": 2
+    }
+  },
+  "nodes_restrictions": [
+    {
+      "position": {
+        "x": 60,
+        "y": null
+      },
+      "restrictions": {
+        "x": true,
+        "y": true
+      }
+    }
+  ],
+  "nodes_forces": [
+    {
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "forces": {
+        "x": 0,
+        "y": -1000
+      }
+    }
+  ],
+  "elements_material": {
+    "E": 200000,
+    "poisson": 0.3,
+    "thickness": 5
+  }
+}

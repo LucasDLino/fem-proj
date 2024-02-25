@@ -1,0 +1,54 @@
+{
+  "element_type": "quad8",
+  "geometry": {
+    "origin": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 800,
+    "height": 400,
+    "num_elements": {
+      "x": 16,
+      "y": 8
+    }
+  },
+  "nodes_restrictions": [
+    {
+      "position": {
+        "x": 800,
+        "y": null
+      },
+      "restrictions": {
+        "x": true,
+        "y": false
+      }
+    },
+    {
+      "position": {
+        "x": 100,
+        "y": 0
+      },
+      "restrictions": {
+        "x": false,
+        "y": true
+      }
+    }
+  ],
+  "nodes_forces": [
+    {
+      "position": {
+        "x": 500,
+        "y": 400
+      },
+      "forces": {
+        "x": 0,
+        "y": -30000
+      }
+    }
+  ],
+  "elements_material": {
+    "E": 40000.0,
+    "poisson": 0.17,
+    "thickness": 100.0
+  }
+}

@@ -39,43 +39,16 @@ class Runner(object):
     def __str__(self):
         return f'Engine with {len(self.geometry.nodes)} nodes and {len(self.geometry.elements)} elements'
 
-    def construct_beam_geometry(self):
-        # Create beam nodes
-        n1 = self.geometry.add_node(0., -10.)
-        n2 = self.geometry.add_node(0., 0.)
-        n3 = self.geometry.add_node(0., 10.)
-        n4 = self.geometry.add_node(10., -10.)
-        n5 = self.geometry.add_node(10., 0.)
-        n6 = self.geometry.add_node(10., 10.)
-        n7 = self.geometry.add_node(20., -10.)
-        n8 = self.geometry.add_node(20., 0.)
-        n9 = self.geometry.add_node(20., 10.)
-        n10 = self.geometry.add_node(30., -10.)
-        n11 = self.geometry.add_node(30., 0.)
-        n12 = self.geometry.add_node(30., 10.)
-        n13 = self.geometry.add_node(40., -10.)
-        n14 = self.geometry.add_node(40., 0.)
-        n15 = self.geometry.add_node(40., 10.)
-        n16 = self.geometry.add_node(50., -10.)
-        n17 = self.geometry.add_node(50., 0.)
-        n18 = self.geometry.add_node(50., 10.)
-        n19 = self.geometry.add_node(60., -10.)
-        n20 = self.geometry.add_node(60., 0.)
-        n21 = self.geometry.add_node(60., 10.)
+    def construct_beam_geometry(self, nodes, elements_connectivity):
+        # Define node coordinates from geom
 
-        # Create beam elements
-        self.geometry.add_bilinear_quadrilateral_element([n1, n4, n5, n2])
-        self.geometry.add_bilinear_quadrilateral_element([n2, n5, n6, n3])
-        self.geometry.add_bilinear_quadrilateral_element([n4, n7, n8, n5])
-        self.geometry.add_bilinear_quadrilateral_element([n5, n8, n9, n6])
-        self.geometry.add_bilinear_quadrilateral_element([n7, n10, n11, n8])
-        self.geometry.add_bilinear_quadrilateral_element([n8, n11, n12, n9])
-        self.geometry.add_bilinear_quadrilateral_element([n10, n13, n14, n11])
-        self.geometry.add_bilinear_quadrilateral_element([n11, n14, n15, n12])
-        self.geometry.add_bilinear_quadrilateral_element([n13, n16, n17, n14])
-        self.geometry.add_bilinear_quadrilateral_element([n14, n17, n18, n15])
-        self.geometry.add_bilinear_quadrilateral_element([n16, n19, n20, n17])
-        self.geometry.add_bilinear_quadrilateral_element([n17, n20, n21, n18])
+        for node_id, (x, y) in nodes.items():
+            nodes[node_id] = self.geometry.add_node(x, y)
+
+        # Create elements
+        for connec in elements_connectivity:
+            node_ids = [nodes[str(node_id)] for node_id in connec]
+            self.geometry.add_element(node_ids)
 
     def set_linear_elastic_material(self, young_modulus: float, poisson_ratio: float, thickness: Optional[float] = None):
         # Set material
@@ -90,24 +63,24 @@ class Runner(object):
     def apply_nodal_load(self, node: int, x: float, y: float):
         self.geometry.nodes[node].apply_load(x, y)
 
-    def run_analysis(self, stiff_intgr_type: str = 'complete', stress_strain_intgr_type: str = 'complete'):
+    def run_analysis(self, stiff_intgr_type: str = 'full', stress_strain_intgr_type: str = 'full'):
         # Compute nodal global indices for each node
         self.geometry.compute_nodal_global_indices()
 
         # Perform the analysis
-        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
+        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix(stiff_intgr_type)
         self.global_force_vector = self.geometry.assemble_global_forces_vector()
         self.global_displacement_vector = self.solve_displacements()
 
         # Compute the stress and strain at the gauss points for each element and extrapolate to the nodes
-        self.compute_elements_stress_strain()
+        self.compute_elements_stress_strain(stress_strain_intgr_type)
         self.average_nodal_stress_strain()
 
-    def integrate_and_assemble_stiffness_matrix(self, ):
+    def integrate_and_assemble_stiffness_matrix(self, stiff_intgr_type: str):
         self.global_stiffness_matrix = np.zeros((self.geometry.count_global_free_dofs(), self.geometry.count_global_free_dofs()))
 
         for element in self.geometry.elements:
-            element_stiffness_matrix = element.compute_elem_stiffness_matrix(self._number_gp)
+            element_stiffness_matrix = element.compute_elem_stiffness_matrix(stiff_intgr_type)
             self.global_stiffness_matrix = self.geometry.assemble_global_stiffness_matrix(self.global_stiffness_matrix, element_stiffness_matrix, element)
 
         return self.global_stiffness_matrix
@@ -126,11 +99,11 @@ class Runner(object):
 
         return self.global_displacement_vector
 
-    def compute_elements_stress_strain(self):
+    def compute_elements_stress_strain(self, stress_strain_intgr_type: str):
         for element in self.geometry.elements:
             # Compute the stress and strain at the gauss points
-            element.compute_stress_strain(self.global_displacement_vector, self._number_gp)
-            element.extrapolate_stress_strain_gp_to_nodes(self._number_gp)
+            element.compute_stress_strain(self.global_displacement_vector, stress_strain_intgr_type)
+            element.extrapolate_stress_strain_gp_to_nodes(stress_strain_intgr_type)
 
     def average_nodal_stress_strain(self):
 
@@ -152,20 +125,20 @@ class Runner(object):
             node.stress_avg /= len(node.stress)
             node.strain_avg /= len(node.strain)
 
-    def show_results(self):
+    def show_results(self, scale_factor: Optional[float] = 1.0):
         visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
 
         visualization.visualize_undeformed_geometry()
-        visualization.visualize_deformed_geometry(self.global_displacement_vector, 100, add_nodal_forces=True)
+        visualization.visualize_deformed_geometry(self.global_displacement_vector, scale_factor, add_nodal_forces=True)
         visualization.visualize_disp_table(self.global_displacement_vector)
 
-        visualization.visualize_nodal_stress("xx", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_stress("yy", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_stress("xy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_stress("xx", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_stress("yy", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_stress("xy", self.global_displacement_vector, scale_factor)
 
-        visualization.visualize_nodal_strain("xx", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_strain("yy", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_strain("xy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_strain("xx", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_strain("yy", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_strain("xy", self.global_displacement_vector, scale_factor)
 
-        visualization.visualize_displacement(self.global_displacement_vector, "x", 100)
-        visualization.visualize_displacement(self.global_displacement_vector, "y", 100)
+        visualization.visualize_displacement(self.global_displacement_vector, "x", scale_factor)
+        visualization.visualize_displacement(self.global_displacement_vector, "y", scale_factor)

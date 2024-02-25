@@ -28,10 +28,10 @@ class Visualizer:
             if node.is_constrained_x() and node.is_constrained_y():
                 ax.plot(node.x, node.y, 'mo', markersize=10, zorder=5)
                 constrained_both_added = True
-            elif node.is_constrained_x() and not constrained_x_added:
+            elif node.is_constrained_x():
                 ax.plot(node.x, node.y, 'ro', markersize=10, zorder=5)
                 constrained_x_added = True
-            elif node.is_constrained_y() and not constrained_y_added:
+            elif node.is_constrained_y():
                 ax.plot(node.x, node.y, 'go', markersize=10, zorder=5)
                 constrained_y_added = True
             else:
@@ -75,10 +75,10 @@ class Visualizer:
             if node.is_constrained_x() and node.is_constrained_y():
                 ax.plot(node.x + scale_factor * displacements[node.global_index_x], node.y + scale_factor * displacements[node.global_index_y], 'mo', markersize=10, label=node.label, zorder=5)
                 constrained_both_added = True
-            elif node.is_constrained_x() and not constrained_x_added:
+            elif node.is_constrained_x():
                 ax.plot(node.x + scale_factor * displacements[node.global_index_x], node.y + scale_factor * displacements[node.global_index_y], 'ro', markersize=10, label=node.label, zorder=5)
                 constrained_x_added = True
-            elif node.is_constrained_y() and not constrained_y_added:
+            elif node.is_constrained_y():
                 ax.plot(node.x + scale_factor * displacements[node.global_index_x], node.y + scale_factor * displacements[node.global_index_y], 'go', markersize=10, label=node.label, zorder=5)
                 constrained_y_added = True
             else:
@@ -110,6 +110,9 @@ class Visualizer:
 
     @staticmethod
     def add_labels(ax, constrained_both_added, constrained_x_added, constrained_y_added):
+        # Get plot size in figure coordinates
+        _, y = ax.transAxes.inverted().transform((0, 0))
+
         legend_elements = []
         if constrained_both_added:
             legend_elements.append(plt.Line2D([0], [0], marker='o', color='m', label='Constrained (x & y)'))
@@ -118,7 +121,7 @@ class Visualizer:
         if constrained_y_added:
             legend_elements.append(plt.Line2D([0], [0], marker='o', color='g', label='Constrained (y)'))
         legend_elements.append(plt.Line2D([0], [0], marker='o', color='b', label='Free'))
-        ax.legend(handles=legend_elements, loc='upper right')
+        ax.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(0, y), title='Legend')
 
     def add_nodal_forces_to_figure(self, fig, displacements: List[float], scale_factor: Optional[float] = 1.0):
         ax = fig.gca()
@@ -258,7 +261,7 @@ class Visualizer:
                 elem_nodes_map[i].append(node.label - 1)
 
         # convert all elements into triangles
-        elements_all_tris = self.quads_to_tris(elem_nodes_map)
+        elements_all_tris = self.shapes_to_tris(elem_nodes_map)
 
         # create an unstructured triangular grid instance
         triangulation = tri.Triangulation(x, y, elements_all_tris)
@@ -314,9 +317,59 @@ class Visualizer:
         plt.colorbar()
         plt.show()
 
+    def shapes_to_tris(self, shapes):
+        """
+        This function converts a list of shapes into a list of triangles
+        :param shapes: list of shapes
+        :return: list of triangles
+        """
+
+        tris = []
+        for shape in shapes:
+            if len(shape) == 3:
+                tris.append(shape)
+            elif len(shape) == 4:
+                tris.extend(self.quads_to_tris(shape))
+            elif len(shape) == 8:
+                tris.extend(self.convert_to_6tris(shape))
+            else:
+                raise ValueError("Invalid shape. Must be a triangle, quad, or 8-node quad.")
+        return tris
+
+    @staticmethod
+    def convert_to_6tris(quad):
+        """
+        This is the shape you would get by converting a quad to 6 triangles
+                            A---B---C
+                            |  /|\  |
+                            | / | \ |
+                            H\  |  \D
+                            | \ |  /|
+                            |  \|/  |
+                            G---F---E
+
+        :param quads: list of quads
+
+        :return: list of triangles
+        """
+        tris = []
+        # First triangle
+        tris.append([quad[0], quad[1], quad[7]])
+        # Second triangle
+        tris.append([quad[1], quad[2], quad[3]])
+        # Third triangle (diagonal-based)
+        tris.append([quad[3], quad[4], quad[5]])
+        # Fourth triangle (diagonal-based)
+        tris.append([quad[5], quad[6], quad[7]])
+        # Fifth triangle (diagonal-based)
+        tris.append([quad[1], quad[5], quad[7]])
+        # Sixth triangle (diagonal-based)
+        tris.append([quad[1], quad[5], quad[3]])
+        return tris
+
     # converts quad elements into tri elements. Reference: https://stackoverflow.com/questions/52202014/how-can-i-plot-2d-fem-results-using-matplotlib
     @staticmethod
-    def quads_to_tris(quads):
+    def quads_to_tris(quad):
         """
         This is the shape you would get by converting a quad to 2 triangles
                             A-------B
@@ -332,11 +385,11 @@ class Visualizer:
         :return: list of triangles
         """
         tris = []
-        for quad in quads:
-            # First triangle
-            tris.append([quad[0], quad[1], quad[2]])
-            # Second triangle
-            tris.append([quad[2], quad[3], quad[0]])
+        # First triangle
+        tris.append([quad[0], quad[1], quad[2]])
+        # Second triangle
+        tris.append([quad[2], quad[3], quad[0]])
+
         return tris
 
     @staticmethod

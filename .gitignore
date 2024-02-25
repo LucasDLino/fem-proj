@@ -13,3 +13,4 @@ make.bat
 Makefile
 .idea/
 *.pyc
+/results/

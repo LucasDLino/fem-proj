@@ -1,31 +1,30 @@
 from Engine.Runner import Runner
+from Examples import examples_reader
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     runner = Runner()
 
+    nodes, elements, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/9_70_bana.json')
+
+
     # Creating a beam geometry
-    runner.construct_beam_geometry()
+    runner.construct_beam_geometry(nodes, elements)
 
     # Setting the material
-    linear_elastic_material = runner.set_linear_elastic_material(young_modulus=40000., poisson_ratio=0.17, thickness=100)
+    linear_elastic_material = runner.set_linear_elastic_material(young_modulus=elements_material['E'], poisson_ratio=elements_material['poisson'], thickness=elements_material['thickness'])
 
     # Boundary conditions
-    # engine.set_boundary_conditions(2, False, True)  # Node 3
-    runner.set_boundary_conditions(14, False, True)
-    runner.set_boundary_conditions(112, True, False)
-    runner.set_boundary_conditions(113, True, False)
-    runner.set_boundary_conditions(114, True, False)
-    runner.set_boundary_conditions(115, True, False)
-    runner.set_boundary_conditions(116, True, False)
-    runner.set_boundary_conditions(117, True, False)
-    runner.set_boundary_conditions(118, True, False)
-    runner.set_boundary_conditions(119, True, False)
-    runner.set_boundary_conditions(120, True, False)
+    for node, (x, y) in nodes_restrictions.items():
+        runner.set_boundary_conditions(int(node), x, y)
+
+    for node, (x, y) in nodes_forces.items():
+        runner.apply_nodal_load(int(node), x, y)
 
 
     # Applying loads
-    runner.apply_nodal_load(78, 0, -30000)  # Node 2
+    # runner.apply_nodal_load(78, 0, -30000)  # Node 2
     # engine.apply_nodal_load(4, 0, -5000)  # Node 5
     # engine.apply_nodal_load(7, 1000, 7000)  # Node 8
 

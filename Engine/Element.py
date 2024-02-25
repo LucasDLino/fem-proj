@@ -103,7 +103,7 @@ class Element(object):
         """Computes the inverse of the Jacobian matrix."""
         return np.linalg.inv(jacobian)
 
-    def compute_elem_stiffness_matrix(self, gauss_points: int) -> np.ndarray:
+    def compute_elem_stiffness_matrix(self, number_gp: int) -> np.ndarray:
         """Computes the element stiffness matrix."""
         raise NotImplementedError('Method compute_elem_stiffness_matrix not implemented')
 

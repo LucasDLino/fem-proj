@@ -90,7 +90,20 @@ class Runner(object):
     def apply_nodal_load(self, node: int, x: float, y: float):
         self.geometry.nodes[node].apply_load(x, y)
 
-    def integrate_and_assemble_stiffness_matrix(self):
+    def run_analysis(self, stiff_intgr_type: str = 'complete', stress_strain_intgr_type: str = 'complete'):
+        # Compute nodal global indices for each node
+        self.geometry.compute_nodal_global_indices()
+
+        # Perform the analysis
+        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
+        self.global_force_vector = self.geometry.assemble_global_forces_vector()
+        self.global_displacement_vector = self.solve_displacements()
+
+        # Compute the stress and strain at the gauss points for each element and extrapolate to the nodes
+        self.compute_elements_stress_strain()
+        self.average_nodal_stress_strain()
+
+    def integrate_and_assemble_stiffness_matrix(self, ):
         self.global_stiffness_matrix = np.zeros((self.geometry.count_global_free_dofs(), self.geometry.count_global_free_dofs()))
 
         for element in self.geometry.elements:
@@ -99,7 +112,7 @@ class Runner(object):
 
         return self.global_stiffness_matrix
 
-    def solve_displacements(self):
+    def solve_displacements(self) -> np.ndarray:
         self.global_displacement_vector = np.zeros(len(self.geometry.nodes) * 2)
         # numpy division of matrices
         displacements = np.linalg.solve(self.global_stiffness_matrix, self.global_force_vector)
@@ -116,8 +129,8 @@ class Runner(object):
     def compute_elements_stress_strain(self):
         for element in self.geometry.elements:
             # Compute the stress and strain at the gauss points
-            element.compute_stress_strain(self.global_displacement_vector, 1)
-            element.extrapolate_stress_strain_gp_to_nodes(1)
+            element.compute_stress_strain(self.global_displacement_vector, self._number_gp)
+            element.extrapolate_stress_strain_gp_to_nodes(self._number_gp)
 
     def average_nodal_stress_strain(self):
 
@@ -128,51 +141,31 @@ class Runner(object):
             # Loop over each stress and strain that has the format [[elem_label, (nparray) strain], ...]
             for i in range(len(node.stress)):
                 # Print all elements contributing to the node stress
-                print(f'Node {node.label} stress from element {node.stress[i][0]}: {node.stress[i][1]}')
+                # print(f'Node {node.label} stress from element {node.stress[i][0]}: {node.stress[i][1]}')
                 node.stress_avg += node.stress[i][1]
 
             for i in range(len(node.strain)):
                 # Print all elements contributing to the node strain
-                print(f'Node {node.label} strain from element {node.strain[i][0]}: {node.strain[i][1]}')
+                # print(f'Node {node.label} strain from element {node.strain[i][0]}: {node.strain[i][1]}')
                 node.strain_avg += node.strain[i][1]
 
             node.stress_avg /= len(node.stress)
             node.strain_avg /= len(node.strain)
 
-    def run_analysis(self):
-        # Compute nodal global indices for each node
-        self.geometry.compute_nodal_global_indices()
-
-        # Perform the analysis
-        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
-        self.global_force_vector = self.geometry.assemble_global_forces_vector()
-        self.global_displacement_vector = self.solve_displacements()
-
-        # Compute the stress and strain at the gauss points for each element and extrapolate to the nodes
-        self.compute_elements_stress_strain()
-        self.average_nodal_stress_strain()
-
     def show_results(self):
-        # print nodes
-        # print('Nodes:')
-        # for i, node in enumerate(self.geometry.nodes):
-        #     print(f'Node {i + 1}: x = {node.x}, y = {node.y} - Constrained x: {node.is_constrained_x()}, Constrained y: {node.is_constrained_y()}')
-
-        # print global force vector
-        # print('Global force vector:')
-        # print(self.global_force_vector)
-
-        # print global displacement results
-        # print('Global displacement results:')
-        # for i, node in enumerate(self.geometry.nodes):
-        #     print(f'Node {i + 1}: u = {self.global_displacement_vector[i * 2]}, v = {self.global_displacement_vector[i * 2 + 1]} with coordinates {node.x}, {node.y}')
-
         visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
 
         visualization.visualize_undeformed_geometry()
         visualization.visualize_deformed_geometry(self.global_displacement_vector, 100, add_nodal_forces=True)
         visualization.visualize_disp_table(self.global_displacement_vector)
-        visualization.visualize_nodal_stress("xx")
-        # visualization.visualize_nodal_strain()
 
-        visualization.visualize_displacement(self.global_displacement_vector, "y")
+        visualization.visualize_nodal_stress("xx", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_stress("yy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_stress("xy", self.global_displacement_vector, 100)
+
+        visualization.visualize_nodal_strain("xx", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_strain("yy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_strain("xy", self.global_displacement_vector, 100)
+
+        visualization.visualize_displacement(self.global_displacement_vector, "x", 100)
+        visualization.visualize_displacement(self.global_displacement_vector, "y", 100)

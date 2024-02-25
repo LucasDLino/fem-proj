@@ -141,9 +141,7 @@ class BilinearQuadElement(Element):
     def extrapolate_stress_strain_gp_to_nodes(self, number_gp: int):
         """Extrapolates the stress or strain from the gauss points to the nodes."""
 
-        if number_gp == 2:
-            # TODO: Check extrapolation, it seems to be wrong
-            # Each row corresponds to a gauss point and each column to a node
+        if number_gp == 2:  # Each row corresponds to a gauss point and each column to a node
             extrapolation_matrix = self.construct_extrapolation_matrix_2gp()
 
             # Extrapolate the stress and strain from the gauss points to the nodes
@@ -166,5 +164,4 @@ class BilinearQuadElement(Element):
                 node.strain.append([self.label, self.strain_gp[0]])
                 node.stress.append([self.label, np.array(self.stress_gp[0][0:3])])
         else:
-            # Todo: Implement the extrapolation for other number of gauss points
             raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')

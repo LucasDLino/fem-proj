@@ -1,5 +1,5 @@
 {
-  "element_type": "quad8",
+  "element_type": "quad4",
   "geometry": {
     "origin": {
       "x": 0,
@@ -7,8 +7,8 @@
     },
     "width": 60,
     "height": 20,
-    "num_nodes": {
-      "x": 5,
+    "num_elements": {
+      "x": 8,
       "y": 2
     }
   },
@@ -24,7 +24,8 @@
       }
     }
   ],
-  "nodes_forces": [{
+  "nodes_forces": [
+    {
       "position": {
         "x": 0,
         "y": 0
@@ -33,7 +34,8 @@
         "x": 0,
         "y": -1000
       }
-  }],
+    }
+  ],
   "elements_material": {
     "E": 200000,
     "poisson": 0.3,

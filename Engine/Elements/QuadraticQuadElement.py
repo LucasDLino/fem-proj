@@ -39,29 +39,29 @@ class QuadraticQuadElement(Element):
                                 [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left
 
     def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
-        return 0.25 * np.array([[-(1. - xi) * (1. - eta)],  # N1 (bottom left)
-                                [(1. + xi) * (1. - eta)],   # N2 (bottom right)
-                                [(1. + xi) * (1. + eta)],   # N3 (top right)
+        return 0.25 * np.array([[(1. - xi) * (1. - eta)],  # N1 (bottom left)
+                                [(1. + xi) * (1. - eta)],  # N2 (bottom right)
+                                [(1. + xi) * (1. + eta)],  # N3 (top right)
                                 [(1. - xi) * (1. + eta)]])  # N4 (top left)
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
         # Derivadas parciais em relação a xi e eta organizadas em uma matriz
         return 0.25 * np.array(
-            [[(1 - eta)*(1 + xi + eta) - (1 - xi)*(1 - eta),  # dN1/dxi ok
-             -4 * xi * (1 - eta),  # dN2/dxi ok
-              (1 - eta)*(1 - xi + eta) + (1 + xi)*(1 - eta),  # dN3/dxi ok
-              2 * (-eta**2 + 1),  # dN4/dxi ok
-              (1 + eta) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/dxi ok
-              -4 * xi * (1 + eta),  # dN6/dxi ok
-              (1 + eta)*(1 + xi - eta) - (1 - xi)*(1 + eta),  # dN7/dxi ok
+            [[(1 - eta) * (1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/dxi
+              -4 * xi * (1 - eta),  # dN2/dxi
+              -(1 - eta) * (1 - xi + eta) + (1 + xi) * (1 - eta),  # dN3/dxi
+              2 * (-eta ** 2 + 1),  # dN4/dxi
+              -(1 + eta) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/dxi
+              -4 * xi * (1 + eta),  # dN6/dxi
+              (1 + eta) * (1 + xi - eta) - (1 - xi) * (1 + eta),  # dN7/dxi
               2. * (eta ** 2. - 1)],  # dN8/dxi
-             [(1 - xi)*(1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/deta ok
-              2 * (xi**2 - 1),  # dN2/deta
-              (1 + xi) * (1 - xi + eta) + (1 + xi)*(1 - eta),  # dN3/deta
+             [(1 - xi) * (1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/deta
+              2 * (xi ** 2 - 1),  # dN2/deta
+              (1 + xi) * (1 - xi + eta) - (1 + xi) * (1 - eta),  # dN3/deta
               -4 * (1 + xi) * eta,  # dN4/deta
-              (1 + xi) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/deta
-              2 * (-xi**2 + 1),  # dN6/deta
-              (1 - xi)*(1 + xi - eta) + (1 - xi)*(1 + eta),  # dN7/deta
+              -(1 + xi) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/deta
+              2 * (-xi ** 2 + 1),  # dN6/deta
+              -(1 - xi) * (1 + xi - eta) + (1 - xi) * (1 + eta),  # dN7/deta
               -4 * (1 - xi) * eta]])  # dN8/deta
 
     def jacobian(self, derivative: np.ndarray) -> np.ndarray:
@@ -107,32 +107,32 @@ class QuadraticQuadElement(Element):
         self.stress_gp = []
         self.strain_gp = []
 
-        gauss_points = self.gauss.get_points(number_gp)
+        arranged_gauss_points = self.gauss.get_ordered_points(number_gp)
 
-        # Compute the stress and strain at the gauss points
-        for i, xi in enumerate(gauss_points):
-            for j, eta in enumerate(gauss_points):
-                shape_derivative = self.shape_functions_derivative(xi, eta)
-                jacobian = self.jacobian(shape_derivative)
-                inverse_jacobian = self.inverse_jacobian(jacobian)
+        # Compute the stress and strain at the gauss points in ordered manner
+        for i in range(len(arranged_gauss_points)):
+            xi, eta = arranged_gauss_points[i]
+            shape_derivative = self.shape_functions_derivative(xi, eta)
+            jacobian = self.jacobian(shape_derivative)
+            inverse_jacobian = self.inverse_jacobian(jacobian)
 
-                derivative = inverse_jacobian @ shape_derivative
+            derivative = inverse_jacobian @ shape_derivative
 
-                b_matrix = self.assemble_elem_b_matrix(derivative)
+            b_matrix = self.assemble_elem_b_matrix(derivative)
 
-                # Compute the element displacement vector from the global displacement vector
-                elem_displacement_vector = self.get_elem_displacement_from_global(global_displacement_vector)
+            # Compute the element displacement vector from the global displacement vector
+            elem_displacement_vector = self.get_elem_displacement_from_global(global_displacement_vector)
 
-                # Compute the strain
-                strain = b_matrix @ elem_displacement_vector
+            # Compute the strain
+            strain = b_matrix @ elem_displacement_vector
 
-                # Compute the stress
-                elastic_matrix = self.material.get_elastic_matrix(True)
-                stress = elastic_matrix @ strain
+            # Compute the stress
+            elastic_matrix = self.material.get_elastic_matrix(True)
+            stress = elastic_matrix @ strain
 
-                # Store the stress and strain at the gauss points
-                self.stress_gp.append(stress)
-                self.strain_gp.append(strain)
+            # Store the stress and strain at the gauss points
+            self.stress_gp.append(stress)
+            self.strain_gp.append(strain)
 
         # Convert the lists to numpy arrays
         self.stress_gp = np.array(
@@ -142,14 +142,14 @@ class QuadraticQuadElement(Element):
 
         return self.stress_gp, self.strain_gp
 
-    def construct_extrapolation_matrix_2gp(self) -> np.ndarray:
+    def construct_extrapolation_matrix_2GP(self) -> np.ndarray:
         """Constructs the extrapolation matrix for the element."""
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
-        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]])
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 0]])
 
-        num_cols = 2 ** 2
+        num_cols = 4
 
         extrapolation_matrix = np.zeros((num_nodes, num_cols))
 
@@ -170,7 +170,7 @@ class QuadraticQuadElement(Element):
 
         if number_gp == 2:
             # Each row corresponds to a gauss point and each column to a node
-            extrapolation_matrix = self.construct_extrapolation_matrix_2gp()
+            extrapolation_matrix = self.construct_extrapolation_matrix_2GP()
 
             # Extrapolate the stress and strain from the gauss points to the nodes
             strain_xx = extrapolation_matrix @ self.strain_gp[:, 0]

@@ -9,8 +9,7 @@ class BeamMeshGenerator:
 
     from typing import Optional
 
-    def generate_bilinear_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int,
-                               x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
+    def generate_bilinear_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int, x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
         num_x_nodes = num_elements_x + 1
         num_y_nodes = num_elements_y + 1
 
@@ -35,7 +34,7 @@ class BeamMeshGenerator:
                                            self.geometry.nodes[n3]])
 
     def generate_biquadratic_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int,
-                          x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
+                                  x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
         num_rows = 2 * num_elements_x + 1
         num_columns = 2 * num_elements_y + 1
 

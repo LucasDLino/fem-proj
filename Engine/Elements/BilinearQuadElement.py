@@ -81,32 +81,32 @@ class BilinearQuadElement(Element):
         self.stress_gp = []
         self.strain_gp = []
 
-        gauss_points = self.gauss.get_points(number_gp)
+        arranged_gauss_points = self.gauss.get_ordered_points(number_gp)
 
-        # Compute the stress and strain at the gauss points
-        for i, xi in enumerate(gauss_points):
-            for j, eta in enumerate(gauss_points):
-                shape_derivative = self.shape_functions_derivative(xi, eta)
-                jacobian = self.jacobian(shape_derivative)
-                inverse_jacobian = self.inverse_jacobian(jacobian)
+        # Compute the stress and strain at the gauss points in ordered manner
+        for i in range(len(arranged_gauss_points)):
+            xi, eta = arranged_gauss_points[i]
+            shape_derivative = self.shape_functions_derivative(xi, eta)
+            jacobian = self.jacobian(shape_derivative)
+            inverse_jacobian = self.inverse_jacobian(jacobian)
 
-                derivative = inverse_jacobian @ shape_derivative
+            derivative = inverse_jacobian @ shape_derivative
 
-                b_matrix = self.assemble_elem_b_matrix(derivative)
+            b_matrix = self.assemble_elem_b_matrix(derivative)
 
-                # Compute the element displacement vector from the global displacement vector
-                elem_displacement_vector = self.get_elem_displacement_from_global(global_displacement_vector)
+            # Compute the element displacement vector from the global displacement vector
+            elem_displacement_vector = self.get_elem_displacement_from_global(global_displacement_vector)
 
-                # Compute the strain
-                strain = b_matrix @ elem_displacement_vector
+            # Compute the strain
+            strain = b_matrix @ elem_displacement_vector
 
-                # Compute the stress
-                elastic_matrix = self.material.get_elastic_matrix(True)
-                stress = elastic_matrix @ strain
+            # Compute the stress
+            elastic_matrix = self.material.get_elastic_matrix(True)
+            stress = elastic_matrix @ strain
 
-                # Store the stress and strain at the gauss points
-                self.stress_gp.append(stress)
-                self.strain_gp.append(strain)
+            # Store the stress and strain at the gauss points
+            self.stress_gp.append(stress)
+            self.strain_gp.append(strain)
 
         # Convert the lists to numpy arrays
         self.stress_gp = np.array(self.stress_gp)  # each row corresponds to a gauss point and each column to a stress component

@@ -33,8 +33,7 @@ class BeamMeshGenerator:
                                            self.geometry.nodes[n4],
                                            self.geometry.nodes[n3]])
 
-    def generate_biquadratic_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int,
-                                  x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
+    def generate_biquadratic_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int, x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
         num_rows = 2 * num_elements_x + 1
         num_columns = 2 * num_elements_y + 1
 

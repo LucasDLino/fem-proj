@@ -34,5 +34,5 @@ if __name__ == '__main__':
                 runner.apply_nodal_load(node.label - 1, force_data['forces']['x'], force_data['forces']['y'])
 
     # Analysis and results
-    runner.run_analysis()
-    runner.show_results()
+    runner.run_analysis(stress_strain_intgr_type='reduced')
+    runner.show_results(scale_factor=200)

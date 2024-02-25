@@ -147,9 +147,9 @@ class QuadraticQuadElement(Element):
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
-        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]])
 
-        num_cols = 4
+        num_cols = 2 ** 2
 
         extrapolation_matrix = np.zeros((num_nodes, num_cols))
 

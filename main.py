@@ -6,7 +6,7 @@ from Pos.Visualizer import Visualizer
 if __name__ == '__main__':
     runner = Runner()
 
-    element_type, geometry, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/9_49_bana.json')
+    element_type, geometry, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/9_70_bana.json')
 
     if element_type == 'quad4':
         BeamMeshGenerator(runner.geometry).generate_bilinear_mesh(width=geometry['width'], height=geometry['height'], num_elements_x=geometry['num_nodes']['x'], num_elements_y=geometry['num_nodes']['y'], x_origin=geometry['origin']['x'], y_origin=geometry['origin']['y'])

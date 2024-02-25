@@ -40,33 +40,35 @@ class QuadraticQuadElement(Element):
 
     def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
         return 0.25 * np.array([[-(1. - xi) * (1. - eta)],  # N1 (bottom left)
-                                [(1. + xi) * (1. - eta)],   # N2 (bottom right)
-                                [(1. + xi) * (1. + eta)],   # N3 (top right)
+                                [(1. + xi) * (1. - eta)],  # N2 (bottom right)
+                                [(1. + xi) * (1. + eta)],  # N3 (top right)
                                 [(1. - xi) * (1. + eta)]])  # N4 (top left)
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
         # Derivadas parciais em relação a xi e eta organizadas em uma matriz
         return 0.25 * np.array(
-            [[(1 - eta)*(1 + xi + eta) - (1 - xi)*(1 - eta),  # dN1/dxi ok
-             -4 * xi * (1 - eta),  # dN2/dxi ok
-              (1 - eta)*(1 - xi + eta) + (1 + xi)*(1 - eta),  # dN3/dxi ok
-              2 * (-eta**2 + 1),  # dN4/dxi ok
-              (1 + eta) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/dxi ok
-              -4 * xi * (1 + eta),  # dN6/dxi ok
-              (1 + eta)*(1 + xi - eta) - (1 - xi)*(1 + eta),  # dN7/dxi ok
+            [[(1 - eta) * (1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/dxi
+              -4 * xi * (1 - eta),  # dN2/dxi
+              -(1 - eta) * (1 - xi + eta) + (1 + xi) * (1 - eta),  # dN3/dxi
+              2 * (-eta ** 2 + 1),  # dN4/dxi
+              -(1 + eta) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/dxi
+              -4 * xi * (1 + eta),  # dN6/dxi
+              (1 + eta) * (1 + xi - eta) - (1 - xi) * (1 + eta),  # dN7/dxi
               2. * (eta ** 2. - 1)],  # dN8/dxi
-             [(1 - xi)*(1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/deta ok
-              2 * (xi**2 - 1),  # dN2/deta
-              (1 + xi) * (1 - xi + eta) + (1 + xi)*(1 - eta),  # dN3/deta
+             [(1 - xi) * (1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/deta
+              2 * (xi ** 2 - 1),  # dN2/deta
+              (1 + xi) * (1 - xi + eta) - (1 + xi) * (1 - eta),  # dN3/deta
               -4 * (1 + xi) * eta,  # dN4/deta
-              (1 + xi) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/deta
-              2 * (-xi**2 + 1),  # dN6/deta
-              (1 - xi)*(1 + xi - eta) + (1 - xi)*(1 + eta),  # dN7/deta
+              -(1 + xi) * (1 - xi - eta) + (1 + xi) * (1 + eta),  # dN5/deta
+              2 * (-xi ** 2 + 1),  # dN6/deta
+              -(1 - xi) * (1 + xi - eta) + (1 - xi) * (1 + eta),  # dN7/deta
               -4 * (1 - xi) * eta]])  # dN8/deta
 
     def jacobian(self, derivative: np.ndarray) -> np.ndarray:
         x = np.array([node.x for node in self.nodes])
         y = np.array([node.y for node in self.nodes])
+
+        coords = np.array([x, y]).T
 
         return derivative @ np.array([x, y]).T
 

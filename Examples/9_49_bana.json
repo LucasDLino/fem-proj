@@ -8,8 +8,8 @@
     "width": 60,
     "height": 20,
     "num_nodes": {
-      "x": 31,
-      "y": 11
+      "x": 30,
+      "y": 10
     }
   },
   "nodes_restrictions": [
@@ -31,7 +31,7 @@
       },
       "forces": {
         "x": 0,
-        "y": -10000
+        "y": -1000
       }
   }],
   "elements_material": {

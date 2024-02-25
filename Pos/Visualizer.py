@@ -192,7 +192,7 @@ class Visualizer:
         self.create_displacement_table(displacements)
         plt.show()
 
-    def visualize_displacement(self, displacements, direction: str = 'x'):
+    def visualize_displacement(self, displacements, direction: str = 'x', scale_factor: Optional[float] = 1.0):
         """Visualize a color map of the nodal displacement."""
 
         if direction == 'x':
@@ -204,9 +204,9 @@ class Visualizer:
         else:
             raise ValueError("Invalid direction. Choose from 'x' or 'y'.")
 
-        self.visualize_nodal_field(displacement_dir, 'Displacement', title)
+        self.visualize_nodal_field(displacement_dir, 'Displacement', title, displacements, scale_factor)
 
-    def visualize_nodal_stress(self, stress_component: str):
+    def visualize_nodal_stress(self, stress_component: str, displacements: List[float], scale_factor: Optional[float] = 1.0):
         """Visualize a color map of the nodal stress."""
 
         # Extract the specified stress component
@@ -222,9 +222,9 @@ class Visualizer:
         else:
             raise ValueError("Invalid stress component. Choose from 'xx', 'yy', or 'xy'.")
 
-        self.visualize_nodal_field(stress, 'Stress', title)
+        self.visualize_nodal_field(stress, 'Stress', title, displacements, scale_factor)
 
-    def visualize_nodal_strain(self, strain_component: str):
+    def visualize_nodal_strain(self, strain_component: str, displacements: List[float], scale_factor: Optional[float] = 1.0):
         """Visualize a color map of the nodal strain."""
 
         # Extract the specified strain component
@@ -240,16 +240,16 @@ class Visualizer:
         else:
             raise ValueError("Invalid strain component. Choose from 'xx', 'yy', or 'xy'.")
 
-        self.visualize_nodal_field(strain, 'Strain', title)
+        self.visualize_nodal_field(strain, 'Strain', title, displacements, scale_factor)
 
-    def visualize_nodal_field(self, field: [], field_name: str, title: str):
+    def visualize_nodal_field(self, field: [], field_name: str, title: str, displacements: List[float] = None, scale_factor: Optional[float] = 1.0):
         """Visualize a color map of a field."""
 
         # Create new plot
         _, ax = plt.subplots(figsize=(12, 9))
 
-        x = [node.x for node in self.nodes]
-        y = [node.y for node in self.nodes]
+        x = [node.x + scale_factor * displacements[node.global_index_x] for node in self.nodes]
+        y = [node.y + scale_factor * displacements[node.global_index_y] for node in self.nodes]
 
         elem_nodes_map = [[] for _ in self.elements]
 
@@ -297,12 +297,18 @@ class Visualizer:
             for i in range(len(element.nodes)):
                 node1 = element.nodes[i]
                 node2 = element.nodes[(i + 1) % len(element.nodes)]  # Connect last node with first node
-                ax.plot([node1.x, node2.x], [node1.y, node2.y], '-', linewidth=0.1, color='black')
+                ax.plot([node1.x + scale_factor * displacements[node1.global_index_x], node2.x + scale_factor * displacements[node2.global_index_x]],
+                        [node1.y + scale_factor * displacements[node1.global_index_y], node2.y + scale_factor * displacements[node2.global_index_y]],
+                        '-', linewidth=0.1, color='black')
 
         # Show max and min stress values
         max_field = max(field)
         min_field = min(field)
-        ax.text(0, -.75, f'Max {field_name}: {max_field:.6f}\nMin {field_name}: {min_field:.6f}', fontsize=10, color='black', transform=ax.transAxes)
+
+        # Get plot size in figure coordinates
+        x, y = ax.transAxes.inverted().transform((0, 0))
+
+        ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.6f}\nMin {field_name}: {min_field:.6f}', fontsize=10, color='black', transform=ax.transAxes)
 
         # show
         plt.colorbar()

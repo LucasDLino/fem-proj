@@ -5,7 +5,7 @@ from Pre.BeamMeshGenerator import BeamMeshGenerator
 if __name__ == '__main__':
     runner = Runner()
 
-    BeamMeshGenerator(runner.geometry).generate_bilinear_mesh(width=60., height=20., num_x_nodes=7, num_y_nodes=3, x_origin=0., y_origin=-10.)
+    BeamMeshGenerator(runner.geometry).generate_bilinear_mesh(width=60., height=20., num_x_nodes=31, num_y_nodes=11, x_origin=0., y_origin=-10.)
 
     # Setting the material
     linear_elastic_material = runner.set_linear_elastic_material(young_modulus=200000., poisson_ratio=0.3, thickness=5.)

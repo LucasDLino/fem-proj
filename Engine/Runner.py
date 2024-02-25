@@ -40,42 +40,176 @@ class Runner(object):
         return f'Engine with {len(self.geometry.nodes)} nodes and {len(self.geometry.elements)} elements'
 
     def construct_beam_geometry(self):
-        # Create beam nodes
-        n1 = self.geometry.add_node(0., -10.)
-        n2 = self.geometry.add_node(0., 0.)
-        n3 = self.geometry.add_node(0., 10.)
-        n4 = self.geometry.add_node(10., -10.)
-        n5 = self.geometry.add_node(10., 0.)
-        n6 = self.geometry.add_node(10., 10.)
-        n7 = self.geometry.add_node(20., -10.)
-        n8 = self.geometry.add_node(20., 0.)
-        n9 = self.geometry.add_node(20., 10.)
-        n10 = self.geometry.add_node(30., -10.)
-        n11 = self.geometry.add_node(30., 0.)
-        n12 = self.geometry.add_node(30., 10.)
-        n13 = self.geometry.add_node(40., -10.)
-        n14 = self.geometry.add_node(40., 0.)
-        n15 = self.geometry.add_node(40., 10.)
-        n16 = self.geometry.add_node(50., -10.)
-        n17 = self.geometry.add_node(50., 0.)
-        n18 = self.geometry.add_node(50., 10.)
-        n19 = self.geometry.add_node(60., -10.)
-        n20 = self.geometry.add_node(60., 0.)
-        n21 = self.geometry.add_node(60., 10.)
+        # Define node coordinates from geom
+        node_coords = {
+            1: (0., 0.),
+            2: (0., 50.),
+            3: (0., 100.),
+            4: (0., 150.),
+            5: (0., 200.),
+            6: (0., 250.),
+            7: (0., 300.),
+            8: (0., 350.),
+            9: (0., 400.),
+            10: (50., 0.),
+            11: (50., 100.),
+            12: (50., 200.),
+            13: (50., 300.),
+            14: (50., 400.),
+            15: (100., 0.),
+            16: (100., 50.),
+            17: (100., 100.),
+            18: (100., 150.),
+            19: (100., 200.),
+            20: (100., 250.),
+            21: (100., 300.),
+            22: (100., 350.),
+            23: (100., 400.),
+            24: (150., 0.),
+            25: (150., 100.),
+            26: (150., 200.),
+            27: (150., 300.),
+            28: (150., 400.),
+            29: (200., 0.),
+            30: (200., 50.),
+            31: (200., 100.),
+            32: (200., 150.),
+            33: (200., 200.),
+            34: (200., 250.),
+            35: (200., 300.),
+            36: (200., 350.),
+            37: (200., 400.),
+            38: (250., 0.),
+            39: (250., 100.),
+            40: (250., 200.),
+            41: (250., 300.),
+            42: (250., 400.),
+            43: (300., 0.),
+            44: (300., 50.),
+            45: (300., 100.),
+            46: (300., 150.),
+            47: (300., 200.),
+            48: (300., 250.),
+            49: (300., 300.),
+            50: (300., 350.),
+            51: (300., 400.),
+            52: (350., 0.),
+            53: (350., 100.),
+            54: (350., 200.),
+            55: (350., 300.),
+            56: (350., 400.),
+            57: (400., 0.),
+            58: (400., 50.),
+            59: (400., 100.),
+            60: (400., 150.),
+            61: (400., 200.),
+            62: (400., 250.),
+            63: (400., 300.),
+            64: (400., 350.),
+            65: (400., 400.),
+            66: (450., 0.),
+            67: (450., 100.),
+            68: (450., 200.),
+            69: (450., 300.),
+            70: (450., 400.),
+            71: (500., 0.),
+            72: (500., 50.),
+            73: (500., 100.),
+            74: (500., 150.),
+            75: (500., 200.),
+            76: (500., 250.),
+            77: (500., 300.),
+            78: (500., 350.),
+            79: (500., 400.),
+            80: (550., 0.),
+            81: (550., 100.),
+            82: (550., 200.),
+            83: (550., 300.),
+            84: (550., 400.),
+            85: (600., 0.),
+            86: (600., 50.),
+            87: (600., 100.),
+            88: (600., 150.),
+            89: (600., 200.),
+            90: (600., 250.),
+            91: (600., 300.),
+            92: (600., 350.),
+            93: (600., 400.),
+            94: (650., 0.),
+            95: (650., 100.),
+            96: (650., 200.),
+            97: (650., 300.),
+            98: (650., 400.),
+            99: (700., 0.),
+            100: (700., 50.),
+            101: (700., 100.),
+            102: (700., 150.),
+            103: (700., 200.),
+            104: (700., 250.),
+            105: (700., 300.),
+            106: (700., 350.),
+            107: (700., 400.),
+            108: (750., 0.),
+            109: (750., 100.),
+            110: (750., 200.),
+            111: (750., 300.),
+            112: (750., 400.),
+            113: (800., 0.),
+            114: (800., 50.),
+            115: (800., 100.),
+            116: (800., 150.),
+            117: (800., 200.),
+            118: (800., 250.),
+            119: (800., 300.),
+            120: (800., 350.),
+            121: (800., 400.)
+        }
 
-        # Create beam elements
-        self.geometry.add_bilinear_quadrilateral_element([n1, n4, n5, n2])
-        self.geometry.add_bilinear_quadrilateral_element([n2, n5, n6, n3])
-        self.geometry.add_bilinear_quadrilateral_element([n4, n7, n8, n5])
-        self.geometry.add_bilinear_quadrilateral_element([n5, n8, n9, n6])
-        self.geometry.add_bilinear_quadrilateral_element([n7, n10, n11, n8])
-        self.geometry.add_bilinear_quadrilateral_element([n8, n11, n12, n9])
-        self.geometry.add_bilinear_quadrilateral_element([n10, n13, n14, n11])
-        self.geometry.add_bilinear_quadrilateral_element([n11, n14, n15, n12])
-        self.geometry.add_bilinear_quadrilateral_element([n13, n16, n17, n14])
-        self.geometry.add_bilinear_quadrilateral_element([n14, n17, n18, n15])
-        self.geometry.add_bilinear_quadrilateral_element([n16, n19, n20, n17])
-        self.geometry.add_bilinear_quadrilateral_element([n17, n20, n21, n18])
+        # Create nodes
+        nodes = {}
+        for node_id, (x, y) in node_coords.items():
+            nodes[node_id] = self.geometry.add_node(x, y)
+
+        # Define element connectivity from connec
+        element_connec = [
+            [1, 10, 15, 16, 17, 11, 3, 2],
+            [3, 11, 17, 18, 19, 12, 5, 4],
+            [5, 12, 19, 20, 21, 13, 7, 6],
+            [7, 13, 21, 22, 23, 14, 9, 8],
+            [15, 24, 29, 30, 31, 25, 17, 16],
+            [17, 25, 31, 32, 33, 26, 19, 18],
+            [19, 26, 33, 34, 35, 27, 21, 20],
+            [21, 27, 35, 36, 37, 28, 23, 22],
+            [29, 38, 43, 44, 45, 39, 31, 30],
+            [31, 39, 45, 46, 47, 40, 33, 32],
+            [33, 40, 47, 48, 49, 41, 35, 34],
+            [35, 41, 49, 50, 51, 42, 37, 36],
+            [43, 52, 57, 58, 59, 53, 45, 44],
+            [45, 53, 59, 60, 61, 54, 47, 46],
+            [47, 54, 61, 62, 63, 55, 49, 48],
+            [49, 55, 63, 64, 65, 56, 51, 50],
+            [57, 66, 71, 72, 73, 67, 59, 58],
+            [59, 67, 73, 74, 75, 68, 61, 60],
+            [61, 68, 75, 76, 77, 69, 63, 62],
+            [63, 69, 77, 78, 79, 70, 65, 64],
+            [71, 80, 85, 86, 87, 81, 73, 72],
+            [73, 81, 87, 88, 89, 82, 75, 74],
+            [75, 82, 89, 90, 91, 83, 77, 76],
+            [77, 83, 91, 92, 93, 84, 79, 78],
+            [85, 94, 99, 100, 101, 95, 87, 86],
+            [87, 95, 101, 102, 103, 96, 89, 88],
+            [89, 96, 103, 104, 105, 97, 91, 90],
+            [91, 97, 105, 106, 107, 98, 93, 92],
+            [99, 108, 113, 114, 115, 109, 101, 100],
+            [101, 109, 115, 116, 117, 110, 103, 102],
+            [103, 110, 117, 118, 119, 111, 105, 104],
+            [105, 111, 119, 120, 121, 112, 107, 106]
+        ]
+
+        # Create elements
+        for connec in element_connec:
+            node_ids = [nodes[node_id] for node_id in connec]
+            self.geometry.add_quadratic_quadrilateral_element(node_ids)
 
     def set_linear_elastic_material(self, young_modulus: float, poisson_ratio: float, thickness: Optional[float] = None):
         # Set material

@@ -193,8 +193,29 @@ class Visualizer:
         plt.show()
 
     # converts quad elements into tri elements. Reference: https://stackoverflow.com/questions/52202014/how-can-i-plot-2d-fem-results-using-matplotlib
+
+
+    def shapes_to_tris(self, shapes):
+        """
+        This function converts a list of shapes into a list of triangles
+        :param shapes: list of shapes
+        :return: list of triangles
+        """
+
+        tris = []
+        for shape in shapes:
+            if len(shape) == 3:
+                tris.append(shape)
+            elif len(shape) == 4:
+                tris.extend(self.quads_to_tris(shape))
+            elif len(shape) == 8:
+                tris.extend(self.convert_to_6tris(shape))
+            else:
+                raise ValueError("Invalid shape. Must be a triangle, quad, or 8-node quad.")
+        return tris
+
     @staticmethod
-    def quads_to_tris(quads):
+    def quads_to_tris(quad):
         """
         This is the shape you would get by converting a quad to 2 triangles
                             A-------B
@@ -210,11 +231,11 @@ class Visualizer:
         :return: list of triangles
         """
         tris = []
-        for quad in quads:
-            # First triangle
-            tris.append([quad[0], quad[1], quad[2]])
-            # Second triangle
-            tris.append([quad[2], quad[3], quad[0]])
+        # First triangle
+        tris.append([quad[0], quad[1], quad[2]])
+        # Second triangle
+        tris.append([quad[2], quad[3], quad[0]])
+
         return tris
 
     @staticmethod
@@ -244,6 +265,38 @@ class Visualizer:
             # Fourth triangle (diagonal-based)
             tris.append([quad[1], quad[2], quad[3]])
         return tris
+
+    @staticmethod
+    def convert_to_6tris(quad):
+        """
+        This is the shape you would get by converting a quad to 6 triangles
+                            A---B---C
+                            |  /|\  |
+                            | / | \ |
+                            H\  |  \D
+                            | \ |  /|
+                            |  \|/  |
+                            G---F---E
+
+        :param quads: list of quads
+
+        :return: list of triangles
+        """
+        tris = []
+        # First triangle
+        tris.append([quad[0], quad[1], quad[7]])
+        # Second triangle
+        tris.append([quad[1], quad[2], quad[3]])
+        # Third triangle (diagonal-based)
+        tris.append([quad[3], quad[4], quad[5]])
+        # Fourth triangle (diagonal-based)
+        tris.append([quad[5], quad[6], quad[7]])
+        # Fifth triangle (diagonal-based)
+        tris.append([quad[1], quad[5], quad[7]])
+        # Sixth triangle (diagonal-based)
+        tris.append([quad[1], quad[5], quad[3]])
+        return tris
+
 
     # plots a finite element mesh
     def plot_fem_mesh(self, nodes_x, nodes_y, elements):
@@ -280,7 +333,7 @@ class Visualizer:
                 elem_nodes_map[i].append(node.label - 1)
 
         # convert all elements into triangles
-        elements_all_tris = self.quads_to_tris(elem_nodes_map)
+        elements_all_tris = self.shapes_to_tris(elem_nodes_map)
 
         # create an unstructured triangular grid instance
         triangulation = tri.Triangulation(x, y, elements_all_tris)
@@ -324,7 +377,7 @@ class Visualizer:
                 elem_nodes_map[i].append(node.label - 1)
 
         # convert all elements into triangles
-        elements_all_tris = self.quads_to_tris(elem_nodes_map)
+        elements_all_tris = self.shapes_to_tris(elem_nodes_map)
 
         # create an unstructured triangular grid instance
         triangulation = tri.Triangulation(x, y, elements_all_tris)

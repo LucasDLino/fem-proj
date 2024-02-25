@@ -42,11 +42,11 @@
     "20": [true, true]
   },
   "nodes_forces": {
-    "1": [0, -30000]
+    "0": [0, -1000]
   },
   "elements_material": {
-    "E": 40000,
-    "poisson": 0.17,
-    "thickness": 100
+    "E": 2000000,
+    "poisson": 0.3,
+    "thickness": 5
   }
 }

@@ -6,7 +6,7 @@ from Examples import examples_reader
 if __name__ == '__main__':
     runner = Runner()
 
-    nodes, elements, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/9_70_bana.json')
+    nodes, elements, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/9_49_bana.json')
 
 
     # Creating a beam geometry

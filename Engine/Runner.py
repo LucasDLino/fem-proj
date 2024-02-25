@@ -42,14 +42,16 @@ class Runner(object):
     def construct_beam_geometry(self, nodes, elements_connectivity):
         # Define node coordinates from geom
 
-
         for node_id, (x, y) in nodes.items():
             nodes[node_id] = self.geometry.add_node(x, y)
 
         # Create elements
         for connec in elements_connectivity:
             node_ids = [nodes[str(node_id)] for node_id in connec]
-            self.geometry.add_quadratic_quadrilateral_element(node_ids)
+            self.geometry.add_element(node_ids)
+
+
+
 
     def set_linear_elastic_material(self, young_modulus: float, poisson_ratio: float, thickness: Optional[float] = None):
         # Set material

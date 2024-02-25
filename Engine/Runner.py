@@ -63,24 +63,24 @@ class Runner(object):
     def apply_nodal_load(self, node: int, x: float, y: float):
         self.geometry.nodes[node].apply_load(x, y)
 
-    def run_analysis(self, stiff_intgr_type: str = 'complete', stress_strain_intgr_type: str = 'complete'):
+    def run_analysis(self, stiff_intgr_type: str = 'full', stress_strain_intgr_type: str = 'full'):
         # Compute nodal global indices for each node
         self.geometry.compute_nodal_global_indices()
 
         # Perform the analysis
-        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix()
+        self.global_stiffness_matrix = self.integrate_and_assemble_stiffness_matrix(stiff_intgr_type)
         self.global_force_vector = self.geometry.assemble_global_forces_vector()
         self.global_displacement_vector = self.solve_displacements()
 
         # Compute the stress and strain at the gauss points for each element and extrapolate to the nodes
-        self.compute_elements_stress_strain()
+        self.compute_elements_stress_strain(stress_strain_intgr_type)
         self.average_nodal_stress_strain()
 
-    def integrate_and_assemble_stiffness_matrix(self, ):
+    def integrate_and_assemble_stiffness_matrix(self, stiff_intgr_type: str):
         self.global_stiffness_matrix = np.zeros((self.geometry.count_global_free_dofs(), self.geometry.count_global_free_dofs()))
 
         for element in self.geometry.elements:
-            element_stiffness_matrix = element.compute_elem_stiffness_matrix(self._number_gp)
+            element_stiffness_matrix = element.compute_elem_stiffness_matrix(stiff_intgr_type)
             self.global_stiffness_matrix = self.geometry.assemble_global_stiffness_matrix(self.global_stiffness_matrix, element_stiffness_matrix, element)
 
         return self.global_stiffness_matrix
@@ -99,11 +99,11 @@ class Runner(object):
 
         return self.global_displacement_vector
 
-    def compute_elements_stress_strain(self):
+    def compute_elements_stress_strain(self, stress_strain_intgr_type: str):
         for element in self.geometry.elements:
             # Compute the stress and strain at the gauss points
-            element.compute_stress_strain(self.global_displacement_vector, self._number_gp)
-            element.extrapolate_stress_strain_gp_to_nodes(self._number_gp)
+            element.compute_stress_strain(self.global_displacement_vector, stress_strain_intgr_type)
+            element.extrapolate_stress_strain_gp_to_nodes(stress_strain_intgr_type)
 
     def average_nodal_stress_strain(self):
 
@@ -125,20 +125,20 @@ class Runner(object):
             node.stress_avg /= len(node.stress)
             node.strain_avg /= len(node.strain)
 
-    def show_results(self):
+    def show_results(self, scale_factor: Optional[float] = 1.0):
         visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
 
         visualization.visualize_undeformed_geometry()
-        visualization.visualize_deformed_geometry(self.global_displacement_vector, 100, add_nodal_forces=True)
+        visualization.visualize_deformed_geometry(self.global_displacement_vector, scale_factor, add_nodal_forces=True)
         visualization.visualize_disp_table(self.global_displacement_vector)
 
-        visualization.visualize_nodal_stress("xx", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_stress("yy", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_stress("xy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_stress("xx", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_stress("yy", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_stress("xy", self.global_displacement_vector, scale_factor)
 
-        visualization.visualize_nodal_strain("xx", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_strain("yy", self.global_displacement_vector, 100)
-        visualization.visualize_nodal_strain("xy", self.global_displacement_vector, 100)
+        visualization.visualize_nodal_strain("xx", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_strain("yy", self.global_displacement_vector, scale_factor)
+        visualization.visualize_nodal_strain("xy", self.global_displacement_vector, scale_factor)
 
-        visualization.visualize_displacement(self.global_displacement_vector, "x", 100)
-        visualization.visualize_displacement(self.global_displacement_vector, "y", 100)
+        visualization.visualize_displacement(self.global_displacement_vector, "x", scale_factor)
+        visualization.visualize_displacement(self.global_displacement_vector, "y", scale_factor)

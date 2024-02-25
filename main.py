@@ -36,5 +36,5 @@ if __name__ == '__main__':
 
 
     # Analysis and results
-    runner.run_analysis()
-    runner.show_results()
+    runner.run_analysis(stress_strain_intgr_type='reduced')
+    runner.show_results(scale_factor=200)

@@ -25,6 +25,14 @@ class QuadraticQuadElement(Element):
         else:
             raise ValueError('Material is not a LinearElasticMaterial')
 
+    def get_number_gp(self, stiff_intgr_type: str) -> int:
+        if stiff_intgr_type == 'full':
+            return 3
+        elif stiff_intgr_type == 'reduced':
+            return 2
+        else:
+            raise ValueError('stiff_intgr_type must be either "full" or "reduced"')
+
     def count_elem_dofs(self) -> int:
         return len(self.nodes) * 2
 
@@ -70,7 +78,9 @@ class QuadraticQuadElement(Element):
 
         return derivative @ np.array([x, y]).T
 
-    def compute_elem_stiffness_matrix(self, number_gp: int) -> np.ndarray:
+    def compute_elem_stiffness_matrix(self, stiff_intgr_type: str) -> np.ndarray:
+        number_gp = self.get_number_gp(stiff_intgr_type)
+
         stiffness = np.zeros((self.count_elem_dofs(), self.count_elem_dofs()))
 
         weights = self.gauss.get_weights(number_gp)
@@ -101,8 +111,10 @@ class QuadraticQuadElement(Element):
                 stiffness += jacobian_determinant * thickness * wi * wj * (b_matrix.T @ elastic_matrix @ b_matrix)
         return stiffness
 
-    def compute_stress_strain(self, global_displacement_vector: np.ndarray, number_gp: int) -> (np.ndarray, np.ndarray):
+    def compute_stress_strain(self, global_displacement_vector: np.ndarray, stress_strain_intgr_type: str) -> (np.ndarray, np.ndarray):
         """Implementation in BilinearQuadElement to compute stress and strain at the gauss points and nodes."""
+
+        number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         self.stress_gp = []
         self.strain_gp = []
@@ -147,7 +159,7 @@ class QuadraticQuadElement(Element):
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
-        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 0]])
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]])
 
         num_cols = 4
 
@@ -165,8 +177,10 @@ class QuadraticQuadElement(Element):
 
         return extrapolation_matrix
 
-    def extrapolate_stress_strain_gp_to_nodes(self, number_gp: int):
+    def extrapolate_stress_strain_gp_to_nodes(self, stress_strain_intgr_type: str):
         """Extrapolates the stress or strain from the gauss points to the nodes."""
+
+        number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         if number_gp == 2:
             # Each row corresponds to a gauss point and each column to a node
@@ -187,9 +201,7 @@ class QuadraticQuadElement(Element):
                 node.strain.append([self.label, np.array([strain_xx[i], strain_yy[i], strain_xy[i]])])
                 node.stress.append([self.label, np.array([stress_xx[i], stress_yy[i], stress_xy[i]])])
 
-        elif number_gp == 1:
-            for i, node in enumerate(self.nodes):
-                node.strain.append([self.label, self.strain_gp[0]])
-                node.stress.append([self.label, np.array(self.stress_gp[0][0:3])])
+        elif number_gp == 3:
+            raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')
         else:
             raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')

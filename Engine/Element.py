@@ -81,6 +81,10 @@ class Element(object):
             self.elem_dofs = len(self.nodes) * 2
         return self.elem_dofs
 
+    def get_number_gp(self, stiff_intgr_type: str) -> int:
+        """Returns the number of gauss points for numerical integration."""
+        raise NotImplementedError('Method get_number_gp not implemented')
+
     def shape_functions(self, xi: float, eta: float) -> np.ndarray:
         """" Computes the shape functions of the element."""
         raise NotImplementedError('Method shape_functions not implemented')
@@ -103,7 +107,7 @@ class Element(object):
         """Computes the inverse of the Jacobian matrix."""
         return np.linalg.inv(jacobian)
 
-    def compute_elem_stiffness_matrix(self, number_gp: int) -> np.ndarray:
+    def compute_elem_stiffness_matrix(self, stiff_intgr_type: str) -> np.ndarray:
         """Computes the element stiffness matrix."""
         raise NotImplementedError('Method compute_elem_stiffness_matrix not implemented')
 
@@ -147,10 +151,10 @@ class Element(object):
         # Calculate the maximum distance between any two nodes
         return max(max(x) - min(x), max(y) - min(y))
 
-    def compute_stress_strain(self, global_displacement_vector: np.ndarray, number_gp: int) -> (np.ndarray, np.ndarray):
+    def compute_stress_strain(self, global_displacement_vector: np.ndarray, stress_strain_intgr_type: str) -> (np.ndarray, np.ndarray):
         """Computes the stress and strain at the gauss points."""
         raise NotImplementedError('Method compute_stress_strain not implemented')
 
-    def extrapolate_stress_strain_gp_to_nodes(self, number_gp: int):
+    def extrapolate_stress_strain_gp_to_nodes(self, stress_strain_intgr_type: str):
         """Extrapolates the stress or strain from the gauss points to the nodes."""
         raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')

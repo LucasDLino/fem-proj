@@ -46,79 +46,16 @@ class QuadraticQuadElement(Element):
                                 [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
                                 [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left)
 
-    # Line by line
-    # def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-    #     return 0.25 * np.array([[(1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
-    #                             [-2 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
-    #                             [-(1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
-    #                             [-2 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
-    #                             [(1 - xi ** 2) * (1 - eta ** 2)],  # N5 (center center)
-    #                             [2 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
-    #                             [-(1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
-    #                             [2 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
-    #                             [(1 + xi) * (1 + eta) * xi * eta]])  # N9 (top right)
-
-    # Literature version - Books style
-    # def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-    #     return 0.25 * np.array([[xi * (xi - 1) * eta * (eta - 1)],  # N1 (bottom left)
-    #                             [xi * (xi + 1) * eta * (eta - 1)],  # N3 (bottom right)
-    #                             [xi * (xi + 1) * eta * (eta + 1)],  # N9 (top right)
-    #                             [xi * (xi - 1) * eta * (eta + 1)],  # N7 (top left)
-    #                             [-2 * (xi + 1) * (xi - 1) * eta * (eta - 1)],  # N2 (bottom center)
-    #                             [-2 * xi * (xi + 1) * (eta + 1) * (eta - 1)],  # N6 (center right)
-    #                             [-2 * (xi + 1) * (xi - 1) * eta * (eta + 1)],  # N8 (top center)
-    #                             [-2 * xi * (xi - 1) * (eta + 1) * (eta - 1)],  # N4 (center left)
-    #                             [(xi + 1) * (xi - 1) * (eta + 1) * (eta - 1)]
-    #                             ])  # N5 (center center)
-
-    # Literature version
-    # def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-    #     return 0.25 * np.array([[(1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
-    #                             [-(1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
-    #                             [(1 + xi) * (1 + eta) * xi * eta],  # N9 (top right)
-    #                             [-(1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
-    #                             [-2 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
-    #                             [2 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
-    #                             [2 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
-    #                             [-2 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
-    #                             [(1 - xi ** 2) * (1 - eta ** 2)]])  # N5 (center center)
-
-    # Literature version 2
     def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-        return 0.25 * np.array([[(1 + xi) * (1 + eta) * xi * eta],  # N9 (top right)
-                                [-(1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
-                                [(1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
-                                [-(1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
-                                [2 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
-                                [-2 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
-                                [-2 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
-                                [2 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
-                                [(1 - xi ** 2) * (1 - eta ** 2)]])  # N5 (center center)
-
-    # Spiral version
-    # def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-    #     return 0.25 * np.array([[(1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
-    #                             [-2 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
-    #                             [-(1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
-    #                             [2 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
-    #                             [(1 + xi) * (1 + eta) * xi * eta],  # N9 (top right)
-    #                             [2 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
-    #                             [-(1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
-    #                             [-2 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
-    #                             [(1 - xi ** 2) * (1 - eta ** 2)]])  # N5 (center center)
-
-    # Column by column
-    # def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
-    #     return 0.25 * np.array([[(1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
-    #                             [-2 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
-    #                             [-(1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
-    #                             [-2 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
-    #                             [(1 - xi ** 2) * (1 - eta ** 2)],  # N5 (center center)
-    #                             [2 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
-    #                             [-(1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
-    #                             [2 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
-    #                             [(1 + xi) * (1 + eta) * xi * eta],  # N9 (top right)
-    #                             ])
+        return np.array([[0.25 * (1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
+                         [-0.5 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
+                         [-0.25 * (1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
+                         [0.5 * (1 + xi) * (1 - eta ** 2) * xi],  # N6 (center right)
+                         [0.25 * (1 + xi) * (1 + eta) * xi * eta],  # N9 (top right)
+                         [0.5 * (1 - xi ** 2) * (1 + eta) * eta],  # N8 (top center)
+                         [-0.25 * (1 - xi) * (1 + eta) * xi * eta],  # N7 (top left)
+                         [-0.5 * (1 - xi) * (1 - eta ** 2) * xi],  # N4 (center left)
+                         [(1 - xi ** 2) * (1 - eta ** 2)]])  # N5 (center center)
 
     def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
         return 0.25 * np.array([[(1. - xi) * (1. - eta)],  # N1 (bottom left)
@@ -256,11 +193,7 @@ class QuadraticQuadElement(Element):
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
-        # parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])  # Line by line
-        # parametric_coords = np.array([[-1, -1], [1, -1], [1, 1], [-1, 1], [0, -1], [1, 0], [0, 1], [-1, 0]])  # Literature version
-        # parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]])  # Spiral
-        parametric_coords = np.array([[1, -1], [-1, 1], [-1, -1], [1, -1], [0, 1], [-1, 0], [0, -1], [1, 0]])  # Literature version 2
-        # parametric_coords = np.array([[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]) # Column by column
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]])  # Spiral
 
         num_cols = 9
 
@@ -292,6 +225,9 @@ class QuadraticQuadElement(Element):
 
         # Check sum of all columns of each row
         check_ones = np.sum(extrapolation_matrix, axis=1)
+
+        if not np.allclose(check_ones, 1.0):
+            raise ValueError('The sum of all columns of each row of the extrapolation matrix must be equal to 1')
 
         # Extrapolate the stress and strain from the gauss points to the nodes
         strain_xx = extrapolation_matrix @ self.strain_gp[:, 0]

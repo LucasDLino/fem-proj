@@ -127,7 +127,7 @@ class Runner(object):
 
         visualization.visualize_undeformed_geometry()
         visualization.visualize_deformed_geometry(self.global_displacement_vector, scale_factor, add_nodal_forces=True)
-        visualization.visualize_disp_table(self.global_displacement_vector)
+        # visualization.visualize_disp_table(self.global_displacement_vector)
 
         visualization.visualize_nodal_stress("xx", self.global_displacement_vector, scale_factor)
         visualization.visualize_nodal_stress("yy", self.global_displacement_vector, scale_factor)

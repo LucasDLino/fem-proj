@@ -146,70 +146,18 @@ class Gauss(object):
             min_eta, max_eta = min(gauss_points), max(gauss_points)
             central_point = gauss_points[1]
 
-            # Line by line
-            # arranged_gauss_points = np.array([
-            #     [min_xi, min_eta],
-            #     [central_point, min_eta],
-            #     [max_xi, min_eta],
-            #     [min_xi, central_point],
-            #     [central_point, central_point],
-            #     [max_xi, central_point],
-            #     [min_xi, max_eta],
-            #     [central_point, max_eta],
-            #     [max_xi, max_eta]
-            # ])
-
             # Spiral version
-            # arranged_gauss_points = np.array([
-            #     [min_xi, min_eta],
-            #     [central_point, min_eta],
-            #     [max_xi, min_eta],
-            #     [max_xi, central_point],
-            #     [max_xi, max_eta],
-            #     [central_point, max_eta],
-            #     [min_xi, max_eta],
-            #     [min_xi, central_point],
-            #     [central_point, central_point]
-            # ])
-
-            # Literature version
-            # arranged_gauss_points = np.array([
-            #     [min_xi, min_eta],
-            #     [max_xi, min_eta],
-            #     [max_xi, max_eta],
-            #     [min_xi, max_eta],
-            #     [central_point, min_eta],
-            #     [max_xi, central_point],
-            #     [central_point, max_eta],
-            #     [min_xi, central_point],
-            #     [central_point, central_point]
-            # ])
-
-            # Literature version 2
             arranged_gauss_points = np.array([
-                [max_xi, max_eta],
-                [min_xi, max_eta],
                 [min_xi, min_eta],
-                [max_xi, min_eta],
-                [central_point, max_eta],
-                [min_xi, central_point],
                 [central_point, min_eta],
+                [max_xi, min_eta],
                 [max_xi, central_point],
+                [max_xi, max_eta],
+                [central_point, max_eta],
+                [min_xi, max_eta],
+                [min_xi, central_point],
                 [central_point, central_point]
             ])
-
-            # Column by column
-            # arranged_gauss_points = np.array([
-            #     [min_xi, min_eta],
-            #     [min_xi, central_point],
-            #     [min_xi, max_eta],
-            #     [central_point, min_eta],
-            #     [central_point, central_point],
-            #     [central_point, max_eta],
-            #     [max_xi, min_eta],
-            #     [max_xi, central_point],
-            #     [max_xi, max_eta]
-            # ])
 
             return arranged_gauss_points
         else:

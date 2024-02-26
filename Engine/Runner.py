@@ -17,9 +17,6 @@ class Runner(object):
         self.global_force_vector = None
         self.global_displacement_vector = None
 
-        # Analysis parameters
-        self._number_gp: int = 2
-
     @property
     def name(self):
         return 'Engine'

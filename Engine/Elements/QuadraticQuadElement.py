@@ -44,13 +44,40 @@ class QuadraticQuadElement(Element):
                                 [-(1. + xi) * (1. + eta) * (1. - xi - eta)],  # N5 (top right)
                                 [(1. - xi ** 2.) * (1. + eta) * 2.],  # N6 (top center)
                                 [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
-                                [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left
+                                [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left)
+
+    def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray: # linha por linha
+        return 0.25 * np.array([[-(1. - xi) * (1. - eta) * (1. + xi + eta)],  # N1 (bottom left)
+                                [(1. - xi ** 2.) * (1. - eta) * 2.],  # N2 (bottom center)
+                                [-(1. + xi) * (1. - eta) * (1. - xi + eta)],  # N3 (bottom right)
+                                [(1. - xi) * (1. - eta ** 2.) * 2.],  # N4 (center left)
+                                [4. * (1 - xi**2) * (1 - eta**2)],  # N5 (center center)
+                                [(1. + xi) * (1. - eta ** 2.) * 2.],  # N6 (center right)
+                                [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
+                                [(1. - xi ** 2.) * (1. + eta) * 2.],  # N8 (top center)
+                                [-(1. + xi) * (1. + eta) * (1. - xi - eta)]])  # N9 (top right)
+
+    ''' espiral
+    def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
+        return 0.25 * np.array([[-(1. - xi) * (1. - eta) * (1. + xi + eta)],  # N1 (bottom left)
+                                [(1. - xi ** 2.) * (1. - eta) * 2.],  # N2 (bottom center)
+                                [-(1. + xi) * (1. - eta) * (1. - xi + eta)],  # N3 (bottom right)
+                                [(1. + xi) * (1. - eta ** 2.) * 2.],  # N4 (center right)
+                                [-(1. + xi) * (1. + eta) * (1. - xi - eta)],  # N5 (top right)
+                                [(1. - xi ** 2.) * (1. + eta) * 2.],  # N6 (top center)
+                                [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
+                                [(1. - xi) * (1. - eta ** 2.) * 2.],  # N8 (center left)
+                                [4. * (1 - xi**2) * (1 - eta**2)]])  # N9 (center center)
+    '''
 
     def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
         return 0.25 * np.array([[(1. - xi) * (1. - eta)],  # N1 (bottom left)
                                 [(1. + xi) * (1. - eta)],  # N2 (bottom right)
                                 [(1. + xi) * (1. + eta)],  # N3 (top right)
                                 [(1. - xi) * (1. + eta)]])  # N4 (top left)
+
+
+
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
         # Derivadas parciais em relação a xi e eta organizadas em uma matriz
@@ -177,6 +204,33 @@ class QuadraticQuadElement(Element):
 
         return extrapolation_matrix
 
+
+
+    def construct_extrapolation_matrix_3GP(self) -> np.ndarray:
+        """Constructs the extrapolation matrix for the element."""
+        num_nodes = len(self.nodes)
+
+        # Construct parametric coordinates
+        # parametric_coords = np.array([[-1, -1], [1, -1], [1, 1], [-1, 1], [0, -1], [1, 0], [0, 1], [-1, 0]])  # forma doidona
+        # parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])  # forma linha por linha
+        parametric_coords = np.array([[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]]) # forma em espiral
+
+        num_cols = 9
+
+        extrapolation_matrix = np.zeros((num_nodes, num_cols))
+
+        # We will evaluate the shape functions at the parametric coordinates and populate the extrapolation matrix
+        for i in range(num_nodes):
+            xi = parametric_coords[i, 0]
+            eta = parametric_coords[i, 1]
+
+            # N_i = 0.25 * (1 +- xi') * (1 +- eta') in which xi' = xi * sqrt(3) and eta' = eta * sqrt(3)
+            shape_funcs = self.shape_functions_q9(xi * (1 / np.sqrt(0.6)), eta * (1 / np.sqrt(0.6)))
+
+            extrapolation_matrix[i, :] = shape_funcs.ravel()
+
+        return extrapolation_matrix
+
     def extrapolate_stress_strain_gp_to_nodes(self, stress_strain_intgr_type: str):
         """Extrapolates the stress or strain from the gauss points to the nodes."""
 
@@ -185,23 +239,25 @@ class QuadraticQuadElement(Element):
         if number_gp == 2:
             # Each row corresponds to a gauss point and each column to a node
             extrapolation_matrix = self.construct_extrapolation_matrix_2GP()
-
-            # Extrapolate the stress and strain from the gauss points to the nodes
-            strain_xx = extrapolation_matrix @ self.strain_gp[:, 0]
-            strain_yy = extrapolation_matrix @ self.strain_gp[:, 1]
-            strain_xy = extrapolation_matrix @ self.strain_gp[:, 2]
-
-            stress_xx = extrapolation_matrix @ self.stress_gp[:, 0]
-            stress_yy = extrapolation_matrix @ self.stress_gp[:, 1]
-            stress_xy = extrapolation_matrix @ self.stress_gp[:, 2]
-
-            # Put the extrapolated values in the correct nodes
-            for i, node in enumerate(self.nodes):
-                # node.strain corresponds to a list of lists of type [[elem_label, (nparray) strain], ...]
-                node.strain.append([self.label, np.array([strain_xx[i], strain_yy[i], strain_xy[i]])])
-                node.stress.append([self.label, np.array([stress_xx[i], stress_yy[i], stress_xy[i]])])
-
         elif number_gp == 3:
-            raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')
+            extrapolation_matrix = self.construct_extrapolation_matrix_3GP()
         else:
-            raise NotImplementedError('Method extrapolate_stress_strain_gp_to_nodes not implemented')
+            raise ValueError('Number of gauss points not supported')
+
+        # Extrapolate the stress and strain from the gauss points to the nodes
+        strain_xx = extrapolation_matrix @ self.strain_gp[:, 0]
+        strain_yy = extrapolation_matrix @ self.strain_gp[:, 1]
+        strain_xy = extrapolation_matrix @ self.strain_gp[:, 2]
+
+        stress_xx = extrapolation_matrix @ self.stress_gp[:, 0]
+        stress_yy = extrapolation_matrix @ self.stress_gp[:, 1]
+        stress_xy = extrapolation_matrix @ self.stress_gp[:, 2]
+
+        # Put the extrapolated values in the correct nodes
+        for i, node in enumerate(self.nodes):
+            # node.strain corresponds to a list of lists of type [[elem_label, (nparray) strain], ...]
+            node.strain.append([self.label, np.array([strain_xx[i], strain_yy[i], strain_xy[i]])])
+            node.stress.append([self.label, np.array([stress_xx[i], stress_yy[i], stress_xy[i]])])
+
+
+

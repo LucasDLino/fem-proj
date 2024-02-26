@@ -1,7 +1,6 @@
 from Engine.Runner import Runner
 from Pre.BeamMeshGenerator import BeamMeshGenerator
 from Examples import examples_reader
-from Pos.Visualizer import Visualizer
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -34,5 +33,5 @@ if __name__ == '__main__':
                 runner.apply_nodal_load(node.label - 1, force_data['forces']['x'], force_data['forces']['y'])
 
     # Analysis and results
-    runner.run_analysis(stress_strain_intgr_type='reduced')
+    runner.run_analysis()  # no flag passed, so that mean full integration in both stiffness and stress-strain computation
     runner.show_results(scale_factor=200)

@@ -47,7 +47,6 @@ class BeamMeshGenerator:
                     y = y_origin + row * y_spacing
                     self.geometry.add_node(x, y)
 
-        a = self.geometry.nodes
         for row in range(num_elements_y):
             for column in range(num_elements_x):
                 n1 = column * (2 * num_elements_y + 1) + column * (num_elements_y + 1) + 2 * row

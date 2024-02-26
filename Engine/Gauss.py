@@ -146,17 +146,17 @@ class Gauss(object):
             min_eta, max_eta = min(gauss_points), max(gauss_points)
             central_point = gauss_points[1]
 
-            # Form arranged_gauss_points based on the min and max values
+            # Spiral version
             arranged_gauss_points = np.array([
                 [min_xi, min_eta],
                 [central_point, min_eta],
                 [max_xi, min_eta],
-                [min_xi, central_point],
-                [central_point, central_point],
                 [max_xi, central_point],
-                [min_xi, max_eta],
+                [max_xi, max_eta],
                 [central_point, max_eta],
-                [max_xi, max_eta]
+                [min_xi, max_eta],
+                [min_xi, central_point],
+                [central_point, central_point]
             ])
 
             return arranged_gauss_points

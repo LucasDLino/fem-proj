@@ -1,7 +1,6 @@
 from Engine.Runner import Runner
 from Pre.BeamMeshGenerator import BeamMeshGenerator
 from Examples import examples_reader
-from Pos.Visualizer import Visualizer
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -16,7 +15,6 @@ if __name__ == '__main__':
         BeamMeshGenerator(runner.geometry).generate_biquadratic_mesh(width=geometry['width'], height=geometry['height'], num_elements_x=geometry['num_elements']['x'], num_elements_y=geometry['num_elements']['y'], x_origin=geometry['origin']['x'], y_origin=geometry['origin']['y'])
     else:
         raise ValueError('Element type not supported')
-
 
     # Setting the material
     linear_elastic_material = runner.set_linear_elastic_material(young_modulus=elements_material['E'], poisson_ratio=elements_material['poisson'], thickness=elements_material['thickness'])
@@ -34,7 +32,6 @@ if __name__ == '__main__':
             if (pos_x == node.x) and (pos_y == node.y):
                 runner.apply_nodal_load(node.label - 1, force_data['forces']['x'], force_data['forces']['y'])
 
-
     # Analysis and results
-    runner.run_analysis()
+    runner.run_analysis()  # no flag passed, so that mean full integration in both stiffness and stress-strain computation
     runner.show_results(scale_factor=200)

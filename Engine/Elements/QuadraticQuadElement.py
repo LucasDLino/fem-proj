@@ -46,6 +46,7 @@ class QuadraticQuadElement(Element):
                                 [-(1. - xi) * (1. + eta) * (1. + xi - eta)],  # N7 (top left)
                                 [(1. - xi) * (1. - eta ** 2.) * 2.]])  # N8 (center left)
 
+    # Reference: https://pkel015.connect.amazon.auckland.ac.nz/SolidMechanicsBooks/FEM/Two_Dimensional/06_2D_Quads.pdf
     def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
         return np.array([[0.25 * (1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
                          [-0.5 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
+import os
 
 from typing import List, Optional
 
@@ -8,12 +9,30 @@ from Engine.Node import Node
 
 
 class Visualizer:
-    def __init__(self, nodes: List[Node], elements: List[Element]):
+    """
+    A class to visualize the finite element analysis results.
+
+    Attributes:
+        nodes (List[Node]): List of nodes in the finite element model.
+
+        elements (List[Element]): List of elements in the finite element model.
+
+        results_dir (str): Directory to save the results.
+
+        base_dir (str): Base directory to save the results.
+
+    """
+
+    def __init__(self, nodes: List[Node], elements: List[Element], results_dir: str):
+        """Initializes the Visualizer."""
         self.nodes = nodes
         self.elements = elements
 
+        self.base_dir = 'results'
+        self.results_dir = results_dir
+
     def create_undeformed_geometry(self):
-        # create a figure
+        """Create a plot of the undeformed geometry."""
         fig = plt.figure(figsize=(12, 9))
 
         ax = fig.gca()
@@ -61,6 +80,7 @@ class Visualizer:
         return fig
 
     def create_deformed_geometry(self, displacements: List[float], scale_factor: Optional[float] = 1.0):
+        """Create a plot of the deformed geometry."""
         fig = plt.figure(figsize=(12, 9))
 
         ax = fig.gca()
@@ -110,6 +130,7 @@ class Visualizer:
 
     @staticmethod
     def add_labels(ax, constrained_both_added, constrained_x_added, constrained_y_added):
+        """Add labels to the plot."""
         # Get plot size in figure coordinates
         _, y = ax.transAxes.inverted().transform((0, 0))
 
@@ -124,6 +145,7 @@ class Visualizer:
         ax.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(0, y), title='Legend')
 
     def add_nodal_forces_to_figure(self, fig, displacements: List[float], scale_factor: Optional[float] = 1.0):
+        """Add nodal forces to the figure."""
         ax = fig.gca()
 
         # Calculate the minimum element size or any other criterion
@@ -156,7 +178,7 @@ class Visualizer:
         return fig
 
     def create_displacement_table(self, displacements):
-        # Create new plot
+        """Create a table of the nodal displacements."""
         fig = plt.figure(figsize=(12, 9))
 
         ax = fig.gca()
@@ -182,16 +204,25 @@ class Visualizer:
         return fig
 
     def visualize_undeformed_geometry(self):
+        """Visualize the undeformed geometry."""
         self.create_undeformed_geometry()
+
+        self.save_fig('undeformed')
+
         plt.show()
 
     def visualize_deformed_geometry(self, displacements: List[float], scale_factor: float, add_nodal_forces: Optional[bool] = False):
+        """Visualize the deformed geometry."""
         fig = self.create_deformed_geometry(displacements, scale_factor)
         if add_nodal_forces:
             self.add_nodal_forces_to_figure(fig, displacements, scale_factor)
+
+        self.save_fig('deformed')
+
         plt.show()
 
     def visualize_disp_table(self, displacements):
+        """Visualize a table of the nodal displacements."""
         self.create_displacement_table(displacements)
         plt.show()
 
@@ -269,25 +300,23 @@ class Visualizer:
         # plot the finite element mesh
         self.plot_fem_mesh(x, y, elem_nodes_map)
 
-        """
-        Choose one of the following color maps:
-        'Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r', 
-        'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Greens', 'Greens_r', 'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r', 
-        'PRGn', 'PRGn_r', 'Paired', 'Paired_r', 'Pastel1', 'Pastel1_r', 'Pastel2', 'Pastel2_r', 'PiYG', 'PiYG_r', 'PuBu', 
-        'PuBuGn', 'PuBuGn_r', 'PuBu_r', 'PuOr', 'PuOr_r', 'PuRd', 'PuRd_r', 'Purples', 'Purples_r', 'RdBu', 'RdBu_r', 'RdGy', 
-        'RdGy_r', 'RdPu', 'RdPu_r', 'RdYlBu', 'RdYlBu_r', 'RdYlGn', 'RdYlGn_r', 'Reds', 'Reds_r', 'Set1', 'Set1_r', 'Set2', 
-        'Set2_r', 'Set3', 'Set3_r', 'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'YlGn', 'YlGnBu', 'YlGnBu_r', 'YlGn_r', 
-        'YlOrBr', 'YlOrBr_r', 'YlOrRd', 'YlOrRd_r', 'afmhot', 'afmhot_r', 'autumn', 'autumn_r', 'binary', 'binary_r', 'bone',
-        'bone_r', 'brg', 'brg_r', 'bwr', 'bwr_r', 'cividis', 'cividis_r', 'cool', 'cool_r', 'coolwarm', 'coolwarm_r', 'copper',
-        'copper_r', 'cubehelix', 'cubehelix_r', 'flag', 'flag_r', 'gist_earth', 'gist_earth_r', 'gist_gray', 'gist_gray_r',
-        'gist_heat', 'gist_heat_r', 'gist_ncar', 'gist_ncar_r', 'gist_rainbow', 'gist_rainbow_r', 'gist_stern', 'gist_stern_r', 
-        'gist_yarg', 'gist_yarg_r', 'gnuplot', 'gnuplot2', 'gnuplot2_r', 'gnuplot_r', 'gray', 'gray_r', 'hot', 'hot_r',
-        'hsv', 'hsv_r', 'inferno', 'inferno_r', 'jet', 'jet_r', 'magma', 'magma_r', 'nipy_spectral', 'nipy_spectral_r', 
-        'ocean', 'ocean_r', 'pink', 'pink_r', 'plasma', 'plasma_r', 'prism', 'prism_r', 'rainbow', 'rainbow_r', 'seismic', 
-        'seismic_r', 'spring', 'spring_r', 'summer', 'summer_r', 'tab10', 'tab10_r', 'tab20', 'tab20_r', 'tab20b', 'tab20b_r',
-        'tab20c', 'tab20c_r', 'terrain', 'terrain_r', 'turbo', 'turbo_r', 'twilight', 'twilight_r', 'twilight_shifted', 
-        'twilight_shifted_r', 'viridis', 'viridis_r', 'winter', 'winter_r'
-        """
+        # Choose one of the following color maps:
+        # 'Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r',
+        # 'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Greens', 'Greens_r', 'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r',
+        # 'PRGn', 'PRGn_r', 'Paired', 'Paired_r', 'Pastel1', 'Pastel1_r', 'Pastel2', 'Pastel2_r', 'PiYG', 'PiYG_r', 'PuBu',
+        # 'PuBuGn', 'PuBuGn_r', 'PuBu_r', 'PuOr', 'PuOr_r', 'PuRd', 'PuRd_r', 'Purples', 'Purples_r', 'RdBu', 'RdBu_r', 'RdGy',
+        # 'RdGy_r', 'RdPu', 'RdPu_r', 'RdYlBu', 'RdYlBu_r', 'RdYlGn', 'RdYlGn_r', 'Reds', 'Reds_r', 'Set1', 'Set1_r', 'Set2',
+        # 'Set2_r', 'Set3', 'Set3_r', 'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'YlGn', 'YlGnBu', 'YlGnBu_r', 'YlGn_r',
+        # 'YlOrBr', 'YlOrBr_r', 'YlOrRd', 'YlOrRd_r', 'afmhot', 'afmhot_r', 'autumn', 'autumn_r', 'binary', 'binary_r', 'bone',
+        # 'bone_r', 'brg', 'brg_r', 'bwr', 'bwr_r', 'cividis', 'cividis_r', 'cool', 'cool_r', 'coolwarm', 'coolwarm_r', 'copper',
+        # 'copper_r', 'cubehelix', 'cubehelix_r', 'flag', 'flag_r', 'gist_earth', 'gist_earth_r', 'gist_gray', 'gist_gray_r',
+        # 'gist_heat', 'gist_heat_r', 'gist_ncar', 'gist_ncar_r', 'gist_rainbow', 'gist_rainbow_r', 'gist_stern', 'gist_stern_r',
+        # 'gist_yarg', 'gist_yarg_r', 'gnuplot', 'gnuplot2', 'gnuplot2_r', 'gnuplot_r', 'gray', 'gray_r', 'hot', 'hot_r',
+        # 'hsv', 'hsv_r', 'inferno', 'inferno_r', 'jet', 'jet_r', 'magma', 'magma_r', 'nipy_spectral', 'nipy_spectral_r',
+        # 'ocean', 'ocean_r', 'pink', 'pink_r', 'plasma', 'plasma_r', 'prism', 'prism_r', 'rainbow', 'rainbow_r', 'seismic',
+        # 'seismic_r', 'spring', 'spring_r', 'summer', 'summer_r', 'tab10', 'tab10_r', 'tab20', 'tab20_r', 'tab20b', 'tab20b_r',
+        # 'tab20c', 'tab20c_r', 'terrain', 'terrain_r', 'turbo', 'turbo_r', 'twilight', 'twilight_r', 'twilight_shifted',
+        # 'twilight_shifted_r', 'viridis', 'viridis_r', 'winter', 'winter_r'
 
         # plot the contours
         plt.tricontourf(triangulation, field, cmap='jet', levels=40)
@@ -311,10 +340,12 @@ class Visualizer:
         # Get plot size in figure coordinates
         x, y = ax.transAxes.inverted().transform((0, 0))
 
-        ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.6f}\nMin {field_name}: {min_field:.6f}', fontsize=10, color='black', transform=ax.transAxes)
+        ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.9f}\nMin {field_name}: {min_field:.9f}', fontsize=10, color='black', transform=ax.transAxes)
 
-        # show
-        plt.colorbar()
+        plt.colorbar(shrink=0.55, aspect=15)
+
+        self.save_fig(title)
+
         plt.show()
 
     def shapes_to_tris(self, shapes):
@@ -340,6 +371,7 @@ class Visualizer:
     def convert_to_6tris(quad):
         """
         This is the shape you would get by converting a quad to 6 triangles
+
                             A---B---C
                             |  /|\  |
                             | / | \ |
@@ -372,6 +404,7 @@ class Visualizer:
     def quads_to_tris(quad):
         """
         This is the shape you would get by converting a quad to 2 triangles
+
                             A-------B
                             |     / |
                             |    /  |
@@ -396,6 +429,7 @@ class Visualizer:
     def convert_to_4tris(quads):
         """
         This is the shape you would get by converting a quad to 4 triangles
+
                             A-------B
                             | \   / |
                             |  \ /  |
@@ -422,7 +456,25 @@ class Visualizer:
 
     # plots a finite element mesh
     def plot_fem_mesh(self, nodes_x, nodes_y, elements):
+        """This function plots the finite element mesh."""
         for element in elements:
             x = [nodes_x[element[i]] for i in range(len(element))]
             y = [nodes_y[element[i]] for i in range(len(element))]
             plt.fill(x, y, edgecolor='black', fill=False)
+
+    def save_fig(self, title: str):
+        """
+        Save the figure in the 'results' directory.
+
+        :param title:  Title of the figure
+        :return:  None
+        """
+        if not os.path.exists(self.base_dir):
+            os.makedirs(self.base_dir)
+
+        directory = self.base_dir = self.results_dir
+
+        # Save fig in svg format in the directory named 'results'. If it doesn't exist, create it.
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        plt.savefig(f'{directory}/{title}.svg', format='svg')

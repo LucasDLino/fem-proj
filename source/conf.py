@@ -28,7 +28,8 @@ release = '0.0.1'
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo',
               'sphinx.ext.viewcode',
-              'autodocsumm']
+              'autodocsumm',
+              'sphinx.ext.githubpages', ]
 
 templates_path = ['_templates']
 exclude_patterns = []

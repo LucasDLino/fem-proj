@@ -6,4 +6,4 @@ Welcome to the documentation for My Project!
 
 The documentation for this project is available below:
 
-[Open Documentation](./build/index.html)
+[Open Documentation](./docs/index.html)

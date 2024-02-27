@@ -1,0 +1,1624 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Welcome to FEM Project’s documentation! &#8212; FEM Project 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-fem-project-s-documentation">
+<h1>Welcome to FEM Project’s documentation!<a class="headerlink" href="#welcome-to-fem-project-s-documentation" title="Permalink to this heading">¶</a></h1>
+<section id="module-BeamMeshGenerator">
+<span id="pre-package"></span><h2>PRE PACKAGE<a class="headerlink" href="#module-BeamMeshGenerator" title="Permalink to this heading">¶</a></h2>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BeamMeshGenerator.BeamMeshGenerator" title="BeamMeshGenerator.BeamMeshGenerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BeamMeshGenerator</span></code></a>(geometry)</p></td>
+<td><p>A class to generate mesh for beam elements.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="BeamMeshGenerator.BeamMeshGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BeamMeshGenerator.</span></span><span class="sig-name descname"><span class="pre">BeamMeshGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BeamMeshGenerator.html#BeamMeshGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BeamMeshGenerator.BeamMeshGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to generate mesh for beam elements.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BeamMeshGenerator.BeamMeshGenerator.generate_bilinear_mesh" title="BeamMeshGenerator.BeamMeshGenerator.generate_bilinear_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_bilinear_mesh</span></code></a>(width, height, ...[, ...])</p></td>
+<td><p>Generates a bilinear mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BeamMeshGenerator.BeamMeshGenerator.generate_biquadratic_mesh" title="BeamMeshGenerator.BeamMeshGenerator.generate_biquadratic_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_biquadratic_mesh</span></code></a>(width, height, ...)</p></td>
+<td><p>Generates a biquadratic mesh.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="BeamMeshGenerator.BeamMeshGenerator.generate_bilinear_mesh">
+<span class="sig-name descname"><span class="pre">generate_bilinear_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_elements_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_elements_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BeamMeshGenerator.html#BeamMeshGenerator.generate_bilinear_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BeamMeshGenerator.BeamMeshGenerator.generate_bilinear_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a bilinear mesh.</p>
+<dl>
+<dt>Args:</dt><dd><p>width (float): The width of the mesh.</p>
+<p>height (float): The height of the mesh.</p>
+<p>num_elements_x (int): The number of elements along the x-axis.</p>
+<p>num_elements_y (int): The number of elements along the y-axis.</p>
+<p>x_origin (Optional[float], optional): The x-coordinate origin. Defaults to 0.</p>
+<p>y_origin (Optional[float], optional): The y-coordinate origin. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BeamMeshGenerator.BeamMeshGenerator.generate_biquadratic_mesh">
+<span class="sig-name descname"><span class="pre">generate_biquadratic_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_elements_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_elements_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BeamMeshGenerator.html#BeamMeshGenerator.generate_biquadratic_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BeamMeshGenerator.BeamMeshGenerator.generate_biquadratic_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a biquadratic mesh.</p>
+<dl>
+<dt>Args:</dt><dd><p>width (float): The width of the mesh.</p>
+<p>height (float): The height of the mesh.</p>
+<p>num_elements_x (int): The number of elements along the x-axis.</p>
+<p>num_elements_y (int): The number of elements along the y-axis.</p>
+<p>x_origin (Optional[float], optional): The x-coordinate origin. Defaults to 0.</p>
+<p>y_origin (Optional[float], optional): The y-coordinate origin. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Gauss">
+<span id="engine-package"></span><h2>ENGINE PACKAGE<a class="headerlink" href="#module-Gauss" title="Permalink to this heading">¶</a></h2>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Gauss.Gauss" title="Gauss.Gauss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Gauss</span></code></a>()</p></td>
+<td><p>Represents a Gauss quadrature method for numerical integration.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Gauss.Gauss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Gauss.</span></span><span class="sig-name descname"><span class="pre">Gauss</span></span><a class="reference internal" href="_modules/Gauss.html#Gauss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Gauss.Gauss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a Gauss quadrature method for numerical integration.</p>
+<p>This class provides methods to retrieve the weights and points of the Gauss quadrature.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>None</p>
+</dd>
+<dt>Usage:</dt><dd><p>gauss = Gauss()</p>
+<p>weights = gauss.get_weights()</p>
+<p>points = gauss.get_points()</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Gauss.Gauss.get_ordered_points" title="Gauss.Gauss.get_ordered_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ordered_points</span></code></a>(number_gp)</p></td>
+<td><p>Returns the points for numerical integration in an ordered manner.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Gauss.Gauss.get_points" title="Gauss.Gauss.get_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_points</span></code></a>(number_gp)</p></td>
+<td><p>Returns the points for numerical integration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Gauss.Gauss.get_weights" title="Gauss.Gauss.get_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_weights</span></code></a>(number_gp)</p></td>
+<td><p>Returns the weights for numerical integration.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Gauss.Gauss.name" title="Gauss.Gauss.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the Gauss quadrature method.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Gauss.Gauss.get_ordered_points">
+<span class="sig-name descname"><span class="pre">get_ordered_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_gp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Gauss.html#Gauss.get_ordered_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Gauss.Gauss.get_ordered_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the points for numerical integration in an ordered manner.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Gauss.Gauss.get_points">
+<span class="sig-name descname"><span class="pre">get_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_gp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Gauss.html#Gauss.get_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Gauss.Gauss.get_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the points for numerical integration.</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><p>NotImplementedError: Method not implemented.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Array of points for numerical integration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Gauss.Gauss.get_weights">
+<span class="sig-name descname"><span class="pre">get_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_gp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Gauss.html#Gauss.get_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Gauss.Gauss.get_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the weights for numerical integration.</p>
+<dl class="simple">
+<dt>Raises:</dt><dd><p>NotImplementedError: Method not implemented.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Array of weights for numerical integration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Gauss.Gauss.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Gauss.Gauss.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the Gauss quadrature method.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The name of the Gauss quadrature method.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Node"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node" title="Node.Node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Node</span></code></a>(x, y)</p></td>
+<td><p>Represents a node in structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Node.Node">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Node.</span></span><span class="sig-name descname"><span class="pre">Node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a node in structural analysis.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>x (float): X-coordinate of the node.</p>
+<p>y (float): Y-coordinate of the node.</p>
+<p>label: Label of the node.</p>
+<p>x_constraint (bool): Indicates if the node is constrained in the x-direction.</p>
+<p>y_constraint (bool): Indicates if the node is constrained in the y-direction.</p>
+<p>x_load (float): Load applied to the node in the x-direction.</p>
+<p>y_load (float): Load applied to the node in the y-direction.</p>
+<p>global_index_x (int): Global index of the node in the x-direction.</p>
+<p>global_index_y (int): Global index of the node in the y-direction.</p>
+<p>stress (list): Stress values from all elements connected to the node.</p>
+<p>strain (list): Strain values from all elements connected to the node.</p>
+<p>stress_avg: Average stress value at the node.</p>
+<p>strain_avg: Average strain value at the node.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node.apply_load" title="Node.Node.apply_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_load</span></code></a>(x, y)</p></td>
+<td><p>Applies loads to the node in the x and y directions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Node.Node.constrain" title="Node.Node.constrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrain</span></code></a>(x, y)</p></td>
+<td><p>Sets the constraint status of the node in the x and y directions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node.is_constrained_x" title="Node.Node.is_constrained_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_constrained_x</span></code></a>()</p></td>
+<td><p>Returns True if the node is constrained in the x-direction, False otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Node.Node.is_constrained_y" title="Node.Node.is_constrained_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_constrained_y</span></code></a>()</p></td>
+<td><p>Returns True if the node is constrained in the y-direction, False otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node.set_global_index_x" title="Node.Node.set_global_index_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_index_x</span></code></a>(index)</p></td>
+<td><p>Sets the global index of the node in the x-direction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Node.Node.set_global_index_y" title="Node.Node.set_global_index_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_index_y</span></code></a>(index)</p></td>
+<td><p>Sets the global index of the node in the y-direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node.unconstrain" title="Node.Node.unconstrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unconstrain</span></code></a>()</p></td>
+<td><p>Removes any constraints applied to the node.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Node.Node.name" title="Node.Node.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the node.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.apply_load">
+<span class="sig-name descname"><span class="pre">apply_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.apply_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.apply_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies loads to the node in the x and y directions.</p>
+<dl>
+<dt>Args:</dt><dd><p>x (float): Load applied to the node in the x-direction.</p>
+<p>y (float): Load applied to the node in the y-direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.constrain">
+<span class="sig-name descname"><span class="pre">constrain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.constrain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.constrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the constraint status of the node in the x and y directions.</p>
+<dl>
+<dt>Args:</dt><dd><p>x (bool): True if the node is constrained in the x-direction, False otherwise.</p>
+<p>y (bool): True if the node is constrained in the y-direction, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.is_constrained_x">
+<span class="sig-name descname"><span class="pre">is_constrained_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.is_constrained_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.is_constrained_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the node is constrained in the x-direction, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.is_constrained_y">
+<span class="sig-name descname"><span class="pre">is_constrained_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.is_constrained_y"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.is_constrained_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the node is constrained in the y-direction, False otherwise.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Node.Node.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#Node.Node.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.set_global_index_x">
+<span class="sig-name descname"><span class="pre">set_global_index_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.set_global_index_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.set_global_index_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the global index of the node in the x-direction.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>index (int): Global index of the node in the x-direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.set_global_index_y">
+<span class="sig-name descname"><span class="pre">set_global_index_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.set_global_index_y"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.set_global_index_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the global index of the node in the y-direction.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>index (int): Global index of the node in the y-direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Node.Node.unconstrain">
+<span class="sig-name descname"><span class="pre">unconstrain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Node.html#Node.unconstrain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Node.Node.unconstrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes any constraints applied to the node.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Element"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element" title="Element.Element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Element</span></code></a>([nodes, material])</p></td>
+<td><p>Represents a finite element used in structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Element.Element">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Element.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Material</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a finite element used in structural analysis.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>nodes (List[Node]): List of nodes that define the element.</p>
+<p>material (Optional[Material]): Material assigned to the element.</p>
+<p>gauss (Gauss): Gauss quadrature method for numerical integration.</p>
+<p>elem_dofs (int): Number of degrees of freedom associated with the element.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.add_node" title="Element.Element.add_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code></a>(node)</p></td>
+<td><p>Adds a node to the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.assemble_elem_b_matrix" title="Element.Element.assemble_elem_b_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble_elem_b_matrix</span></code></a>(shape_derivative)</p></td>
+<td><p>Assembles the B matrix for the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.compute_elem_stiffness_matrix" title="Element.Element.compute_elem_stiffness_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_elem_stiffness_matrix</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Computes the element stiffness matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.compute_stress_strain" title="Element.Element.compute_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_stress_strain</span></code></a>(...)</p></td>
+<td><p>Computes the stress and strain at the gauss points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.count_elem_dofs" title="Element.Element.count_elem_dofs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_elem_dofs</span></code></a>()</p></td>
+<td><p>Counts the degrees of freedom associated with the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.extrapolate_stress_strain_gp_to_nodes" title="Element.Element.extrapolate_stress_strain_gp_to_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></code></a>(...)</p></td>
+<td><p>Extrapolates the stress or strain from the gauss points to the nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.get_connectivity_vector" title="Element.Element.get_connectivity_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_connectivity_vector</span></code></a>()</p></td>
+<td><p>Returns the connectivity vector for global assembly.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.get_elem_displacement_from_global" title="Element.Element.get_elem_displacement_from_global"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elem_displacement_from_global</span></code></a>(...)</p></td>
+<td><p>Returns the element displacement vector from the global displacement vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.get_number_gp" title="Element.Element.get_number_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_gp</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Returns the number of gauss points for numerical integration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.inverse_jacobian" title="Element.Element.inverse_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_jacobian</span></code></a>(jacobian)</p></td>
+<td><p>Computes the inverse of the Jacobian matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.jacobian" title="Element.Element.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian</span></code></a>(derivative)</p></td>
+<td><p>Computes the Jacobian matrix for the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.jacobian_determinant" title="Element.Element.jacobian_determinant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_determinant</span></code></a>(jacobian)</p></td>
+<td><p>Computes the determinant of the Jacobian matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.max_size" title="Element.Element.max_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_size</span></code></a>()</p></td>
+<td><p>Computes the maximum size of the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.set_material" title="Element.Element.set_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_material</span></code></a>(material)</p></td>
+<td><p>Sets the material for the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.shape_functions" title="Element.Element.shape_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the shape functions of the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.shape_functions_derivative" title="Element.Element.shape_functions_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions_derivative</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the derivative of the shape functions.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Element.Element.max_nodes" title="Element.Element.max_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_nodes</span></code></a></p></td>
+<td><p>Returns the maximum number of nodes the element can have.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Element.Element.name" title="Element.Element.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the element.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.add_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a node to the element.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node (Node): Node to be added to the element.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If the maximum number of nodes is exceeded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.assemble_elem_b_matrix">
+<span class="sig-name descname"><span class="pre">assemble_elem_b_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape_derivative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.assemble_elem_b_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.assemble_elem_b_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assembles the B matrix for the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.compute_elem_stiffness_matrix">
+<span class="sig-name descname"><span class="pre">compute_elem_stiffness_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.compute_elem_stiffness_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.compute_elem_stiffness_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the element stiffness matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.compute_stress_strain">
+<span class="sig-name descname"><span class="pre">compute_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_displacement_vector:</span> <span class="pre">~numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element.compute_stress_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.compute_stress_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the stress and strain at the gauss points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.count_elem_dofs">
+<span class="sig-name descname"><span class="pre">count_elem_dofs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/Element.html#Element.count_elem_dofs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.count_elem_dofs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the degrees of freedom associated with the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.extrapolate_stress_strain_gp_to_nodes">
+<span class="sig-name descname"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element.extrapolate_stress_strain_gp_to_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.extrapolate_stress_strain_gp_to_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extrapolates the stress or strain from the gauss points to the nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.get_connectivity_vector">
+<span class="sig-name descname"><span class="pre">get_connectivity_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.get_connectivity_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.get_connectivity_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the connectivity vector for global assembly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.get_elem_displacement_from_global">
+<span class="sig-name descname"><span class="pre">get_elem_displacement_from_global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_displacement_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.get_elem_displacement_from_global"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.get_elem_displacement_from_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element displacement vector from the global displacement vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.get_number_gp">
+<span class="sig-name descname"><span class="pre">get_number_gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/Element.html#Element.get_number_gp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.get_number_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of gauss points for numerical integration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.inverse_jacobian">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inverse_jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jacobian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.inverse_jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.inverse_jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of the Jacobian matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.jacobian">
+<span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derivative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Jacobian matrix for the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.jacobian_determinant">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jacobian_determinant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jacobian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/Element.html#Element.jacobian_determinant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.jacobian_determinant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the determinant of the Jacobian matrix.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Element.Element.max_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_nodes</span></span><a class="headerlink" href="#Element.Element.max_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum number of nodes the element can have.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.max_size">
+<span class="sig-name descname"><span class="pre">max_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element.max_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.max_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the maximum size of the element.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Element.Element.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#Element.Element.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.set_material">
+<span class="sig-name descname"><span class="pre">set_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Element.html#Element.set_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.set_material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the material for the element.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>material (Material): Material assigned to the element.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.shape_functions">
+<span class="sig-name descname"><span class="pre">shape_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.shape_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.shape_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the shape functions of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Element.Element.shape_functions_derivative">
+<span class="sig-name descname"><span class="pre">shape_functions_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Element.html#Element.shape_functions_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Element.Element.shape_functions_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the derivative of the shape functions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Material"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Material.Material" title="Material.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a>()</p></td>
+<td><p>Represents a material used in structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Material.Material">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Material.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><a class="reference internal" href="_modules/Material.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Material.Material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a material used in structural analysis.</p>
+<p>This is an abstract class defining the interface for material properties.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Material.Material.get_elastic_matrix" title="Material.Material.get_elastic_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_matrix</span></code></a>(*args)</p></td>
+<td><p>Computes the elastic matrix of the material.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Material.Material.name" title="Material.Material.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the material.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Material.Material.get_elastic_matrix">
+<span class="sig-name descname"><span class="pre">get_elastic_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Material.html#Material.get_elastic_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Material.Material.get_elastic_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the elastic matrix of the material.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>*args: Additional arguments if needed.</p>
+</dd>
+<dt>Raises:</dt><dd><p>NotImplementedError: If the method is not implemented in the subclass.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Material.Material.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#Material.Material.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the material.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Geometry"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry" title="Geometry.Geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Geometry</span></code></a>()</p></td>
+<td><p>Represents the geometry of a finite element structure.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Geometry.Geometry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Geometry.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><a class="reference internal" href="_modules/Geometry.html#Geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the geometry of a finite element structure.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>nodes (List[Node]): List of nodes in the geometry.</p>
+<p>elements (List[Element]): List of elements in the geometry.</p>
+<p>global_free_dofs (int): Number of global free degrees of freedom.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry.add_bilinear_quadrilateral_element" title="Geometry.Geometry.add_bilinear_quadrilateral_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_bilinear_quadrilateral_element</span></code></a>(nodes)</p></td>
+<td><p>Adds a bilinear quadrilateral element to the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Geometry.Geometry.add_element" title="Geometry.Geometry.add_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_element</span></code></a>(nodes)</p></td>
+<td><p>Adds an element to the geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry.add_node" title="Geometry.Geometry.add_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code></a>(x, y)</p></td>
+<td><p>Adds a node to the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Geometry.Geometry.add_quadratic_quadrilateral_element" title="Geometry.Geometry.add_quadratic_quadrilateral_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_quadratic_quadrilateral_element</span></code></a>(nodes)</p></td>
+<td><p>Adds a quadratic quadrilateral element to the geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry.assemble_global_forces_vector" title="Geometry.Geometry.assemble_global_forces_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble_global_forces_vector</span></code></a>()</p></td>
+<td><p>Assembles the global forces vector for the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Geometry.Geometry.assemble_global_stiffness_matrix" title="Geometry.Geometry.assemble_global_stiffness_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble_global_stiffness_matrix</span></code></a>(...)</p></td>
+<td><p>Assembles the global stiffness matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry.compute_nodal_global_indices" title="Geometry.Geometry.compute_nodal_global_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_nodal_global_indices</span></code></a>()</p></td>
+<td><p>Computes global indices for all nodes in the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Geometry.Geometry.count_global_free_dofs" title="Geometry.Geometry.count_global_free_dofs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_global_free_dofs</span></code></a>()</p></td>
+<td><p>Counts the number of global free degrees of freedom in the geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Geometry.Geometry.set_all_materials" title="Geometry.Geometry.set_all_materials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_all_materials</span></code></a>(material)</p></td>
+<td><p>Sets the material for all elements in the geometry.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.add_bilinear_quadrilateral_element">
+<span class="sig-name descname"><span class="pre">add_bilinear_quadrilateral_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.add_bilinear_quadrilateral_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.add_bilinear_quadrilateral_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a bilinear quadrilateral element to the geometry.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>nodes (List[Node]): List of nodes defining the element.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Element: The newly added bilinear quadrilateral element.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.add_element">
+<span class="sig-name descname"><span class="pre">add_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.add_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.add_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an element to the geometry.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>nodes (List[Node]): List of nodes defining the element.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Element: The newly added element.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If the element type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Node</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.add_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a node to the geometry.</p>
+<dl>
+<dt>Args:</dt><dd><p>x (float): X-coordinate of the node.</p>
+<p>y (float): Y-coordinate of the node.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Node: The newly added node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.add_quadratic_quadrilateral_element">
+<span class="sig-name descname"><span class="pre">add_quadratic_quadrilateral_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Element</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.add_quadratic_quadrilateral_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.add_quadratic_quadrilateral_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a quadratic quadrilateral element to the geometry.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>nodes (List[Node]): List of nodes defining the element.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Element: The newly added quadratic quadrilateral element.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.assemble_global_forces_vector">
+<span class="sig-name descname"><span class="pre">assemble_global_forces_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.assemble_global_forces_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.assemble_global_forces_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assembles the global forces vector for the geometry.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>np.ndarray: Global forces vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.assemble_global_stiffness_matrix">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assemble_global_stiffness_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_stiffness_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_stiffness_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.assemble_global_stiffness_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.assemble_global_stiffness_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assembles the global stiffness matrix.</p>
+<dl>
+<dt>Args:</dt><dd><p>global_stiffness_matrix (np.ndarray): Global stiffness matrix.</p>
+<p>element_stiffness_matrix (np.ndarray): Element stiffness matrix.</p>
+<p>element (Element): Element for which stiffness matrix is assembled.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Updated global stiffness matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.compute_nodal_global_indices">
+<span class="sig-name descname"><span class="pre">compute_nodal_global_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Geometry.html#Geometry.compute_nodal_global_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.compute_nodal_global_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes global indices for all nodes in the geometry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.count_global_free_dofs">
+<span class="sig-name descname"><span class="pre">count_global_free_dofs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/Geometry.html#Geometry.count_global_free_dofs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.count_global_free_dofs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of global free degrees of freedom in the geometry.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: Number of global free degrees of freedom.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Geometry.Geometry.set_all_materials">
+<span class="sig-name descname"><span class="pre">set_all_materials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Geometry.html#Geometry.set_all_materials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Geometry.Geometry.set_all_materials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the material for all elements in the geometry.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>material (Material): Material to be assigned to the elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Runner"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner" title="Runner.Runner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Runner</span></code></a>()</p></td>
+<td><p>Represents a runner for structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Runner.Runner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Runner.</span></span><span class="sig-name descname"><span class="pre">Runner</span></span><a class="reference internal" href="_modules/Runner.html#Runner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a runner for structural analysis.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>geometry (Geometry): The geometry for the analysis.</p>
+<p>count_free_dofs: Number of free degrees of freedom.</p>
+<p>global_stiffness_matrix (np.ndarray): Global stiffness matrix.</p>
+<p>global_force_vector (np.ndarray): Global force vector.</p>
+<p>global_displacement_vector (np.ndarray): Global displacement vector.</p>
+<p>_number_gp (int): Number of Gauss points.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.apply_nodal_load" title="Runner.Runner.apply_nodal_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_nodal_load</span></code></a>(node, x, y)</p></td>
+<td><p>Applies nodal loads.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.average_nodal_stress_strain" title="Runner.Runner.average_nodal_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_nodal_stress_strain</span></code></a>()</p></td>
+<td><p>Averages nodal stress and strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.compute_elements_stress_strain" title="Runner.Runner.compute_elements_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_elements_stress_strain</span></code></a>(...)</p></td>
+<td><p>Computes stress and strain for elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.construct_beam_geometry" title="Runner.Runner.construct_beam_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_beam_geometry</span></code></a>(nodes, ...)</p></td>
+<td><p>Constructs the geometry of the beam.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.integrate_and_assemble_stiffness_matrix" title="Runner.Runner.integrate_and_assemble_stiffness_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_and_assemble_stiffness_matrix</span></code></a>(...)</p></td>
+<td><p>Integrates and assembles the stiffness matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.run_analysis" title="Runner.Runner.run_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_analysis</span></code></a>([stiff_intgr_type, ...])</p></td>
+<td><p>Runs the structural analysis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.set_boundary_conditions" title="Runner.Runner.set_boundary_conditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_boundary_conditions</span></code></a>(node, x, y)</p></td>
+<td><p>Sets boundary conditions for a node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.set_linear_elastic_material" title="Runner.Runner.set_linear_elastic_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_linear_elastic_material</span></code></a>(young_modulus, ...)</p></td>
+<td><p>Sets the linear elastic material properties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.show_results" title="Runner.Runner.show_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_results</span></code></a>([scale_factor, results_dir])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.solve_displacements" title="Runner.Runner.solve_displacements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_displacements</span></code></a>()</p></td>
+<td><p>Solves for displacements.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Runner.Runner.name" title="Runner.Runner.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the runner.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Runner.Runner.number_gp" title="Runner.Runner.number_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_gp</span></code></a></p></td>
+<td><p>Returns the number of Gauss points.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.apply_nodal_load">
+<span class="sig-name descname"><span class="pre">apply_nodal_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.apply_nodal_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.apply_nodal_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies nodal loads.</p>
+<dl>
+<dt>Args:</dt><dd><p>node (int): Node index.</p>
+<p>x (float): Load in the x-direction.</p>
+<p>y (float): Load in the y-direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.average_nodal_stress_strain">
+<span class="sig-name descname"><span class="pre">average_nodal_stress_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.average_nodal_stress_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.average_nodal_stress_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Averages nodal stress and strain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.compute_elements_stress_strain">
+<span class="sig-name descname"><span class="pre">compute_elements_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.compute_elements_stress_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.compute_elements_stress_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes stress and strain for elements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.construct_beam_geometry">
+<span class="sig-name descname"><span class="pre">construct_beam_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements_connectivity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.construct_beam_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.construct_beam_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the geometry of the beam.</p>
+<dl>
+<dt>Args:</dt><dd><p>nodes: Node coordinates.</p>
+<p>elements_connectivity: Element connectivity information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.integrate_and_assemble_stiffness_matrix">
+<span class="sig-name descname"><span class="pre">integrate_and_assemble_stiffness_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.integrate_and_assemble_stiffness_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.integrate_and_assemble_stiffness_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrates and assembles the stiffness matrix.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Runner.Runner.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#Runner.Runner.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the runner.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Runner.Runner.number_gp">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_gp</span></span><a class="headerlink" href="#Runner.Runner.number_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of Gauss points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.run_analysis">
+<span class="sig-name descname"><span class="pre">run_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'full'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.run_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.run_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the structural analysis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.set_boundary_conditions">
+<span class="sig-name descname"><span class="pre">set_boundary_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.set_boundary_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.set_boundary_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets boundary conditions for a node.</p>
+<dl>
+<dt>Args:</dt><dd><p>node (int): Node index.</p>
+<p>x (bool): Constraint status in the x-direction.</p>
+<p>y (bool): Constraint status in the y-direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.set_linear_elastic_material">
+<span class="sig-name descname"><span class="pre">set_linear_elastic_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">young_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.set_linear_elastic_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.set_linear_elastic_material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the linear elastic material properties.</p>
+<dl>
+<dt>Args:</dt><dd><p>young_modulus (float): Young’s modulus of the material.</p>
+<p>poisson_ratio (float): Poisson’s ratio of the material.</p>
+<p>thickness (Optional[float]): Thickness of the material.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.show_results">
+<span class="sig-name descname"><span class="pre">show_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'figs'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Runner.html#Runner.show_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.show_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Runner.Runner.solve_displacements">
+<span class="sig-name descname"><span class="pre">solve_displacements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/Runner.html#Runner.solve_displacements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Runner.Runner.solve_displacements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves for displacements.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="module-LinearElasticMaterial">
+<span id="materials-package"></span><h3>Materials Package<a class="headerlink" href="#module-LinearElasticMaterial" title="Permalink to this heading">¶</a></h3>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearElasticMaterial.LinearElasticMaterial" title="LinearElasticMaterial.LinearElasticMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearElasticMaterial</span></code></a>(young_modulus, ...)</p></td>
+<td><p>Represents a linear elastic material.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="LinearElasticMaterial.LinearElasticMaterial">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LinearElasticMaterial.</span></span><span class="sig-name descname"><span class="pre">LinearElasticMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">young_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/LinearElasticMaterial.html#LinearElasticMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearElasticMaterial.LinearElasticMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></p>
+<p>Represents a linear elastic material.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>young_modulus (float): Young’s modulus of the material.</p>
+<p>poisson_ratio (float): Poisson’s ratio of the material.</p>
+<p>_beam_thickness (float): Thickness of the beam.</p>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearElasticMaterial.LinearElasticMaterial.beam_thickness" title="LinearElasticMaterial.LinearElasticMaterial.beam_thickness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beam_thickness</span></code></a></p></td>
+<td><p>Getter method for beam thickness.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#LinearElasticMaterial.LinearElasticMaterial.name" title="LinearElasticMaterial.LinearElasticMaterial.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the material.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearElasticMaterial.LinearElasticMaterial.get_elastic_matrix" title="LinearElasticMaterial.LinearElasticMaterial.get_elastic_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_matrix</span></code></a>([plane_stress])</p></td>
+<td><p>Returns the elastic matrix of the material.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="LinearElasticMaterial.LinearElasticMaterial.beam_thickness">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">beam_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#LinearElasticMaterial.LinearElasticMaterial.beam_thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter method for beam thickness.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearElasticMaterial.LinearElasticMaterial.get_elastic_matrix">
+<span class="sig-name descname"><span class="pre">get_elastic_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane_stress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/LinearElasticMaterial.html#LinearElasticMaterial.get_elastic_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearElasticMaterial.LinearElasticMaterial.get_elastic_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the elastic matrix of the material.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>plane_stress (bool): Flag indicating whether the stress state is plane stress.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Elastic matrix of the material.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="LinearElasticMaterial.LinearElasticMaterial.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#LinearElasticMaterial.LinearElasticMaterial.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the material.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-BilinearQuadElement">
+<span id="elements-package"></span><h3>Elements Package<a class="headerlink" href="#module-BilinearQuadElement" title="Permalink to this heading">¶</a></h3>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement" title="BilinearQuadElement.BilinearQuadElement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BilinearQuadElement</span></code></a>([nodes, material])</p></td>
+<td><p>Represents a bilinear quadrilateral finite element used in structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BilinearQuadElement.</span></span><span class="sig-name descname"><span class="pre">BilinearQuadElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Material</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">typing.Union[Engine.Material.Material,</span> <span class="pre">NoneType]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></p>
+<p>Represents a bilinear quadrilateral finite element used in structural analysis.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>nodes (List[Node]): List of nodes that define the element.</p>
+<p>material (Optional[Material]): Material assigned to the element.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.compute_elem_stiffness_matrix" title="BilinearQuadElement.BilinearQuadElement.compute_elem_stiffness_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_elem_stiffness_matrix</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Computes the element stiffness matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.compute_stress_strain" title="BilinearQuadElement.BilinearQuadElement.compute_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_stress_strain</span></code></a>(...)</p></td>
+<td><p>Computes stress and strain at the Gauss points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.construct_extrapolation_matrix_2gp" title="BilinearQuadElement.BilinearQuadElement.construct_extrapolation_matrix_2gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_extrapolation_matrix_2gp</span></code></a>()</p></td>
+<td><p>Constructs the extrapolation matrix for the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.count_elem_dofs" title="BilinearQuadElement.BilinearQuadElement.count_elem_dofs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_elem_dofs</span></code></a>()</p></td>
+<td><p>Counts the degrees of freedom associated with the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.extrapolate_stress_strain_gp_to_nodes" title="BilinearQuadElement.BilinearQuadElement.extrapolate_stress_strain_gp_to_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></code></a>(...)</p></td>
+<td><p>Extrapolates stress or strain from Gauss points to nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.get_number_gp" title="BilinearQuadElement.BilinearQuadElement.get_number_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_gp</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Returns the number of Gauss points for numerical integration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.get_thickness" title="BilinearQuadElement.BilinearQuadElement.get_thickness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_thickness</span></code></a>()</p></td>
+<td><p>Returns the thickness of the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.jacobian" title="BilinearQuadElement.BilinearQuadElement.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian</span></code></a>(derivative)</p></td>
+<td><p>Computes the Jacobian matrix for the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.shape_functions" title="BilinearQuadElement.BilinearQuadElement.shape_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the shape functions of the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.shape_functions_derivative" title="BilinearQuadElement.BilinearQuadElement.shape_functions_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions_derivative</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the derivative of the shape functions.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.max_nodes" title="BilinearQuadElement.BilinearQuadElement.max_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_nodes</span></code></a></p></td>
+<td><p>Returns the maximum number of nodes the element can have.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#BilinearQuadElement.BilinearQuadElement.name" title="BilinearQuadElement.BilinearQuadElement.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the element.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.compute_elem_stiffness_matrix">
+<span class="sig-name descname"><span class="pre">compute_elem_stiffness_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.compute_elem_stiffness_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.compute_elem_stiffness_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the element stiffness matrix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>stiff_intgr_type (str): Type of numerical integration.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Element stiffness matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.compute_stress_strain">
+<span class="sig-name descname"><span class="pre">compute_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_displacement_vector:</span> <span class="pre">~numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.compute_stress_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.compute_stress_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes stress and strain at the Gauss points.</p>
+<dl>
+<dt>Args:</dt><dd><p>global_displacement_vector (np.ndarray): Global displacement vector.</p>
+<p>stress_strain_intgr_type (str): Type of numerical integration.</p>
+</dd>
+<dt>Returns:</dt><dd><p>(np.ndarray, np.ndarray): Arrays containing stress and strain at the Gauss points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.construct_extrapolation_matrix_2gp">
+<span class="sig-name descname"><span class="pre">construct_extrapolation_matrix_2gp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.construct_extrapolation_matrix_2gp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.construct_extrapolation_matrix_2gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the extrapolation matrix for the element.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>np.ndarray: Extrapolation matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.count_elem_dofs">
+<span class="sig-name descname"><span class="pre">count_elem_dofs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.count_elem_dofs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.count_elem_dofs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the degrees of freedom associated with the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.extrapolate_stress_strain_gp_to_nodes">
+<span class="sig-name descname"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.extrapolate_stress_strain_gp_to_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.extrapolate_stress_strain_gp_to_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extrapolates stress or strain from Gauss points to nodes.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>stress_strain_intgr_type (str): Type of numerical integration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.get_number_gp">
+<span class="sig-name descname"><span class="pre">get_number_gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.get_number_gp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.get_number_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of Gauss points for numerical integration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.get_thickness">
+<span class="sig-name descname"><span class="pre">get_thickness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.get_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.get_thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the thickness of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.jacobian">
+<span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derivative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Jacobian matrix for the element.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>derivative (np.ndarray): Derivative of the shape functions.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Jacobian matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.max_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_nodes</span></span><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.max_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum number of nodes the element can have.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.shape_functions">
+<span class="sig-name descname"><span class="pre">shape_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.shape_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.shape_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the shape functions of the element.</p>
+<dl>
+<dt>Args:</dt><dd><p>xi (float): Parametric coordinate along the xi-axis.</p>
+<p>eta (float): Parametric coordinate along the eta-axis.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Array containing the computed shape functions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BilinearQuadElement.BilinearQuadElement.shape_functions_derivative">
+<span class="sig-name descname"><span class="pre">shape_functions_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/BilinearQuadElement.html#BilinearQuadElement.shape_functions_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BilinearQuadElement.BilinearQuadElement.shape_functions_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the derivative of the shape functions.</p>
+<dl>
+<dt>Args:</dt><dd><p>xi (float): Parametric coordinate along the xi-axis.</p>
+<p>eta (float): Parametric coordinate along the eta-axis.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Array containing the computed derivatives of the shape functions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-QuadraticQuadElement"></span><p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement" title="QuadraticQuadElement.QuadraticQuadElement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuadraticQuadElement</span></code></a>([nodes, material])</p></td>
+<td><p>Represents a quadratic quadrilateral finite element used in structural analysis.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">QuadraticQuadElement.</span></span><span class="sig-name descname"><span class="pre">QuadraticQuadElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Material</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></p>
+<p>Represents a quadratic quadrilateral finite element used in structural analysis.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.compute_elem_stiffness_matrix" title="QuadraticQuadElement.QuadraticQuadElement.compute_elem_stiffness_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_elem_stiffness_matrix</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Computes the element stiffness matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.compute_stress_strain" title="QuadraticQuadElement.QuadraticQuadElement.compute_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_stress_strain</span></code></a>(...)</p></td>
+<td><p>Computes stress and strain at the Gauss points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_2GP" title="QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_2GP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_extrapolation_matrix_2GP</span></code></a>()</p></td>
+<td><p>Constructs the extrapolation matrix for the element using 2 Gauss points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_3GP" title="QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_3GP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_extrapolation_matrix_3GP</span></code></a>()</p></td>
+<td><p>Constructs the extrapolation matrix for the element using 3 Gauss points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.count_elem_dofs" title="QuadraticQuadElement.QuadraticQuadElement.count_elem_dofs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_elem_dofs</span></code></a>()</p></td>
+<td><p>Counts the degrees of freedom associated with the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.extrapolate_stress_strain_gp_to_nodes" title="QuadraticQuadElement.QuadraticQuadElement.extrapolate_stress_strain_gp_to_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></code></a>(...)</p></td>
+<td><p>Extrapolates the stress or strain from the Gauss points to the nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.get_number_gp" title="QuadraticQuadElement.QuadraticQuadElement.get_number_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_gp</span></code></a>(stiff_intgr_type)</p></td>
+<td><p>Returns the number of Gauss points for numerical integration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.get_thickness" title="QuadraticQuadElement.QuadraticQuadElement.get_thickness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_thickness</span></code></a>()</p></td>
+<td><p>Returns the thickness of the element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.jacobian" title="QuadraticQuadElement.QuadraticQuadElement.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian</span></code></a>(derivative)</p></td>
+<td><p>Computes the Jacobian matrix for the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.linear_shape_functions" title="QuadraticQuadElement.QuadraticQuadElement.linear_shape_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_shape_functions</span></code></a>(xi, eta)</p></td>
+<td><p>Computes linear shape functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions" title="QuadraticQuadElement.QuadraticQuadElement.shape_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the shape functions of the element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions_derivative" title="QuadraticQuadElement.QuadraticQuadElement.shape_functions_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions_derivative</span></code></a>(xi, eta)</p></td>
+<td><p>Computes the derivative of the shape functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions_q9" title="QuadraticQuadElement.QuadraticQuadElement.shape_functions_q9"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape_functions_q9</span></code></a>(xi, eta)</p></td>
+<td><p>Computes shape functions for a 9-node quadratic quadrilateral element.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.max_nodes" title="QuadraticQuadElement.QuadraticQuadElement.max_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_nodes</span></code></a></p></td>
+<td><p>Returns the maximum number of nodes the element can have.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#QuadraticQuadElement.QuadraticQuadElement.name" title="QuadraticQuadElement.QuadraticQuadElement.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Returns the name of the element.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.compute_elem_stiffness_matrix">
+<span class="sig-name descname"><span class="pre">compute_elem_stiffness_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.compute_elem_stiffness_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.compute_elem_stiffness_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the element stiffness matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.compute_stress_strain">
+<span class="sig-name descname"><span class="pre">compute_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_displacement_vector:</span> <span class="pre">~numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'numpy.ndarray'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.compute_stress_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.compute_stress_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes stress and strain at the Gauss points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_2GP">
+<span class="sig-name descname"><span class="pre">construct_extrapolation_matrix_2GP</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.construct_extrapolation_matrix_2GP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_2GP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the extrapolation matrix for the element using 2 Gauss points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_3GP">
+<span class="sig-name descname"><span class="pre">construct_extrapolation_matrix_3GP</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.construct_extrapolation_matrix_3GP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.construct_extrapolation_matrix_3GP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the extrapolation matrix for the element using 3 Gauss points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.count_elem_dofs">
+<span class="sig-name descname"><span class="pre">count_elem_dofs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.count_elem_dofs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.count_elem_dofs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the degrees of freedom associated with the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.extrapolate_stress_strain_gp_to_nodes">
+<span class="sig-name descname"><span class="pre">extrapolate_stress_strain_gp_to_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_strain_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.extrapolate_stress_strain_gp_to_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.extrapolate_stress_strain_gp_to_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extrapolates the stress or strain from the Gauss points to the nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.get_number_gp">
+<span class="sig-name descname"><span class="pre">get_number_gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stiff_intgr_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.get_number_gp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.get_number_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of Gauss points for numerical integration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.get_thickness">
+<span class="sig-name descname"><span class="pre">get_thickness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.get_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.get_thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the thickness of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.jacobian">
+<span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derivative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Jacobian matrix for the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.linear_shape_functions">
+<span class="sig-name descname"><span class="pre">linear_shape_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.linear_shape_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.linear_shape_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes linear shape functions.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.max_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.max_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum number of nodes the element can have.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.shape_functions">
+<span class="sig-name descname"><span class="pre">shape_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.shape_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the shape functions of the element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.shape_functions_derivative">
+<span class="sig-name descname"><span class="pre">shape_functions_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.shape_functions_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the derivative of the shape functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="QuadraticQuadElement.QuadraticQuadElement.shape_functions_q9">
+<span class="sig-name descname"><span class="pre">shape_functions_q9</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/QuadraticQuadElement.html#QuadraticQuadElement.shape_functions_q9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QuadraticQuadElement.QuadraticQuadElement.shape_functions_q9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes shape functions for a 9-node quadratic quadrilateral element.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="module-Visualizer">
+<span id="pos-package"></span><h2>POS PACKAGE<a class="headerlink" href="#module-Visualizer" title="Permalink to this heading">¶</a></h2>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer" title="Visualizer.Visualizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Visualizer</span></code></a>(nodes, elements, results_dir)</p></td>
+<td><p>A class to visualize the finite element analysis results.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Visualizer.Visualizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Visualizer.</span></span><span class="sig-name descname"><span class="pre">Visualizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to visualize the finite element analysis results.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>nodes (List[Node]): List of nodes in the finite element model.</p>
+<p>elements (List[Element]): List of elements in the finite element model.</p>
+<p>results_dir (str): Directory to save the results.</p>
+<p>base_dir (str): Base directory to save the results.</p>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.add_labels" title="Visualizer.Visualizer.add_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_labels</span></code></a>(ax, constrained_both_added, ...)</p></td>
+<td><p>Add labels to the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.add_nodal_forces_to_figure" title="Visualizer.Visualizer.add_nodal_forces_to_figure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodal_forces_to_figure</span></code></a>(fig, displacements)</p></td>
+<td><p>Add nodal forces to the figure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.convert_to_4tris" title="Visualizer.Visualizer.convert_to_4tris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_4tris</span></code></a>(quads)</p></td>
+<td><p>This is the shape you would get by converting a quad to 4 triangles</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.convert_to_6tris" title="Visualizer.Visualizer.convert_to_6tris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_6tris</span></code></a>(quad)</p></td>
+<td><p>This is the shape you would get by converting a quad to 6 triangles</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.create_deformed_geometry" title="Visualizer.Visualizer.create_deformed_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_deformed_geometry</span></code></a>(displacements[, ...])</p></td>
+<td><p>Create a plot of the deformed geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.create_displacement_table" title="Visualizer.Visualizer.create_displacement_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_displacement_table</span></code></a>(displacements)</p></td>
+<td><p>Create a table of the nodal displacements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.create_undeformed_geometry" title="Visualizer.Visualizer.create_undeformed_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_undeformed_geometry</span></code></a>()</p></td>
+<td><p>Create a plot of the undeformed geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.plot_fem_mesh" title="Visualizer.Visualizer.plot_fem_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_fem_mesh</span></code></a>(nodes_x, nodes_y, elements)</p></td>
+<td><p>This function plots the finite element mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.quads_to_tris" title="Visualizer.Visualizer.quads_to_tris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_tris</span></code></a>(quad)</p></td>
+<td><p>This is the shape you would get by converting a quad to 2 triangles</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.save_fig" title="Visualizer.Visualizer.save_fig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_fig</span></code></a>(title)</p></td>
+<td><p>Save the figure in the 'results' directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.shapes_to_tris" title="Visualizer.Visualizer.shapes_to_tris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shapes_to_tris</span></code></a>(shapes)</p></td>
+<td><p>This function converts a list of shapes into a list of triangles :param shapes: list of shapes :return: list of triangles</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_deformed_geometry" title="Visualizer.Visualizer.visualize_deformed_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_deformed_geometry</span></code></a>(displacements, ...)</p></td>
+<td><p>Visualize the deformed geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_disp_table" title="Visualizer.Visualizer.visualize_disp_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_disp_table</span></code></a>(displacements)</p></td>
+<td><p>Visualize a table of the nodal displacements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_displacement" title="Visualizer.Visualizer.visualize_displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_displacement</span></code></a>(displacements[, ...])</p></td>
+<td><p>Visualize a color map of the nodal displacement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_nodal_field" title="Visualizer.Visualizer.visualize_nodal_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_nodal_field</span></code></a>(field, field_name, title)</p></td>
+<td><p>Visualize a color map of a field.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_nodal_strain" title="Visualizer.Visualizer.visualize_nodal_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_nodal_strain</span></code></a>(strain_component, ...)</p></td>
+<td><p>Visualize a color map of the nodal strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_nodal_stress" title="Visualizer.Visualizer.visualize_nodal_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_nodal_stress</span></code></a>(stress_component, ...)</p></td>
+<td><p>Visualize a color map of the nodal stress.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Visualizer.Visualizer.visualize_undeformed_geometry" title="Visualizer.Visualizer.visualize_undeformed_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize_undeformed_geometry</span></code></a>()</p></td>
+<td><p>Visualize the undeformed geometry.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.add_labels">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constrained_both_added</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constrained_x_added</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constrained_y_added</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.add_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.add_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add labels to the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.add_nodal_forces_to_figure">
+<span class="sig-name descname"><span class="pre">add_nodal_forces_to_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.add_nodal_forces_to_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.add_nodal_forces_to_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add nodal forces to the figure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.convert_to_4tris">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_4tris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.convert_to_4tris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.convert_to_4tris" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the shape you would get by converting a quad to 4 triangles</p>
+<blockquote>
+<div><p>A——-B
+|   / |
+|  /  |
+|   X   |
+|  /  |
+| /   |
+D——-C</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>quads</strong> – list of quads</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of triangles</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.convert_to_6tris">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_6tris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.convert_to_6tris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.convert_to_6tris" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the shape you would get by converting a quad to 6 triangles</p>
+<blockquote>
+<div><p>A—B—C
+|  /<a href="#id1"><span class="problematic" id="id2">|\  |
+| / | \ |
+H\  |  \D
+| \ |  /|</span></a>
+|  |/  |
+G—F—E</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>quads</strong> – list of quads</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of triangles</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.create_deformed_geometry">
+<span class="sig-name descname"><span class="pre">create_deformed_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.create_deformed_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.create_deformed_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a plot of the deformed geometry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.create_displacement_table">
+<span class="sig-name descname"><span class="pre">create_displacement_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.create_displacement_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.create_displacement_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a table of the nodal displacements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.create_undeformed_geometry">
+<span class="sig-name descname"><span class="pre">create_undeformed_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.create_undeformed_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.create_undeformed_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a plot of the undeformed geometry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.plot_fem_mesh">
+<span class="sig-name descname"><span class="pre">plot_fem_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.plot_fem_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.plot_fem_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots the finite element mesh.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.quads_to_tris">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quads_to_tris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.quads_to_tris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.quads_to_tris" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the shape you would get by converting a quad to 2 triangles</p>
+<blockquote>
+<div><p>A——-B
+|     / |
+|    /  |
+|   /   |
+|  /    |
+| /     |
+D——-C</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>quads</strong> – list of quads</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of triangles</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.save_fig">
+<span class="sig-name descname"><span class="pre">save_fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.save_fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.save_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the figure in the ‘results’ directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>title</strong> – Title of the figure</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.shapes_to_tris">
+<span class="sig-name descname"><span class="pre">shapes_to_tris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.shapes_to_tris"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.shapes_to_tris" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a list of shapes into a list of triangles
+:param shapes: list of shapes
+:return: list of triangles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_deformed_geometry">
+<span class="sig-name descname"><span class="pre">visualize_deformed_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_nodal_forces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_deformed_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_deformed_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize the deformed geometry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_disp_table">
+<span class="sig-name descname"><span class="pre">visualize_disp_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_disp_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_disp_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize a table of the nodal displacements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_displacement">
+<span class="sig-name descname"><span class="pre">visualize_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_displacement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_displacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize a color map of the nodal displacement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_nodal_field">
+<span class="sig-name descname"><span class="pre">visualize_nodal_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_nodal_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_nodal_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize a color map of a field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_nodal_strain">
+<span class="sig-name descname"><span class="pre">visualize_nodal_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain_component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_nodal_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_nodal_strain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize a color map of the nodal strain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_nodal_stress">
+<span class="sig-name descname"><span class="pre">visualize_nodal_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_nodal_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_nodal_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize a color map of the nodal stress.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Visualizer.Visualizer.visualize_undeformed_geometry">
+<span class="sig-name descname"><span class="pre">visualize_undeformed_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Visualizer.html#Visualizer.visualize_undeformed_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Visualizer.Visualizer.visualize_undeformed_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize the undeformed geometry.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and Tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">FEM Project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Lucas Lino and Christian Oliveira.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

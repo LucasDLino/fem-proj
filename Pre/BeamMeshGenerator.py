@@ -4,12 +4,36 @@ from Engine.Geometry import Geometry
 
 
 class BeamMeshGenerator:
+    """
+    A class to generate mesh for beam elements.
+    """
+
     def __init__(self, geometry: Geometry):
+        """
+        Initializes the BeamMeshGenerator.
+
+        Args:
+            geometry (Geometry): The geometry object to which the mesh will be added.
+        """
         self.geometry = geometry
 
-    from typing import Optional
-
     def generate_bilinear_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int, x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
+        """
+        Generates a bilinear mesh.
+
+        Args:
+            width (float): The width of the mesh.
+
+            height (float): The height of the mesh.
+
+            num_elements_x (int): The number of elements along the x-axis.
+
+            num_elements_y (int): The number of elements along the y-axis.
+
+            x_origin (Optional[float], optional): The x-coordinate origin. Defaults to 0.
+
+            y_origin (Optional[float], optional): The y-coordinate origin. Defaults to 0.
+        """
         num_x_nodes = num_elements_x + 1
         num_y_nodes = num_elements_y + 1
 
@@ -34,6 +58,22 @@ class BeamMeshGenerator:
                                            self.geometry.nodes[n3]])
 
     def generate_biquadratic_mesh(self, width: float, height: float, num_elements_x: int, num_elements_y: int, x_origin: Optional[float] = 0., y_origin: Optional[float] = 0.):
+        """
+        Generates a biquadratic mesh.
+
+        Args:
+            width (float): The width of the mesh.
+
+            height (float): The height of the mesh.
+
+            num_elements_x (int): The number of elements along the x-axis.
+
+            num_elements_y (int): The number of elements along the y-axis.
+
+            x_origin (Optional[float], optional): The x-coordinate origin. Defaults to 0.
+
+            y_origin (Optional[float], optional): The y-coordinate origin. Defaults to 0.
+        """
         num_rows = 2 * num_elements_x + 1
         num_columns = 2 * num_elements_y + 1
 

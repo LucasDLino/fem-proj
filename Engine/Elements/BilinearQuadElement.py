@@ -8,24 +8,47 @@ from Engine.Node import Node
 
 
 class BilinearQuadElement(Element):
+    """
+    Represents a bilinear quadrilateral finite element used in structural analysis.
+
+    Attributes:
+        nodes (List[Node]): List of nodes that define the element.
+
+        material (Optional[Material]): Material assigned to the element.
+
+
+    """
+
     def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):
+        """
+        Initializes a BilinearQuadElement object.
+
+        Args:
+            nodes (List[Node], optional): List of nodes that define the element. Defaults to None.
+
+            material (Material, optional): Material assigned to the element. Defaults to None.
+        """
         super().__init__(nodes, material)
 
     @property
     def name(self):
+        """Returns the name of the element."""
         return 'Bilinear Quadrilateral Element'
 
     @property
     def max_nodes(self):
+        """Returns the maximum number of nodes the element can have."""
         return 4
 
     def get_thickness(self) -> float:
+        """Returns the thickness of the element."""
         if isinstance(self.material, LinearElasticMaterial):
             return self.material.beam_thickness
         else:
             raise ValueError('Material is not a LinearElasticMaterial')
 
     def get_number_gp(self, stiff_intgr_type: str) -> int:
+        """Returns the number of Gauss points for numerical integration."""
         if stiff_intgr_type == 'full':
             return 2
         elif stiff_intgr_type == 'reduced':
@@ -34,25 +57,66 @@ class BilinearQuadElement(Element):
             raise ValueError('stiff_intgr_type must be either "full" or "reduced"')
 
     def count_elem_dofs(self) -> int:
+        """Counts the degrees of freedom associated with the element."""
         return len(self.nodes) * 2
 
     def shape_functions(self, xi: float, eta: float) -> np.ndarray:
+        """
+        Computes the shape functions of the element.
+
+        Args:
+            xi (float): Parametric coordinate along the xi-axis.
+
+            eta (float): Parametric coordinate along the eta-axis.
+
+        Returns:
+            np.ndarray: Array containing the computed shape functions.
+        """
         return 0.25 * np.array([[(1. - xi) * (1. - eta)],  # N1 (bottom left)
                                 [(1. + xi) * (1. - eta)],  # N2 (bottom right)
                                 [(1. + xi) * (1. + eta)],  # N3 (top right)
                                 [(1. - xi) * (1. + eta)]])  # N4 (top left)
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
+        """
+        Computes the derivative of the shape functions.
+
+        Args:
+            xi (float): Parametric coordinate along the xi-axis.
+
+            eta (float): Parametric coordinate along the eta-axis.
+
+        Returns:
+            np.ndarray: Array containing the computed derivatives of the shape functions.
+        """
         return 0.25 * np.array([[-(1. - eta), (1. - eta), (1. + eta), -(1. + eta)],  # dN1/dxi, dN2/dxi, dN3/dxi, dN4/dxi
                                 [-(1. - xi), -(1. + xi), (1. + xi), (1. - xi)]])  # dN1/deta, dN2/deta, dN3/deta, dN4/deta
 
     def jacobian(self, derivative: np.ndarray) -> np.ndarray:
+        """
+        Computes the Jacobian matrix for the element.
+
+        Args:
+            derivative (np.ndarray): Derivative of the shape functions.
+
+        Returns:
+            np.ndarray: Jacobian matrix.
+        """
         x = np.array([node.x for node in self.nodes])
         y = np.array([node.y for node in self.nodes])
 
         return derivative @ np.array([x, y]).T
 
     def compute_elem_stiffness_matrix(self, stiff_intgr_type: str) -> np.ndarray:
+        """
+        Computes the element stiffness matrix.
+
+        Args:
+            stiff_intgr_type (str): Type of numerical integration.
+
+        Returns:
+            np.ndarray: Element stiffness matrix.
+        """
         number_gp = self.get_number_gp(stiff_intgr_type)
 
         stiffness = np.zeros((self.count_elem_dofs(), self.count_elem_dofs()))
@@ -60,7 +124,6 @@ class BilinearQuadElement(Element):
         weights = self.gauss.get_weights(number_gp)
 
         for i, weight in enumerate(weights):
-
             wi = weights[i]
 
             points = self.gauss.get_points(number_gp)
@@ -86,8 +149,17 @@ class BilinearQuadElement(Element):
         return stiffness
 
     def compute_stress_strain(self, global_displacement_vector: np.ndarray, stress_strain_intgr_type: str) -> (np.ndarray, np.ndarray):
-        """Implementation in BilinearQuadElement to compute stress and strain at the gauss points and nodes."""
+        """
+        Computes stress and strain at the Gauss points.
 
+        Args:
+            global_displacement_vector (np.ndarray): Global displacement vector.
+
+            stress_strain_intgr_type (str): Type of numerical integration.
+
+        Returns:
+            (np.ndarray, np.ndarray): Arrays containing stress and strain at the Gauss points.
+        """
         number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         self.stress_gp = []
@@ -127,7 +199,12 @@ class BilinearQuadElement(Element):
         return self.stress_gp, self.strain_gp
 
     def construct_extrapolation_matrix_2gp(self) -> np.ndarray:
-        """Constructs the extrapolation matrix for the element."""
+        """
+        Constructs the extrapolation matrix for the element.
+
+        Returns:
+            np.ndarray: Extrapolation matrix.
+        """
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
@@ -151,8 +228,12 @@ class BilinearQuadElement(Element):
         return extrapolation_matrix
 
     def extrapolate_stress_strain_gp_to_nodes(self, stress_strain_intgr_type: str):
-        """Extrapolates the stress or strain from the gauss points to the nodes."""
+        """
+        Extrapolates stress or strain from Gauss points to nodes.
 
+        Args:
+            stress_strain_intgr_type (str): Type of numerical integration.
+        """
         number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         if number_gp == 2:  # Each row corresponds to a gauss point and each column to a node

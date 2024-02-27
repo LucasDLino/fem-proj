@@ -8,26 +8,27 @@ from Engine.Material import Material
 
 class Element(object):
     """
-     Represents a finite element used in structural analysis.
+    Represents a finite element used in structural analysis.
 
-     Attributes:
-         nodes (List[Node]): List of nodes that define the element.
+    Attributes:
+        nodes (List[Node]): List of nodes that define the element.
 
-         material (Optional[Material]): Material assigned to the element.
+        material (Optional[Material]): Material assigned to the element.
 
-         gauss (Gauss): Gauss quadrature method for numerical integration.
+        gauss (Gauss): Gauss quadrature method for numerical integration.
 
-         elem_dofs (int): Number of degrees of freedom associated with the element.
-     """
+        elem_dofs (int): Number of degrees of freedom associated with the element.
+    """
 
-    def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):
+    def __init__(self, nodes: List[Node] = None, material: Optional[Material] = None):
         """
-       Initializes an Element object.
+        Initializes an Element object.
 
-       Args:
-           nodes (List[Node], optional): List of nodes that define the element. Defaults to None.
-           material (Material, optional): Material assigned to the element. Defaults to None.
-       """
+        Args:
+            nodes (List[Node], optional): List of nodes that define the element. Defaults to None.
+
+            material (Material, optional): Material assigned to the element. Defaults to None.
+        """
         self.label = None
 
         if nodes is None:
@@ -76,17 +77,21 @@ class Element(object):
         self.material = material
 
     def count_elem_dofs(self) -> int:
-        """Counts the degrees of freedom associated with the element."""
+        """
+        Counts the degrees of freedom associated with the element.
+        """
         if self.elem_dofs == 0:
             self.elem_dofs = len(self.nodes) * 2
         return self.elem_dofs
 
     def get_number_gp(self, stiff_intgr_type: str) -> int:
-        """Returns the number of gauss points for numerical integration."""
+        """
+        Returns the number of gauss points for numerical integration.
+        """
         raise NotImplementedError('Method get_number_gp not implemented')
 
     def shape_functions(self, xi: float, eta: float) -> np.ndarray:
-        """" Computes the shape functions of the element."""
+        """Computes the shape functions of the element."""
         raise NotImplementedError('Method shape_functions not implemented')
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:

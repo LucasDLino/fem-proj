@@ -8,24 +8,39 @@ from Engine.Materials.LinearElasticMaterial import LinearElasticMaterial
 
 
 class QuadraticQuadElement(Element):
-    def __init__(self, nodes: List[Node] = None, material: Material = Optional[Material]):
+    """
+    Represents a quadratic quadrilateral finite element used in structural analysis.
+    """
+
+    def __init__(self, nodes: List[Node] = None, material: Optional[Material] = None):
+        """
+        Initializes a QuadraticQuadElement object.
+
+        :param nodes: List of nodes that define the element.
+
+        :param material: Material assigned to the element.
+        """
         super().__init__(nodes, material)
 
     @property
-    def name(self):
+    def name(self) -> str:
+        """Returns the name of the element."""
         return 'Quadratic Quadrilateral Element'
 
     @property
-    def max_nodes(self):
+    def max_nodes(self) -> int:
+        """Returns the maximum number of nodes the element can have."""
         return 8
 
     def get_thickness(self) -> float:
+        """Returns the thickness of the element."""
         if isinstance(self.material, LinearElasticMaterial):
             return self.material.beam_thickness
         else:
             raise ValueError('Material is not a LinearElasticMaterial')
 
     def get_number_gp(self, stiff_intgr_type: str) -> int:
+        """Returns the number of Gauss points for numerical integration."""
         if stiff_intgr_type == 'full':
             return 3
         elif stiff_intgr_type == 'reduced':
@@ -34,9 +49,11 @@ class QuadraticQuadElement(Element):
             raise ValueError('stiff_intgr_type must be either "full" or "reduced"')
 
     def count_elem_dofs(self) -> int:
+        """Counts the degrees of freedom associated with the element."""
         return len(self.nodes) * 2
 
     def shape_functions(self, xi: float, eta: float) -> np.ndarray:
+        """Computes the shape functions of the element."""
         return 0.25 * np.array([[-(1. - xi) * (1. - eta) * (1. + xi + eta)],  # N1 (bottom left)
                                 [(1. - xi ** 2.) * (1. - eta) * 2.],  # N2 (bottom center)
                                 [-(1. + xi) * (1. - eta) * (1. - xi + eta)],  # N3 (bottom right)
@@ -48,6 +65,7 @@ class QuadraticQuadElement(Element):
 
     # Reference: https://pkel015.connect.amazon.auckland.ac.nz/SolidMechanicsBooks/FEM/Two_Dimensional/06_2D_Quads.pdf
     def shape_functions_q9(self, xi: float, eta: float) -> np.ndarray:
+        """Computes shape functions for a 9-node quadratic quadrilateral element."""
         return np.array([[0.25 * (1 - xi) * (1 - eta) * xi * eta],  # N1 (bottom left)
                          [-0.5 * (1 - xi ** 2) * (1 - eta) * eta],  # N2 (bottom center)
                          [-0.25 * (1 + xi) * (1 - eta) * xi * eta],  # N3 (bottom right)
@@ -59,12 +77,14 @@ class QuadraticQuadElement(Element):
                          [(1 - xi ** 2) * (1 - eta ** 2)]])  # N5 (center center)
 
     def linear_shape_functions(self, xi: float, eta: float) -> np.ndarray:
+        """Computes linear shape functions."""
         return 0.25 * np.array([[(1. - xi) * (1. - eta)],  # N1 (bottom left)
                                 [(1. + xi) * (1. - eta)],  # N2 (bottom right)
                                 [(1. + xi) * (1. + eta)],  # N3 (top right)
                                 [(1. - xi) * (1. + eta)]])  # N4 (top left)
 
     def shape_functions_derivative(self, xi: float, eta: float) -> np.ndarray:
+        """Computes the derivative of the shape functions."""
         # Derivadas parciais em relação a xi e eta organizadas em uma matriz
         return 0.25 * np.array(
             [[(1 - eta) * (1 + xi + eta) - (1 - xi) * (1 - eta),  # dN1/dxi
@@ -85,12 +105,14 @@ class QuadraticQuadElement(Element):
               -4 * (1 - xi) * eta]])  # dN8/deta
 
     def jacobian(self, derivative: np.ndarray) -> np.ndarray:
+        """Computes the Jacobian matrix for the element."""
         x = np.array([node.x for node in self.nodes])
         y = np.array([node.y for node in self.nodes])
 
         return derivative @ np.array([x, y]).T
 
     def compute_elem_stiffness_matrix(self, stiff_intgr_type: str) -> np.ndarray:
+        """Computes the element stiffness matrix."""
         number_gp = self.get_number_gp(stiff_intgr_type)
 
         stiffness = np.zeros((self.count_elem_dofs(), self.count_elem_dofs()))
@@ -124,8 +146,7 @@ class QuadraticQuadElement(Element):
         return stiffness
 
     def compute_stress_strain(self, global_displacement_vector: np.ndarray, stress_strain_intgr_type: str) -> (np.ndarray, np.ndarray):
-        """Implementation in BilinearQuadElement to compute stress and strain at the gauss points and nodes."""
-
+        """Computes stress and strain at the Gauss points."""
         number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         self.stress_gp = []
@@ -167,7 +188,7 @@ class QuadraticQuadElement(Element):
         return self.stress_gp, self.strain_gp
 
     def construct_extrapolation_matrix_2GP(self) -> np.ndarray:
-        """Constructs the extrapolation matrix for the element."""
+        """Constructs the extrapolation matrix for the element using 2 Gauss points."""
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
@@ -190,7 +211,7 @@ class QuadraticQuadElement(Element):
         return extrapolation_matrix
 
     def construct_extrapolation_matrix_3GP(self) -> np.ndarray:
-        """Constructs the extrapolation matrix for the element."""
+        """Constructs the extrapolation matrix for the element using 3 Gauss points."""
         num_nodes = len(self.nodes)
 
         # Construct parametric coordinates
@@ -212,8 +233,7 @@ class QuadraticQuadElement(Element):
         return extrapolation_matrix
 
     def extrapolate_stress_strain_gp_to_nodes(self, stress_strain_intgr_type: str):
-        """Extrapolates the stress or strain from the gauss points to the nodes."""
-
+        """Extrapolates the stress or strain from the Gauss points to the nodes."""
         number_gp = self.get_number_gp(stress_strain_intgr_type)
 
         if number_gp == 2:

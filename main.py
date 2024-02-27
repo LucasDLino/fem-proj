@@ -1,13 +1,14 @@
 from Engine.Runner import Runner
 from Pre.BeamMeshGenerator import BeamMeshGenerator
 from Examples import examples_reader
+import time
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     runner = Runner()
 
     element_type, geometry, nodes_restrictions, nodes_forces, elements_material, results_dir = examples_reader.read_json_file('Examples/9_49_bana.json')
-    # element_type, geometry, nodes_restrictions, nodes_forces, elements_material = examples_reader.read_json_file('Examples/something_bana.json')
+    # element_type, geometry, nodes_restrictions, nodes_forces, elements_material, results_dir = examples_reader.read_json_file('Examples/something_bana.json')
 
     if element_type == 'quad4':
         BeamMeshGenerator(runner.geometry).generate_bilinear_mesh(width=geometry['width'], height=geometry['height'], num_elements_x=geometry['num_elements']['x'], num_elements_y=geometry['num_elements']['y'], x_origin=geometry['origin']['x'], y_origin=geometry['origin']['y'])
@@ -32,6 +33,11 @@ if __name__ == '__main__':
             if (pos_x == node.x) and (pos_y == node.y):
                 runner.apply_nodal_load(node.label - 1, force_data['forces']['x'], force_data['forces']['y'])
 
-    # Analysis and results
-    runner.run_analysis()  # no flag passed, so that mean full integration in both stiffness and stress-strain computation
+    start = time.time()
+    runner.run_analysis()
+    # runner.run_analysis(stiff_intgr_type='reduced', stress_strain_intgr_type='reduced')
+    end = time.time()
+
+    print(f'Elapsed time: {end - start} seconds')
+
     runner.show_results(scale_factor=100, results_dir=results_dir)

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
+import os
 
 from typing import List, Optional
 
@@ -8,9 +9,12 @@ from Engine.Node import Node
 
 
 class Visualizer:
-    def __init__(self, nodes: List[Node], elements: List[Element]):
+    def __init__(self, nodes: List[Node], elements: List[Element], results_dir: str):
         self.nodes = nodes
         self.elements = elements
+
+        self.base_dir = 'results'
+        self.results_dir = results_dir
 
     def create_undeformed_geometry(self):
         # create a figure
@@ -183,12 +187,18 @@ class Visualizer:
 
     def visualize_undeformed_geometry(self):
         self.create_undeformed_geometry()
+
+        self.save_fig('undeformed')
+
         plt.show()
 
     def visualize_deformed_geometry(self, displacements: List[float], scale_factor: float, add_nodal_forces: Optional[bool] = False):
         fig = self.create_deformed_geometry(displacements, scale_factor)
         if add_nodal_forces:
             self.add_nodal_forces_to_figure(fig, displacements, scale_factor)
+
+        self.save_fig('deformed')
+
         plt.show()
 
     def visualize_disp_table(self, displacements):
@@ -313,8 +323,10 @@ class Visualizer:
 
         ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.6f}\nMin {field_name}: {min_field:.6f}', fontsize=10, color='black', transform=ax.transAxes)
 
-        # show
-        plt.colorbar()
+        plt.colorbar(shrink=0.55, aspect=15)
+
+        self.save_fig(title)
+
         plt.show()
 
     def shapes_to_tris(self, shapes):
@@ -426,3 +438,14 @@ class Visualizer:
             x = [nodes_x[element[i]] for i in range(len(element))]
             y = [nodes_y[element[i]] for i in range(len(element))]
             plt.fill(x, y, edgecolor='black', fill=False)
+
+    def save_fig(self, title: str):
+        if not os.path.exists(self.base_dir):
+            os.makedirs(self.base_dir)
+
+        directory = self.base_dir = self.results_dir
+
+        # Save fig in svg format in the directory named 'results'. If it doesn't exist, create it.
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        plt.savefig(f'{directory}/{title}.svg', format='svg')

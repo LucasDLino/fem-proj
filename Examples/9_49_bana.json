@@ -40,5 +40,6 @@
     "E": 200000,
     "poisson": 0.3,
     "thickness": 5
-  }
+  },
+  "results_dir": "bilinear_results_case=1_mesh=coarse_intgr=full"
 }

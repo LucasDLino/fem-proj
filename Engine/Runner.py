@@ -122,8 +122,8 @@ class Runner(object):
             node.stress_avg /= len(node.stress)
             node.strain_avg /= len(node.strain)
 
-    def show_results(self, scale_factor: Optional[float] = 1.0):
-        visualization = Visualizer(self.geometry.nodes, self.geometry.elements)
+    def show_results(self, scale_factor: Optional[float] = 1.0, results_dir: Optional[str] = 'figs'):
+        visualization = Visualizer(self.geometry.nodes, self.geometry.elements, results_dir)
 
         visualization.visualize_undeformed_geometry()
         visualization.visualize_deformed_geometry(self.global_displacement_vector, scale_factor, add_nodal_forces=True)

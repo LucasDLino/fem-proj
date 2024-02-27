@@ -50,5 +50,6 @@
     "E": 40000.0,
     "poisson": 0.17,
     "thickness": 100.0
-  }
+  },
+  "results_dir": "quad8_results_case=2_mesh=coarse_intgr=full"
 }

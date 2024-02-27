@@ -321,7 +321,7 @@ class Visualizer:
         # Get plot size in figure coordinates
         x, y = ax.transAxes.inverted().transform((0, 0))
 
-        ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.6f}\nMin {field_name}: {min_field:.6f}', fontsize=10, color='black', transform=ax.transAxes)
+        ax.text(0, y - 0.1, f'Max {field_name}: {max_field:.9f}\nMin {field_name}: {min_field:.9f}', fontsize=10, color='black', transform=ax.transAxes)
 
         plt.colorbar(shrink=0.55, aspect=15)
 

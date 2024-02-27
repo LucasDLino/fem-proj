@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualizer &#8212; FEM Project 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for Visualizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.tri</span> <span class="k">as</span> <span class="nn">tri</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">Engine.Element</span> <span class="kn">import</span> <span class="n">Element</span>
+<span class="kn">from</span> <span class="nn">Engine.Node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="Visualizer"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer">[docs]</a><span class="k">class</span> <span class="nc">Visualizer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to visualize the finite element analysis results.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        nodes (List[Node]): List of nodes in the finite element model.</span>
+
+<span class="sd">        elements (List[Element]): List of elements in the finite element model.</span>
+
+<span class="sd">        results_dir (str): Directory to save the results.</span>
+
+<span class="sd">        base_dir (str): Base directory to save the results.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Element</span><span class="p">],</span> <span class="n">results_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Visualizer.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="s1">&#39;results&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span> <span class="o">=</span> <span class="n">results_dir</span>
+
+<div class="viewcode-block" id="Visualizer.create_undeformed_geometry"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.create_undeformed_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">create_undeformed_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a plot of the undeformed geometry.&quot;&quot;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="n">label_offset</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+        <span class="n">constrained_x_added</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">constrained_y_added</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">constrained_both_added</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_x</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_y</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;mo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_both_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_x</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_x_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_y</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_y_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">label_offset</span><span class="p">,</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">label_offset</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Change &#39;Node&#39; to your desired label</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># Adjust font size as needed</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>  <span class="c1"># Adjust color as needed</span>
+
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)):</span>
+                <span class="n">node1</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">node2</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)]</span>  <span class="c1"># Connect last node with first node</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">node1</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">node2</span><span class="o">.</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">node2</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X-axis&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y-axis&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Geometry Visualization&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Only add legend items that have been used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">constrained_both_added</span><span class="p">,</span> <span class="n">constrained_x_added</span><span class="p">,</span> <span class="n">constrained_y_added</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="Visualizer.create_deformed_geometry"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.create_deformed_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">create_deformed_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a plot of the deformed geometry.&quot;&quot;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="n">label_offset</span> <span class="o">=</span> <span class="mf">0.6</span>
+
+        <span class="n">constrained_x_added</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">constrained_y_added</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">constrained_both_added</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_x</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_y</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="s1">&#39;mo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_both_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_x</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_x_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constrained_y</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">constrained_y_added</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">label_offset</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">label_offset</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Change &#39;Node&#39; to your desired label</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># Adjust font size as needed</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>  <span class="c1"># Adjust color as needed</span>
+
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)):</span>
+                <span class="n">node1</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">node2</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)]</span>  <span class="c1"># Connect last node with first node</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">node1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node2</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node2</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]],</span>
+                         <span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="n">node2</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node2</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X-axis&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y-axis&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Deformed Geometry Visualization&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Only add legend items that have been used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">constrained_both_added</span><span class="p">,</span> <span class="n">constrained_x_added</span><span class="p">,</span> <span class="n">constrained_y_added</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="Visualizer.add_labels"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.add_labels">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">add_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">constrained_both_added</span><span class="p">,</span> <span class="n">constrained_x_added</span><span class="p">,</span> <span class="n">constrained_y_added</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add labels to the plot.&quot;&quot;&quot;</span>
+        <span class="c1"># Get plot size in figure coordinates</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">constrained_both_added</span><span class="p">:</span>
+            <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Constrained (x &amp; y)&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">constrained_x_added</span><span class="p">:</span>
+            <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Constrained (x)&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">constrained_y_added</span><span class="p">:</span>
+            <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Constrained (y)&#39;</span><span class="p">))</span>
+        <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Free&#39;</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Legend&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Visualizer.add_nodal_forces_to_figure"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.add_nodal_forces_to_figure">[docs]</a>    <span class="k">def</span> <span class="nf">add_nodal_forces_to_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add nodal forces to the figure.&quot;&quot;&quot;</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="c1"># Calculate the minimum element size or any other criterion</span>
+        <span class="n">min_element_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">max_size</span><span class="p">()</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span>  <span class="c1"># Example calculation of the minimum element size</span>
+
+        <span class="c1"># Define a fraction of the element size to scale down the forces</span>
+        <span class="n">force_scaling_factor</span> <span class="o">=</span> <span class="n">min_element_size</span> <span class="o">*</span> <span class="mf">0.5</span>  <span class="c1"># Adjust the fraction as needed</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">force_x</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">x_load</span>
+            <span class="n">force_y</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">y_load</span>
+
+            <span class="c1"># Scale down the forces if they exceed the specified fraction of the element size</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">force_scaling_factor</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">force_scaling_factor</span><span class="p">:</span>
+                <span class="n">scaling_factor_x</span> <span class="o">=</span> <span class="n">force_scaling_factor</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_x</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">scaling_factor_y</span> <span class="o">=</span> <span class="n">force_scaling_factor</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_y</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">force_y</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+
+                <span class="c1"># Apply the minimum scaling factor to ensure the force magnitude is less than the element size</span>
+                <span class="n">scaling_factor</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">scaling_factor_x</span><span class="p">,</span> <span class="n">scaling_factor_y</span><span class="p">)</span>
+
+                <span class="c1"># Apply the scaling factor to both force components</span>
+                <span class="n">scaled_force_x</span> <span class="o">=</span> <span class="n">force_x</span> <span class="o">*</span> <span class="n">scaling_factor</span>
+                <span class="n">scaled_force_y</span> <span class="o">=</span> <span class="n">force_y</span> <span class="o">*</span> <span class="n">scaling_factor</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]</span> <span class="o">-</span> <span class="n">scaled_force_x</span><span class="p">,</span>
+                         <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]</span> <span class="o">-</span> <span class="n">scaled_force_y</span><span class="p">,</span>
+                         <span class="n">scaled_force_x</span><span class="p">,</span>
+                         <span class="n">scaled_force_y</span><span class="p">,</span>
+                         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">length_includes_head</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="Visualizer.create_displacement_table"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.create_displacement_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_displacement_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displacements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a table of the nodal displacements.&quot;&quot;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="c1"># Created margins to fit the table</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="c1"># # Define the table data and headers</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Node&#39;</span><span class="p">,</span> <span class="s1">&#39;X Displacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Y Displacement&#39;</span><span class="p">]</span>
+        <span class="n">table_data</span> <span class="o">=</span> <span class="p">[[</span><span class="sa">f</span><span class="s1">&#39;Node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+
+        <span class="c1"># Create the table and add it to the figure</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">cellText</span><span class="o">=</span><span class="n">table_data</span><span class="p">,</span> <span class="n">colLabels</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">cellLoc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">colLoc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Adjust table properties</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">auto_set_font_size</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>  <span class="c1"># Adjust scale as needed</span>
+
+        <span class="c1"># Hide axes to make the table more visible</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_undeformed_geometry"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_undeformed_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_undeformed_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the undeformed geometry.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_undeformed_geometry</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;undeformed&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_deformed_geometry"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_deformed_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_deformed_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">add_nodal_forces</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the deformed geometry.&quot;&quot;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_deformed_geometry</span><span class="p">(</span><span class="n">displacements</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_nodal_forces</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_nodal_forces_to_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">displacements</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;deformed&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_disp_table"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_disp_table">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_disp_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displacements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize a table of the nodal displacements.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_displacement_table</span><span class="p">(</span><span class="n">displacements</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_displacement"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_displacement">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_displacement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displacements</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize a color map of the nodal displacement.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Displacement in x direction&#39;</span>
+            <span class="n">displacement_dir</span> <span class="o">=</span> <span class="p">[</span><span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Displacement in y direction&#39;</span>
+            <span class="n">displacement_dir</span> <span class="o">=</span> <span class="p">[</span><span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid direction. Choose from &#39;x&#39; or &#39;y&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualize_nodal_field</span><span class="p">(</span><span class="n">displacement_dir</span><span class="p">,</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">displacements</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_nodal_stress"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_nodal_stress">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_nodal_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stress_component</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize a color map of the nodal stress.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Extract the specified stress component</span>
+        <span class="k">if</span> <span class="n">stress_component</span> <span class="o">==</span> <span class="s1">&#39;xx&#39;</span><span class="p">:</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">stress_avg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Stress xx&#39;</span>
+        <span class="k">elif</span> <span class="n">stress_component</span> <span class="o">==</span> <span class="s1">&#39;yy&#39;</span><span class="p">:</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">stress_avg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Stress yy&#39;</span>
+        <span class="k">elif</span> <span class="n">stress_component</span> <span class="o">==</span> <span class="s1">&#39;xy&#39;</span><span class="p">:</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">stress_avg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Stress xy&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid stress component. Choose from &#39;xx&#39;, &#39;yy&#39;, or &#39;xy&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualize_nodal_field</span><span class="p">(</span><span class="n">stress</span><span class="p">,</span> <span class="s1">&#39;Stress&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">displacements</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_nodal_strain"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_nodal_strain">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_nodal_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strain_component</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize a color map of the nodal strain.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Extract the specified strain component</span>
+        <span class="k">if</span> <span class="n">strain_component</span> <span class="o">==</span> <span class="s1">&#39;xx&#39;</span><span class="p">:</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">strain_avg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Strain xx&#39;</span>
+        <span class="k">elif</span> <span class="n">strain_component</span> <span class="o">==</span> <span class="s1">&#39;yy&#39;</span><span class="p">:</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">strain_avg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Strain yy&#39;</span>
+        <span class="k">elif</span> <span class="n">strain_component</span> <span class="o">==</span> <span class="s1">&#39;xy&#39;</span><span class="p">:</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">strain_avg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Strain xy&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid strain component. Choose from &#39;xx&#39;, &#39;yy&#39;, or &#39;xy&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualize_nodal_field</span><span class="p">(</span><span class="n">strain</span><span class="p">,</span> <span class="s1">&#39;Strain&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">displacements</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Visualizer.visualize_nodal_field"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.visualize_nodal_field">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_nodal_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="p">[],</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">displacements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize a color map of a field.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Create new plot</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+
+        <span class="n">elem_nodes_map</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                <span class="n">elem_nodes_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># convert all elements into triangles</span>
+        <span class="n">elements_all_tris</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes_to_tris</span><span class="p">(</span><span class="n">elem_nodes_map</span><span class="p">)</span>
+
+        <span class="c1"># create an unstructured triangular grid instance</span>
+        <span class="n">triangulation</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">elements_all_tris</span><span class="p">)</span>
+
+        <span class="c1"># plot the finite element mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_fem_mesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">elem_nodes_map</span><span class="p">)</span>
+
+        <span class="c1"># Choose one of the following color maps:</span>
+        <span class="c1"># &#39;Accent&#39;, &#39;Accent_r&#39;, &#39;Blues&#39;, &#39;Blues_r&#39;, &#39;BrBG&#39;, &#39;BrBG_r&#39;, &#39;BuGn&#39;, &#39;BuGn_r&#39;, &#39;BuPu&#39;, &#39;BuPu_r&#39;, &#39;CMRmap&#39;, &#39;CMRmap_r&#39;,</span>
+        <span class="c1"># &#39;Dark2&#39;, &#39;Dark2_r&#39;, &#39;GnBu&#39;, &#39;GnBu_r&#39;, &#39;Greens&#39;, &#39;Greens_r&#39;, &#39;Greys&#39;, &#39;Greys_r&#39;, &#39;OrRd&#39;, &#39;OrRd_r&#39;, &#39;Oranges&#39;, &#39;Oranges_r&#39;,</span>
+        <span class="c1"># &#39;PRGn&#39;, &#39;PRGn_r&#39;, &#39;Paired&#39;, &#39;Paired_r&#39;, &#39;Pastel1&#39;, &#39;Pastel1_r&#39;, &#39;Pastel2&#39;, &#39;Pastel2_r&#39;, &#39;PiYG&#39;, &#39;PiYG_r&#39;, &#39;PuBu&#39;,</span>
+        <span class="c1"># &#39;PuBuGn&#39;, &#39;PuBuGn_r&#39;, &#39;PuBu_r&#39;, &#39;PuOr&#39;, &#39;PuOr_r&#39;, &#39;PuRd&#39;, &#39;PuRd_r&#39;, &#39;Purples&#39;, &#39;Purples_r&#39;, &#39;RdBu&#39;, &#39;RdBu_r&#39;, &#39;RdGy&#39;,</span>
+        <span class="c1"># &#39;RdGy_r&#39;, &#39;RdPu&#39;, &#39;RdPu_r&#39;, &#39;RdYlBu&#39;, &#39;RdYlBu_r&#39;, &#39;RdYlGn&#39;, &#39;RdYlGn_r&#39;, &#39;Reds&#39;, &#39;Reds_r&#39;, &#39;Set1&#39;, &#39;Set1_r&#39;, &#39;Set2&#39;,</span>
+        <span class="c1"># &#39;Set2_r&#39;, &#39;Set3&#39;, &#39;Set3_r&#39;, &#39;Spectral&#39;, &#39;Spectral_r&#39;, &#39;Wistia&#39;, &#39;Wistia_r&#39;, &#39;YlGn&#39;, &#39;YlGnBu&#39;, &#39;YlGnBu_r&#39;, &#39;YlGn_r&#39;,</span>
+        <span class="c1"># &#39;YlOrBr&#39;, &#39;YlOrBr_r&#39;, &#39;YlOrRd&#39;, &#39;YlOrRd_r&#39;, &#39;afmhot&#39;, &#39;afmhot_r&#39;, &#39;autumn&#39;, &#39;autumn_r&#39;, &#39;binary&#39;, &#39;binary_r&#39;, &#39;bone&#39;,</span>
+        <span class="c1"># &#39;bone_r&#39;, &#39;brg&#39;, &#39;brg_r&#39;, &#39;bwr&#39;, &#39;bwr_r&#39;, &#39;cividis&#39;, &#39;cividis_r&#39;, &#39;cool&#39;, &#39;cool_r&#39;, &#39;coolwarm&#39;, &#39;coolwarm_r&#39;, &#39;copper&#39;,</span>
+        <span class="c1"># &#39;copper_r&#39;, &#39;cubehelix&#39;, &#39;cubehelix_r&#39;, &#39;flag&#39;, &#39;flag_r&#39;, &#39;gist_earth&#39;, &#39;gist_earth_r&#39;, &#39;gist_gray&#39;, &#39;gist_gray_r&#39;,</span>
+        <span class="c1"># &#39;gist_heat&#39;, &#39;gist_heat_r&#39;, &#39;gist_ncar&#39;, &#39;gist_ncar_r&#39;, &#39;gist_rainbow&#39;, &#39;gist_rainbow_r&#39;, &#39;gist_stern&#39;, &#39;gist_stern_r&#39;,</span>
+        <span class="c1"># &#39;gist_yarg&#39;, &#39;gist_yarg_r&#39;, &#39;gnuplot&#39;, &#39;gnuplot2&#39;, &#39;gnuplot2_r&#39;, &#39;gnuplot_r&#39;, &#39;gray&#39;, &#39;gray_r&#39;, &#39;hot&#39;, &#39;hot_r&#39;,</span>
+        <span class="c1"># &#39;hsv&#39;, &#39;hsv_r&#39;, &#39;inferno&#39;, &#39;inferno_r&#39;, &#39;jet&#39;, &#39;jet_r&#39;, &#39;magma&#39;, &#39;magma_r&#39;, &#39;nipy_spectral&#39;, &#39;nipy_spectral_r&#39;,</span>
+        <span class="c1"># &#39;ocean&#39;, &#39;ocean_r&#39;, &#39;pink&#39;, &#39;pink_r&#39;, &#39;plasma&#39;, &#39;plasma_r&#39;, &#39;prism&#39;, &#39;prism_r&#39;, &#39;rainbow&#39;, &#39;rainbow_r&#39;, &#39;seismic&#39;,</span>
+        <span class="c1"># &#39;seismic_r&#39;, &#39;spring&#39;, &#39;spring_r&#39;, &#39;summer&#39;, &#39;summer_r&#39;, &#39;tab10&#39;, &#39;tab10_r&#39;, &#39;tab20&#39;, &#39;tab20_r&#39;, &#39;tab20b&#39;, &#39;tab20b_r&#39;,</span>
+        <span class="c1"># &#39;tab20c&#39;, &#39;tab20c_r&#39;, &#39;terrain&#39;, &#39;terrain_r&#39;, &#39;turbo&#39;, &#39;turbo_r&#39;, &#39;twilight&#39;, &#39;twilight_r&#39;, &#39;twilight_shifted&#39;,</span>
+        <span class="c1"># &#39;twilight_shifted_r&#39;, &#39;viridis&#39;, &#39;viridis_r&#39;, &#39;winter&#39;, &#39;winter_r&#39;</span>
+
+        <span class="c1"># plot the contours</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="n">triangulation</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Plot elements grid</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)):</span>
+                <span class="n">node1</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">node2</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">nodes</span><span class="p">)]</span>  <span class="c1"># Connect last node with first node</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">node1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">],</span> <span class="n">node2</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node2</span><span class="o">.</span><span class="n">global_index_x</span><span class="p">]],</span>
+                        <span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node1</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">],</span> <span class="n">node2</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">displacements</span><span class="p">[</span><span class="n">node2</span><span class="o">.</span><span class="n">global_index_y</span><span class="p">]],</span>
+                        <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Show max and min stress values</span>
+        <span class="n">max_field</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">min_field</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+        <span class="c1"># Get plot size in figure coordinates</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Max </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">max_field</span><span class="si">:</span><span class="s1">.9f</span><span class="si">}</span><span class="se">\n</span><span class="s1">Min </span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">min_field</span><span class="si">:</span><span class="s1">.9f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">shrink</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Visualizer.shapes_to_tris"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.shapes_to_tris">[docs]</a>    <span class="k">def</span> <span class="nf">shapes_to_tris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function converts a list of shapes into a list of triangles</span>
+<span class="sd">        :param shapes: list of shapes</span>
+<span class="sd">        :return: list of triangles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tris</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">tris</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quads_to_tris</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">tris</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_to_6tris</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid shape. Must be a triangle, quad, or 8-node quad.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tris</span></div>
+
+<div class="viewcode-block" id="Visualizer.convert_to_6tris"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.convert_to_6tris">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_to_6tris</span><span class="p">(</span><span class="n">quad</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the shape you would get by converting a quad to 6 triangles</span>
+
+<span class="sd">                            A---B---C</span>
+<span class="sd">                            |  /|\  |</span>
+<span class="sd">                            | / | \ |</span>
+<span class="sd">                            H\  |  \D</span>
+<span class="sd">                            | \ |  /|</span>
+<span class="sd">                            |  \|/  |</span>
+<span class="sd">                            G---F---E</span>
+
+<span class="sd">        :param quads: list of quads</span>
+
+<span class="sd">        :return: list of triangles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tris</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># First triangle</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">7</span><span class="p">]])</span>
+        <span class="c1"># Second triangle</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+        <span class="c1"># Third triangle (diagonal-based)</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">5</span><span class="p">]])</span>
+        <span class="c1"># Fourth triangle (diagonal-based)</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">7</span><span class="p">]])</span>
+        <span class="c1"># Fifth triangle (diagonal-based)</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">7</span><span class="p">]])</span>
+        <span class="c1"># Sixth triangle (diagonal-based)</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">tris</span></div>
+
+    <span class="c1"># converts quad elements into tri elements. Reference: https://stackoverflow.com/questions/52202014/how-can-i-plot-2d-fem-results-using-matplotlib</span>
+<div class="viewcode-block" id="Visualizer.quads_to_tris"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.quads_to_tris">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">quads_to_tris</span><span class="p">(</span><span class="n">quad</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the shape you would get by converting a quad to 2 triangles</span>
+
+<span class="sd">                            A-------B</span>
+<span class="sd">                            |     / |</span>
+<span class="sd">                            |    /  |</span>
+<span class="sd">                            |   /   |</span>
+<span class="sd">                            |  /    |</span>
+<span class="sd">                            | /     |</span>
+<span class="sd">                            D-------C</span>
+
+<span class="sd">        :param quads: list of quads</span>
+
+<span class="sd">        :return: list of triangles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tris</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># First triangle</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="c1"># Second triangle</span>
+        <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">tris</span></div>
+
+<div class="viewcode-block" id="Visualizer.convert_to_4tris"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.convert_to_4tris">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_to_4tris</span><span class="p">(</span><span class="n">quads</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the shape you would get by converting a quad to 4 triangles</span>
+
+<span class="sd">                            A-------B</span>
+<span class="sd">                            | \   / |</span>
+<span class="sd">                            |  \ /  |</span>
+<span class="sd">                            |   X   |</span>
+<span class="sd">                            |  / \  |</span>
+<span class="sd">                            | /   \ |</span>
+<span class="sd">                            D-------C</span>
+
+<span class="sd">        :param quads: list of quads</span>
+
+<span class="sd">        :return: list of triangles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tris</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">quad</span> <span class="ow">in</span> <span class="n">quads</span><span class="p">:</span>
+            <span class="c1"># First triangle</span>
+            <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+            <span class="c1"># Second triangle</span>
+            <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+            <span class="c1"># Third triangle (diagonal-based)</span>
+            <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+            <span class="c1"># Fourth triangle (diagonal-based)</span>
+            <span class="n">tris</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">quad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">quad</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">tris</span></div>
+
+    <span class="c1"># plots a finite element mesh</span>
+<div class="viewcode-block" id="Visualizer.plot_fem_mesh"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.plot_fem_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">plot_fem_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes_x</span><span class="p">,</span> <span class="n">nodes_y</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function plots the finite element mesh.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes_x</span><span class="p">[</span><span class="n">element</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">))]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes_y</span><span class="p">[</span><span class="n">element</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">))]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Visualizer.save_fig"><a class="viewcode-back" href="../index.html#Visualizer.Visualizer.save_fig">[docs]</a>    <span class="k">def</span> <span class="nf">save_fig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the figure in the &#39;results&#39; directory.</span>
+
+<span class="sd">        :param title:  Title of the figure</span>
+<span class="sd">        :return:  None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span><span class="p">)</span>
+
+        <span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span>
+
+        <span class="c1"># Save fig in svg format in the directory named &#39;results&#39;. If it doesn&#39;t exist, create it.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">FEM Project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Lucas Lino and Christian Oliveira.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
